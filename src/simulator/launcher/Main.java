@@ -29,10 +29,12 @@ public class Main {
 	// default values for some parameters
 	//
 	private final static Double _dtimeDefaultValue = 2500.0;
+	private final static Integer _stepsDefaultValue = 150;
 
 	// some attributes to stores values corresponding to command-line parameters
 	//
 	private static Double _dtime = null;
+	private static Integer _steps = null;
 	private static String _inFile = null;
 	private static JSONObject _gravityLawsInfo = null;
 
@@ -41,6 +43,7 @@ public class Main {
 	private static Factory<GravityLaws> _gravityLawsFactory;
 
 	private static void init() {
+		//TODO
 		// initialize the bodies factory
 		// ...
 
@@ -63,6 +66,9 @@ public class Main {
 			parseInFileOption(line);
 			parseDeltaTimeOption(line);
 			parseGravityLawsOption(line);
+			parseOutputOption(line);
+			parseStepsOption(line);
+			
 
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
@@ -100,6 +106,16 @@ public class Main {
 		// gravity laws -- there is a workaround to make it work even when
 		// _gravityLawsFactory is null. 
 		//
+		
+		//output file
+		cmdLineOptions.addOption(Option.builder("o").longOpt("output").hasArg().desc("Output file, where output is written. Default\r\n" + 
+				"value: the standard output.").build());
+		
+		//steps
+		cmdLineOptions.addOption(Option.builder("s").longOpt("steps").hasArg().desc("An integer representing the number of\r\n" + 
+				"simulation steps. Default value: " + _stepsDefaultValue +".").build());
+		
+		
 		String gravityLawsValues = "N/A";
 		String defaultGravityLawsValue = "N/A";
 		if (_gravityLawsFactory != null) {
@@ -167,8 +183,28 @@ public class Main {
 			_gravityLawsInfo = _gravityLawsFactory.getInfo().get(0);
 		}
 	}
+	
+	private static void parseOutputOption(CommandLine line) throws ParseException  {
+		String output = line.getOptionValue("o");
+		try {
+			//TODO output 
+		} catch (Exception e) {
+			throw new ParseException("Invalid output File: " + output);
+		}
+	}
+	
+	private static void parseStepsOption(CommandLine line) throws ParseException  {
+		String s = line.getOptionValue("s", _stepsDefaultValue.toString());
+		try {
+			_steps = Integer.parseInt(s);
+			assert (_steps > 0);
+		} catch (Exception e) {
+			throw new ParseException("Invalid steps value: " + s);
+		}
+	}
 
 	private static void startBatchMode() throws Exception {
+		//TODO
 		// create and connect components, then start the simulator
 	}
 
