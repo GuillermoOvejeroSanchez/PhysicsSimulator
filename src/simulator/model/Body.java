@@ -1,6 +1,6 @@
 package simulator.model;
 
-//import json*;
+import json.*;
 import simulator.misc.Vector;
 
 public class Body {
@@ -54,15 +54,15 @@ public class Body {
 		this.position = position.plus(velocity.scale(t)).plus(acceleration.scale(1/2).scale(t).scale(t)) ;
 		this.velocity = velocity.plus(acceleration.scale(t));
 	}
-	/*
+	
 	public String toString() {
-		return id;	
+		//return id;	
 	
 
 	this.toJSONString();
 	}
 	
-	*/
+	
 	
 }
 	
