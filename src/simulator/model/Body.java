@@ -1,6 +1,6 @@
 package simulator.model;
 
-import json.*;
+
 import simulator.misc.Vector;
 
 public class Body {
@@ -58,8 +58,7 @@ public class Body {
 	public String toString() {
 		//return id;	
 	
-
-	this.toJSONString();
+		return null; 
 	}
 	
 	
