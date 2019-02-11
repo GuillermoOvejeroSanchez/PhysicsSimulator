@@ -9,12 +9,14 @@ public class Body {
 	protected Vector acceleration;
 	protected Vector position;
 	protected double mass;
+	protected double elapsedTime;
 	public Body(String id, Vector vel, Vector acc, Vector pos, double mass) {
 		this.id = id;
 		this.velocity = vel;
 		this.acceleration = acc;
 		this.position = pos;
 		this.mass = mass;
+		this.elapsedTime = 0.0;
 	}
 	
 	public String getId() {
@@ -52,6 +54,8 @@ public class Body {
 	void move(double t) {
 		this.position = position.plus(velocity.scale(t)).plus(acceleration.scale(1/2).scale(t).scale(t)) ;
 		this.velocity = velocity.plus(acceleration.scale(t));
+		
+		elapsedTime = t;
 	}
 	
 	@Override
