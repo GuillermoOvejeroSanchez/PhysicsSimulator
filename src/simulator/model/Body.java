@@ -1,6 +1,6 @@
 package simulator.model;
 
-import json;
+import org.json.*;
 import simulator.misc.Vector;
 
 public class Body {
@@ -9,7 +9,6 @@ public class Body {
 	protected Vector acceleration;
 	protected Vector position;
 	protected double mass;
-	
 	public Body(String id, Vector vel, Vector acc, Vector pos, double mass) {
 		this.id = id;
 		this.velocity = vel;
@@ -55,9 +54,8 @@ public class Body {
 		this.velocity = velocity.plus(acceleration.scale(t));
 	}
 	
+	@Override
 	public String toString() {
-		return id;	
-		
-	this.toJSONString();
+	return JSONObject.valueToString(this);
 	}
 }
