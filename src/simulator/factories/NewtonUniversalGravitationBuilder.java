@@ -2,7 +2,9 @@ package simulator.factories;
 
 import org.json.JSONObject;
 
-public class NewtonUniversalGravitationBuilder extends Builder<Object> {
+import simulator.model.GravityLaws;
+
+public class NewtonUniversalGravitationBuilder extends Builder<GravityLaws> {
 
 	@Override
 	JSONObject createData() {
@@ -11,9 +13,9 @@ public class NewtonUniversalGravitationBuilder extends Builder<Object> {
 	}
 
 	@Override
-	void createTheInstance(JSONObject jo) {
+	public GravityLaws createTheInstance(JSONObject jo) {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
 }

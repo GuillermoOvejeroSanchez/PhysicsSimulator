@@ -2,11 +2,8 @@ package simulator.factories;
 
 import org.json.JSONObject;
 
-public abstract class Builder<T> {
 
-	Builder(){
-		
-	}
+public abstract class Builder<T> {
 	
 	double[] jsonArrayToDoubleArray(JSONObject jo) {
 		return null;
@@ -22,5 +19,5 @@ public abstract class Builder<T> {
 	
 	abstract JSONObject createData();
 	
-	abstract void createTheInstance(JSONObject jo);
+	public abstract T createTheInstance(JSONObject jo);
 }

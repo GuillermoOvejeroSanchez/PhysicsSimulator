@@ -2,7 +2,9 @@ package simulator.factories;
 
 import org.json.JSONObject;
 
-public class MassLosingBodyBuilder extends Builder<Object>{
+import simulator.model.Body;
+
+public class MassLosingBodyBuilder extends Builder<Body>{
 
 	@Override
 	JSONObject createData() {
@@ -11,7 +13,9 @@ public class MassLosingBodyBuilder extends Builder<Object>{
 	}
 
 	@Override
-	void createTheInstance(JSONObject jo) {
+	public
+	Body createTheInstance(JSONObject jo) {
+		return null;
 		// TODO Auto-generated method stub
 		
 	}
