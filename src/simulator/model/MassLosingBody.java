@@ -28,6 +28,21 @@ public class MassLosingBody extends Body {
 	private void setMass(double mass) {
 		this.mass = mass;
 	}
+	
+	@Override
+	public void move(double t) {
+		
+		super.move(t);
+		
+		if(elapsedTime >= t) {
+			this.mass = this.mass * (1 - lossFactor);
+			elapsedTime = 0.0; 
+		}
+		
+		
+	}
+	
+	/*
 
 	public void setLossMass(){
 		if(elapsedTime >= lossFrequency) {
@@ -35,6 +50,8 @@ public class MassLosingBody extends Body {
 			elapsedTime = 0.0;
 		}
 	}
+	
+	*/
 	
 	
 }
