@@ -56,11 +56,37 @@ public class Body {
 		this.velocity = velocity.plus(acceleration.scale(t));
 	}
 	
+	/*
 	@Override
 	public String toString() {
 	return JSONObject.valueToString(this);
 	}
+	*/
 	
+	public String toSring() {
+		JSONObject cuerpo = new JSONObject(); 
+		
+		cuerpo.put("id", id); 
+		cuerpo.put("mass", mass); 
+		cuerpo.put("acceleration", acceleration); 
+		cuerpo.put("position", position); 
+		cuerpo.put("velocity", velocity); 
+		
+		
+		return cuerpo.toString();
+	}
+public boolean equals(Body body) {
+		
+		boolean same = false; 
+		
+		if(this.id == body.id && this.mass == body.mass) {
+			if(this.position.equals(body.position) && this.velocity.equals(body.velocity) && this.acceleration.equals(body.acceleration)) {
+				same = true ;
+			}
+		}
+		
+		return same; 
+	}
 	
 	
 }
