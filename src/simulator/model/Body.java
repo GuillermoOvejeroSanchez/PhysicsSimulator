@@ -4,19 +4,19 @@ import org.json.*;
 import simulator.misc.Vector;
 
 public class Body {
+	
 	protected String id;
 	protected Vector velocity;
 	protected Vector acceleration;
 	protected Vector position;
 	protected double mass;
-	protected double elapsedTime;
+	
 	public Body(String id, Vector vel, Vector acc, Vector pos, double mass) {
 		this.id = id;
 		this.velocity = vel;
 		this.acceleration = acc;
 		this.position = pos;
 		this.mass = mass;
-		this.elapsedTime = 0.0;
 	}
 	
 	public String getId() {
@@ -24,15 +24,15 @@ public class Body {
 	}
 	
 	public Vector getVelocity() {
-		return this.velocity;
+		return new Vector(velocity);
 	}
 	
 	public Vector getAcceleration() {
-		return this.acceleration;
+		return new Vector(acceleration);
 	}
 	
 	public Vector getPosition() {
-		return this.position;
+		return new Vector(position);
 	}
 	
 	public double getMass() {
@@ -40,22 +40,20 @@ public class Body {
 	}
 	
 	public void setVelocity(Vector v) {
-		this.velocity = v;
+		velocity = new Vector(v);
 	}
 	
 	public void setAcceleration(Vector a) {
-		this.acceleration = a;
+		acceleration = new Vector(a);
 	}
 	
 	public void setPosition(Vector p) {
-		this.position = p;
+		position = new Vector(p);
 	}
 	
-	void move(double t) {
+	public void move(double t) {
 		this.position = position.plus(velocity.scale(t)).plus(acceleration.scale(1/2).scale(t).scale(t)) ;
 		this.velocity = velocity.plus(acceleration.scale(t));
-		
-		elapsedTime = t;
 	}
 	
 	@Override
