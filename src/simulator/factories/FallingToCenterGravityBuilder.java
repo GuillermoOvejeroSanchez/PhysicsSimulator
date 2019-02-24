@@ -7,9 +7,8 @@ import simulator.model.GravityLaws;
 public class FallingToCenterGravityBuilder<T> extends Builder<GravityLaws> {
 
 	@Override
-	JSONObject createData() {
-		// TODO Auto-generated method stub
-		return null;
+	public JSONObject createData() {
+		return super.createData();
 	}
 
 	@Override

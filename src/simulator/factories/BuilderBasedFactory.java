@@ -1,14 +1,18 @@
 package simulator.factories;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
 
 public class BuilderBasedFactory<T> implements Factory<T> {
 
-	private List<Builder<T>> builderList;
-	public BuilderBasedFactory(List<Builder<T>> builder) {
-		setBuilderList(builder);
+	
+	static List<JSONObject> _factoryElements;
+	private List<Builder<T>> _builders;	
+
+	public BuilderBasedFactory(List<Builder<T>> builders) {
+		_builders = new ArrayList<Builder<T>>(builders);
 	}
 	@Override
 	public T createInstance(JSONObject info) {
@@ -21,11 +25,6 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public List<Builder<T>> getBuilderList() {
-		return builderList;
-	}
-	public void setBuilderList(List<Builder<T>> builderList) {
-		this.builderList = builderList;
-	}
+
 
 }
