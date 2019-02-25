@@ -21,6 +21,11 @@ static private final double G = 6.67E-11;
 			
 			if(bodies.get(i).getMass() > 0) {
 				fuerza = force(bodies.get(i), bodies.get(i + 1));  // TODO fuerzas que ejercen sobre un cuerpo hacerlo bien
+				
+				for(int j  = i; i < bodies.size(); j++) {
+					
+				}
+				
 				aceleracion = fuerza.scale(1/bodies.get(i).getMass()); 
 				bodies.get(i).setAcceleration(new Vector (aceleracion));
 				
