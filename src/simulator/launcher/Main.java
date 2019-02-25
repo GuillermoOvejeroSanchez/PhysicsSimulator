@@ -120,13 +120,13 @@ public class Main {
 		String defaultGravityLawsValue = "N/A";
 		if (_gravityLawsFactory != null) {
 			gravityLawsValues = "";
-			for (JSONObject fe : _gravityLawsFactory.getInfo()) {
+			for (JSONObject fe : _gravityLawsFactory.getBuilderInfo()) {
 				if (gravityLawsValues.length() > 0) {
 					gravityLawsValues = gravityLawsValues + ", ";
 				}
 				gravityLawsValues = gravityLawsValues + "'" + fe.getString("type") + "' (" + fe.getString("desc") + ")";
 			}
-			defaultGravityLawsValue = _gravityLawsFactory.getInfo().get(0).getString("type");
+			defaultGravityLawsValue = _gravityLawsFactory.getBuilderInfo().get(0).getString("type");
 		}
 		cmdLineOptions.addOption(Option.builder("gl").longOpt("gravity-laws").hasArg()
 				.desc("Gravity laws to be used in the simulator. Possible values: " + gravityLawsValues
@@ -170,7 +170,7 @@ public class Main {
 
 		String gl = line.getOptionValue("gl");
 		if (gl != null) {
-			for (JSONObject fe : _gravityLawsFactory.getInfo()) {
+			for (JSONObject fe : _gravityLawsFactory.getBuilderInfo()) {
 				if (gl.equals(fe.getString("type"))) {
 					_gravityLawsInfo = fe;
 					break;
@@ -180,7 +180,7 @@ public class Main {
 				throw new ParseException("Invalid gravity laws: " + gl);
 			}
 		} else {
-			_gravityLawsInfo = _gravityLawsFactory.getInfo().get(0);
+			_gravityLawsInfo = _gravityLawsFactory.getBuilderInfo().get(0);
 		}
 	}
 	
