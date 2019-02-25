@@ -16,9 +16,6 @@ public class NoGravityBuilder extends Builder<GravityLaws> {
 	}
 	
 	public JSONObject createData() {
-		
-		JSONObject data = new JSONObject(); 
-		
 		return super.createData();
 	}
 

@@ -4,7 +4,7 @@ import org.json.JSONObject;
 import simulator.misc.Vector;
 import simulator.model.Body;
 
-public class BasicBodyBuilder<T> extends Builder<Body> {
+public class BasicBodyBuilder extends Builder<Body> {
 
 	
 	public BasicBodyBuilder() {

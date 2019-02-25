@@ -22,7 +22,6 @@ public class NewtonUniversalGravitationBuilder extends Builder<GravityLaws> {
 
 	@Override
 	public GravityLaws createTheInstance(JSONObject jo) {
-	
 		return new NewtonUniversalGravitation();
 	}
 

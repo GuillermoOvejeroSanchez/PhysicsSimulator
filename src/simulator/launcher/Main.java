@@ -1,5 +1,9 @@
 package simulator.launcher;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+
 /*
  * Examples of command-line parameters:
  * 
@@ -20,9 +24,18 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.json.JSONObject;
 
+import simulator.control.Controller;
+import simulator.factories.BasicBodyBuilder;
+import simulator.factories.Builder;
+import simulator.factories.BuilderBasedFactory;
 import simulator.factories.Factory;
+import simulator.factories.FallingToCenterGravityBuilder;
+import simulator.factories.MassLosingBodyBuilder;
+import simulator.factories.NewtonUniversalGravitationBuilder;
+import simulator.factories.NoGravityBuilder;
 import simulator.model.Body;
 import simulator.model.GravityLaws;
+import simulator.model.PhysicsSimulator;
 
 public class Main {
 
@@ -43,12 +56,19 @@ public class Main {
 	private static Factory<GravityLaws> _gravityLawsFactory;
 
 	private static void init() {
-		//TODO
-		// initialize the bodies factory
-		// ...
-
-		// initialize the gravity laws factory
-		// ...
+		
+		ArrayList<Builder<Body>> bodyBuilders = new ArrayList<>();
+		bodyBuilders.add(new BasicBodyBuilder());
+		bodyBuilders.add(new MassLosingBodyBuilder());
+		_bodyFactory = new BuilderBasedFactory<Body>(bodyBuilders);
+		
+		ArrayList<Builder<GravityLaws>> gravityLawsBuilders = new ArrayList<>();
+		gravityLawsBuilders.add(new NewtonUniversalGravitationBuilder());
+		gravityLawsBuilders.add(new FallingToCenterGravityBuilder());
+		gravityLawsBuilders.add(new NoGravityBuilder());
+		_gravityLawsFactory = new BuilderBasedFactory<GravityLaws>(gravityLawsBuilders);
+		
+		
 	}
 
 	private static void parseArgs(String[] args) {
@@ -204,8 +224,14 @@ public class Main {
 	}
 
 	private static void startBatchMode() throws Exception {
-		//TODO
-		// create and connect components, then start the simulator
+		GravityLaws gravityLaws = _gravityLawsFactory.createInstance(_gravityLawsInfo);
+		PhysicsSimulator sim = new PhysicsSimulator(gravityLaws,_dtime);
+		//TODO InputStream & OutputStream
+		InputStream is = null;
+		OutputStream os = null;
+		Controller ctrl = new Controller(sim,_bodyFactory);
+		ctrl.loadBodies(is);
+		ctrl.run(_steps, os);
 	}
 
 	private static void start(String[] args) throws Exception {
