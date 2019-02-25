@@ -7,9 +7,12 @@ import simulator.model.NewtonUniversalGravitation;
 
 public class NewtonUniversalGravitationBuilder extends Builder<GravityLaws> {
 
+	public static final String TIPO = "nug"; 
+	public static final String DES = "Newton universal law"; 
+	
 	public NewtonUniversalGravitationBuilder() {
-		_typeTag = "nlug";
-		_desc = "Newton's universal law gravitation builder";
+		this._typeTag = TIPO; 
+		this._desc = DES; 
 	}
 	
 	@Override
@@ -19,8 +22,8 @@ public class NewtonUniversalGravitationBuilder extends Builder<GravityLaws> {
 
 	@Override
 	public GravityLaws createTheInstance(JSONObject jo) {
-		GravityLaws gl = new NewtonUniversalGravitation();
-		return gl;
+	
+		return new NewtonUniversalGravitation();
 	}
 
 }
