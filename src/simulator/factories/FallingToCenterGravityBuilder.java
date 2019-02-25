@@ -2,10 +2,16 @@ package simulator.factories;
 
 import org.json.JSONObject;
 
+import simulator.model.FallingToCenterGravity;
 import simulator.model.GravityLaws;
 
 public class FallingToCenterGravityBuilder<T> extends Builder<GravityLaws> {
 
+	public FallingToCenterGravityBuilder() {
+		_typeTag = "ftcg";
+		_desc = "Falling to the center gravity";
+	}
+	
 	@Override
 	public JSONObject createData() {
 		return super.createData();
@@ -14,8 +20,8 @@ public class FallingToCenterGravityBuilder<T> extends Builder<GravityLaws> {
 	@Override
 	public
 	GravityLaws createTheInstance(JSONObject jo) {
-		return null;
-		// TODO Auto-generated method stub
+		GravityLaws gl = new FallingToCenterGravity();
+		return gl;
 		
 	}
 

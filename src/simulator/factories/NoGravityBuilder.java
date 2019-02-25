@@ -3,9 +3,15 @@ package simulator.factories;
 import org.json.JSONObject;
 
 import simulator.model.GravityLaws;
+import simulator.model.NoGravity;
 
 public class NoGravityBuilder extends Builder<GravityLaws> {
 
+	
+	public NoGravityBuilder() {
+		_typeTag = "ng";
+		_desc = "No gravity";
+	}
 	@Override
 	public JSONObject createData() {
 		return super.createData();
@@ -13,8 +19,8 @@ public class NoGravityBuilder extends Builder<GravityLaws> {
 
 	@Override
 	public GravityLaws createTheInstance(JSONObject jo) {
-		// TODO Auto-generated method stub
-		return null;
+		GravityLaws gl = new NoGravity();
+		return gl;
 	}
 
 }

@@ -9,13 +9,8 @@ public class FallingToCenterGravity implements GravityLaws{
 	
 	
 	
-	public FallingToCenterGravity() {
-		
-		
+	public FallingToCenterGravity() {	
 	}
-	
-	
-
 	
 	
 	public void apply(List<Body> bodies) {
