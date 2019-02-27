@@ -11,10 +11,14 @@ public abstract class Builder<T> {
 	protected String _typeTag;
 	protected String _desc;
 	
-	public T createInstance(JSONObject info) {
+	public T createInstance(JSONObject info){
 		T b = null;
 		if (_typeTag != null && _typeTag.equals(info.getString("type")))
-		b = createTheInstance(info.getJSONObject("data"));
+		try {
+			b = createTheInstance(info.getJSONObject("data"));
+		}catch(Exception e) {
+			e.getMessage();
+		}
 		return b;
 		}
 	

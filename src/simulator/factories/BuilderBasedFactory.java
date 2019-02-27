@@ -15,22 +15,22 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 		_builders = new ArrayList<Builder<T>>(builders);
 	}
 	@Override
-	public T createInstance(JSONObject info) {
+	public T createInstance(JSONObject info){
 		T instance = null;
-		for (Builder<T> b: _builders) {
-			instance = b.createInstance(info);
-			if(instance!= null)
-				return instance;
-		}
+			for (Builder<T> b: _builders) {
+				instance = b.createInstance(info);
+				if(instance!= null)
+					return instance;
+			}
 		return instance;
+	
 	}
 
 	@Override
-	public List<JSONObject> getBuilderInfo() {
+	public List<JSONObject> getInfo() {
 		List<JSONObject> builderList = new ArrayList<JSONObject>();
 		for(Builder<T> b: _builders) {
 			builderList.add(b.getBuilderInfo());
-			
 		}
 		return builderList;
 	}
