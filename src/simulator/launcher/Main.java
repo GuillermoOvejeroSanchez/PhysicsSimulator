@@ -50,6 +50,8 @@ public class Main {
 	private static Integer _steps = null;
 	private static String _inFile = null;
 	private static JSONObject _gravityLawsInfo = null;
+	private static InputStream is;
+	private static OutputStream os;
 
 	// factories
 	private static Factory<Body> _bodyFactory;
@@ -61,7 +63,6 @@ public class Main {
 		bodyBuilders.add(new BasicBodyBuilder());
 		bodyBuilders.add(new MassLosingBodyBuilder());
 		_bodyFactory = new BuilderBasedFactory<Body>(bodyBuilders);
-		
 		ArrayList<Builder<GravityLaws>> gravityLawsBuilders = new ArrayList<>();
 		gravityLawsBuilders.add(new NewtonUniversalGravitationBuilder());
 		gravityLawsBuilders.add(new FallingToCenterGravityBuilder());
@@ -206,11 +207,11 @@ public class Main {
 	
 	private static void parseOutputOption(CommandLine line) throws ParseException  {
 		String output = line.getOptionValue("o");
-		if (output == null) {}
-		try {
-			//TODO output 
-		} catch (Exception e) {
-			throw new ParseException("Invalid output File: " + output);
+		if (output == null) {
+			os = System.out;
+		}else {
+			try {}
+			catch(Exception e) {throw new ParseException("Invalid output File: " + output);}
 		}
 	}
 	
@@ -227,10 +228,8 @@ public class Main {
 	private static void startBatchMode() throws Exception {
 		GravityLaws gravityLaws = _gravityLawsFactory.createInstance(_gravityLawsInfo);
 		PhysicsSimulator sim = new PhysicsSimulator(gravityLaws,_dtime);
-		//TODO InputStream & OutputStream
-		InputStream is = null;
-		OutputStream os = null;
 		Controller ctrl = new Controller(sim,_bodyFactory);
+		//TODO InputStream & OutputStream
 		ctrl.loadBodies(is);
 		ctrl.run(_steps, os);
 	}

@@ -56,14 +56,9 @@ public class Body {
 		this.velocity = velocity.plus(acceleration.scale(t));
 	}
 	
-	/*
-	@Override
-	public String toString() {
-	return JSONObject.valueToString(this);
-	}
-	*/
 	
-	public String toSring() {
+	
+	public String toString() {
 		JSONObject cuerpo = new JSONObject(); 
 		
 		cuerpo.put("id", id); 
@@ -75,6 +70,7 @@ public class Body {
 		
 		return cuerpo.toString();
 	}
+	
 public boolean equals(Body body) {
 		
 		boolean same = false; 

@@ -1,6 +1,5 @@
 package simulator.model;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class PhysicsSimulator {
@@ -10,13 +9,20 @@ public class PhysicsSimulator {
 	private List<Body> _bodies;
 	private double _dt;
 	private double _time; 
+	private StringBuilder state;
 
 	public PhysicsSimulator(GravityLaws gravityLaws, Double _dtime){
 		_gravityLaws = gravityLaws;
 		if(_gravityLaws == null)
 			throw new IllegalArgumentException();
-		_dt = _dtime;
+		if(_dtime.isNaN())
+			throw new IllegalArgumentException(); 
+		else
+			_dt = _dtime;
 		_time = 0.0;
+		state = new StringBuilder();
+		state.append("{\r\n" + 
+				"\"states\": [\r\n");
 	}
 
 	public void addBody(Body b) {
@@ -27,16 +33,21 @@ public class PhysicsSimulator {
 		_gravityLaws.apply(_bodies);
 		for (Body body : _bodies) {
 			body.move(_dt);
-			body.toSring();
+			body.toString();
 		}
 		_time+=_dt;
-		
-		//TODO Print output
 	}
 	
-	public String toString() {
-		//TODO
-		return null;
+	public String toString() { 
+		state.append("{ \"time\": ");
+		state.append(_time);
+		state.append(", \"bodies\": [ ");
+		for (Body body : _bodies) {
+			state.append(body.toString());
+			state.append(",");
+		}
+		state.append("] },");
+		return state.toString();
 		
 	}
 

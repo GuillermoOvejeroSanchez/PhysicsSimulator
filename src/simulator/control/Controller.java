@@ -32,10 +32,15 @@ public class Controller {
 	public void run(Integer _steps, OutputStream out) {
 		PrintStream p = (out == null) ? null : new PrintStream(out);
 		
+		//TODO Output format
+		// { "states": [s0,s1,...,sn]}
+		p.println(_sim.toString());//s0
 		for(int i = 0; i < _steps;i++) {
 		_sim.advance();
+		p.println(_sim.toString());//si
 		}
 		
+		p.close();
 	}
 
 }
