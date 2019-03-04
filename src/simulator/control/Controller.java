@@ -42,7 +42,7 @@ public class Controller {
 		while(i < _steps) {
 			_sim.advance();
 			jsonArray.put(new JSONObject(_sim.toString())); 
-			
+			i++; 
 			
 		}
 		
