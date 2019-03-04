@@ -1,5 +1,6 @@
 package simulator.control;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -30,9 +31,37 @@ public class Controller {
 	}
 
 	public void run(Integer _steps, OutputStream out) {
-		PrintStream p = (out == null) ? null : new PrintStream(out);
 		
-		//TODO Output format
+		JSONObject estados = new JSONObject(); 
+		JSONArray jsonArray = new JSONArray();
+		
+		jsonArray.put(new JSONObject(_sim.toString())); 
+		
+		int i  = 0; 
+		
+		while(i < _steps) {
+			_sim.advance();
+			jsonArray.put(new JSONObject(_sim.toString())); 
+			
+			
+		}
+		
+		estados.put("state", jsonArray); 
+		
+		try {
+			out.write(estados.toString().getBytes());
+		}catch (IOException a) {
+			System.err.println("error en la salida brow");
+		}
+		
+	}
+
+}
+
+
+/*
+ * PrintStream p = (out == null) ? null : new PrintStream(out);
+ //TODO Output format
 		// { "states": [s0,s1,...,sn]}
 		p.println(_sim.toString());//s0
 		for(int i = 0; i < _steps;i++) {
@@ -41,6 +70,8 @@ public class Controller {
 		}
 		
 		p.close();
-	}
-
-}
+	} 
+ 
+  
+ */
+ 
