@@ -1,7 +1,9 @@
 package simulator.launcher;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 /*
@@ -49,16 +51,17 @@ public class Main {
 	private static Double _dtime = null;
 	private static Integer _steps = null;
 	private static String _inFile = null;
+	private static String _outFile = null;
 	private static JSONObject _gravityLawsInfo = null;
 	private static InputStream is;
-	private static OutputStream os;
+	private static PrintStream os;
 
 	// factories
 	private static Factory<Body> _bodyFactory;
 	private static Factory<GravityLaws> _gravityLawsFactory;
 
 	private static void init() {
-		
+
 		ArrayList<Builder<Body>> bodyBuilders = new ArrayList<>();
 		bodyBuilders.add(new BasicBodyBuilder());
 		bodyBuilders.add(new MassLosingBodyBuilder());
@@ -68,8 +71,7 @@ public class Main {
 		gravityLawsBuilders.add(new FallingToCenterGravityBuilder());
 		gravityLawsBuilders.add(new NoGravityBuilder());
 		_gravityLawsFactory = new BuilderBasedFactory<GravityLaws>(gravityLawsBuilders);
-		
-		
+
 	}
 
 	private static void parseArgs(String[] args) {
@@ -89,7 +91,6 @@ public class Main {
 			parseGravityLawsOption(line);
 			parseOutputOption(line);
 			parseStepsOption(line);
-			
 
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
@@ -125,18 +126,18 @@ public class Main {
 				.build());
 
 		// gravity laws -- there is a workaround to make it work even when
-		// _gravityLawsFactory is null. 
+		// _gravityLawsFactory is null.
 		//
-		
-		//output file
-		cmdLineOptions.addOption(Option.builder("o").longOpt("output").hasArg().desc("Output file, where output is written. Default\r\n" + 
-				"value: the standard output.").build());
-		
-		//steps
-		cmdLineOptions.addOption(Option.builder("s").longOpt("steps").hasArg().desc("An integer representing the number of\r\n" + 
-				"simulation steps. Default value: " + _stepsDefaultValue +".").build());
-		
-		
+
+		// output file
+		cmdLineOptions.addOption(Option.builder("o").longOpt("output").hasArg()
+				.desc("Output file, where output is written. Default\r\n" + "value: the standard output.").build());
+
+		// steps
+		cmdLineOptions.addOption(
+				Option.builder("s").longOpt("steps").hasArg().desc("An integer representing the number of\r\n"
+						+ "simulation steps. Default value: " + _stepsDefaultValue + ".").build());
+
 		String gravityLawsValues = "N/A";
 		String defaultGravityLawsValue = "N/A";
 		if (_gravityLawsFactory != null) {
@@ -167,6 +168,11 @@ public class Main {
 
 	private static void parseInFileOption(CommandLine line) throws ParseException {
 		_inFile = line.getOptionValue("i");
+		try {
+			is = new FileInputStream(_inFile);
+		} catch (FileNotFoundException e) {
+			throw new ParseException("Invalid Input File");
+		}
 		if (_inFile == null) {
 			throw new ParseException("An input file of bodies is required");
 		}
@@ -204,18 +210,18 @@ public class Main {
 			_gravityLawsInfo = _gravityLawsFactory.getInfo().get(0);
 		}
 	}
-	
-	private static void parseOutputOption(CommandLine line) throws ParseException  {
-		String output = line.getOptionValue("o");
-		if (output == null) {
-			os = System.out;
-		}else {
-			try {}
-			catch(Exception e) {throw new ParseException("Invalid output File: " + output);}
-		}
+
+	private static void parseOutputOption(CommandLine line) throws ParseException {
+		_outFile = line.getOptionValue("o");
+			try {
+				os = (_outFile == null) ? System.out : new PrintStream(_outFile);
+			} catch (FileNotFoundException e) {
+				throw new ParseException("Invalid output File: " + _outFile);
+
+			}
 	}
-	
-	private static void parseStepsOption(CommandLine line) throws ParseException  {
+
+	private static void parseStepsOption(CommandLine line) throws ParseException {
 		String s = line.getOptionValue("s", _stepsDefaultValue.toString());
 		try {
 			_steps = Integer.parseInt(s);
@@ -227,9 +233,9 @@ public class Main {
 
 	private static void startBatchMode() throws Exception {
 		GravityLaws gravityLaws = _gravityLawsFactory.createInstance(_gravityLawsInfo);
-		PhysicsSimulator sim = new PhysicsSimulator(gravityLaws,_dtime);
-		Controller ctrl = new Controller(sim,_bodyFactory);
-		//TODO InputStream & OutputStream
+		PhysicsSimulator sim = new PhysicsSimulator(gravityLaws, _dtime);
+		Controller ctrl = new Controller(sim, _bodyFactory);
+
 		ctrl.loadBodies(is);
 		ctrl.run(_steps, os);
 	}
@@ -243,6 +249,7 @@ public class Main {
 		try {
 			init();
 			start(args);
+			System.out.println("Simulacion Completada");
 		} catch (Exception e) {
 			System.err.println("Something went wrong ...");
 			System.err.println();

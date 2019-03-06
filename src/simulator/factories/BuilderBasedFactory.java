@@ -13,6 +13,7 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 
 	public BuilderBasedFactory(List<Builder<T>> builders) {
 		_builders = new ArrayList<Builder<T>>(builders);
+		_factoryElements = new ArrayList<JSONObject>();
 	}
 	@Override
 	public T createInstance(JSONObject info){
@@ -28,11 +29,10 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 
 	@Override
 	public List<JSONObject> getInfo() {
-		List<JSONObject> builderList = new ArrayList<JSONObject>();
 		for(Builder<T> b: _builders) {
-			builderList.add(b.getBuilderInfo());
+			_factoryElements.add(b.getBuilderInfo());
 		}
-		return builderList;
+		return _factoryElements;
 	}
 
 

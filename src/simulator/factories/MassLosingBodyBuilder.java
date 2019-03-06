@@ -8,6 +8,11 @@ import simulator.model.MassLosingBody;
 
 public class MassLosingBodyBuilder extends Builder<Body>{
 
+	
+	public MassLosingBodyBuilder() {
+			_typeTag = "mlb";
+			_desc = "Mass Losing Body";
+	}
 	@Override
 	public JSONObject createData() {
 		JSONObject data = new JSONObject();

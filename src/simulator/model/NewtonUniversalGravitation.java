@@ -17,14 +17,14 @@ static private final double G = 6.67E-11;
 		Vector aceleracion; 
 		Vector fuerza; 
 		
-		for(int i = 0; i < bodies.size(); i++) {
+		for(int i = 0; i < bodies.size() - 1; i++) {
 			
 			if(bodies.get(i).getMass() > 0) {
 				fuerza = force(bodies.get(i), bodies.get(i + 1));  // TODO fuerzas que ejercen sobre un cuerpo hacerlo bien
 				
-				for(int j  = i; i < bodies.size(); j++) {
-					
-				}
+				//for(int j  = 0; j < bodies.size(); j++) {
+				//	
+				//}
 				
 				aceleracion = fuerza.scale(1/bodies.get(i).getMass()); 
 				bodies.get(i).setAcceleration(new Vector (aceleracion));

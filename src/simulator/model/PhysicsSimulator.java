@@ -1,6 +1,10 @@
 package simulator.model;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class PhysicsSimulator {
 
@@ -9,10 +13,11 @@ public class PhysicsSimulator {
 	private List<Body> _bodies;
 	private double _dt;
 	private double _time; 
-	private StringBuilder state;
+	private JSONObject stateJSON;
 
 	public PhysicsSimulator(GravityLaws gravityLaws, Double _dtime){
 		_gravityLaws = gravityLaws;
+		_bodies = new ArrayList<Body>();
 		if(_gravityLaws == null)
 			throw new IllegalArgumentException();
 		if(_dtime.isNaN())
@@ -20,9 +25,7 @@ public class PhysicsSimulator {
 		else
 			_dt = _dtime;
 		_time = 0.0;
-		state = new StringBuilder();
-		state.append("{\r\n" + 
-				"\"states\": [\r\n");
+		stateJSON = new JSONObject();
 	}
 
 	public void addBody(Body b) {
@@ -38,16 +41,17 @@ public class PhysicsSimulator {
 		_time+=_dt;
 	}
 	
-	public String toString() { 
-		state.append("{ \"time\": ");
-		state.append(_time);
-		state.append(", \"bodies\": [ ");
+	
+	public String toString() {
+		stateJSON.put("time", _time);
+		JSONArray bodies = new JSONArray();
 		for (Body body : _bodies) {
-			state.append(body.toString());
-			state.append(",");
+			bodies.put(body);
 		}
-		state.append("] },");
-		return state.toString();
+		stateJSON.put("bodies",bodies);
+		
+		//System.out.println(stateJSON);
+		return stateJSON.toString();
 		
 	}
 
