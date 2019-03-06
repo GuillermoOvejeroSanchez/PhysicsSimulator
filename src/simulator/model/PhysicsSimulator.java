@@ -1,8 +1,7 @@
 package simulator.model;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -17,7 +16,7 @@ public class PhysicsSimulator {
 
 	public PhysicsSimulator(GravityLaws gravityLaws, Double _dtime){
 		_gravityLaws = gravityLaws;
-		_bodies = new ArrayList<Body>();
+		_bodies = new LinkedList<Body>();
 		if(_gravityLaws == null)
 			throw new IllegalArgumentException();
 		if(_dtime.isNaN())
@@ -28,8 +27,12 @@ public class PhysicsSimulator {
 		stateJSON = new JSONObject();
 	}
 
-	public void addBody(Body b) {
-		_bodies.add(b);
+	public void addBody(Body b) throws IllegalArgumentException {
+		for (Body body : _bodies) {
+			if(body.getId().equals(b.getId()))
+				throw new IllegalArgumentException("Cuerpo con ID duplicado");
+		}
+			_bodies.add(b);
 	}
 	
 	public void advance() {
@@ -49,7 +52,6 @@ public class PhysicsSimulator {
 			bodies.put(body);
 		}
 		stateJSON.put("bodies",bodies);
-		
 		//System.out.println(stateJSON);
 		return stateJSON.toString();
 		

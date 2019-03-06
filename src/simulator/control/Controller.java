@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -20,7 +21,10 @@ public class Controller {
 		_bodiesFactory = _bodyFactory;
 	}
 
-	public void loadBodies(InputStream in) throws IOException {
+	public void loadBodies(InputStream in) throws JSONException, Exception {
+		
+		//El jsonInput con InputStream no funciona bien
+		//JSONObject jsonInupt = new JSONObject(new JSONTokener(in()));
 		
 		StringBuilder input = new StringBuilder();
 		int data = in.read();
@@ -29,10 +33,8 @@ public class Controller {
 			data = in.read();
 			input.append((char) data);
 		}
-		
-		//new JSONTokener()
-		JSONObject jsonInupt = new JSONObject(new JSONTokener(input.toString()));
-		JSONArray bodies = jsonInupt.getJSONArray("bodies");
+		JSONObject jsonInput = new JSONObject(new JSONTokener(input.toString()));
+		JSONArray bodies = jsonInput.getJSONArray("bodies");
 		for (int i = 0; i < bodies.length(); i++)
 		_sim.addBody(_bodiesFactory.createInstance(bodies.getJSONObject(i)));
 		
@@ -51,37 +53,16 @@ public class Controller {
 			_sim.advance();
 			jsonArray.put(new JSONObject(_sim.toString())); 
 			i++; 
-			
 		}
 		
 		estados.put("state", jsonArray); 
 		
-		System.out.println("Output de la simulacion");
 		 try {
 			out.write(estados.toString().getBytes());
 		}catch (IOException a) {
-			System.err.println("error en la salida brow");
+			System.err.println("Error en la salida");
 		}
-		
-		
+		 System.out.println("Output de la simulacion realizado");
 	}
 
-}
-
-
-/*
- * PrintStream p = (out == null) ? null : new PrintStream(out);
- //TODO Output format
-		// { "states": [s0,s1,...,sn]}
-		p.println(_sim.toString());//s0
-		for(int i = 0; i < _steps;i++) {
-		_sim.advance();
-		p.println(_sim.toString());//si
-		}
-		
-		p.close();
-	} 
- 
-  
- */
- 
+} 

@@ -14,11 +14,16 @@ public class BasicBodyBuilder extends Builder<Body> {
 	@Override
 	public Body createTheInstance(JSONObject data) {
 				Body bodyObject = null;
+				try {
 					Vector acc = defaultVector();
 					Vector vel = new Vector(jsonArrayTodoubleArray(data.getJSONArray("pos")));
 					Vector pos = new Vector(jsonArrayTodoubleArray(data.getJSONArray("vel")));
 					bodyObject = new Body(data.getString("id"), vel, acc, pos, data.getDouble("mass"));
-				return bodyObject;
+				}catch (Exception e) {
+					// TODO: handle exception
+					throw new IllegalArgumentException("Datos no validos");
+				}
+					return bodyObject;
 			}
 
 	@Override
