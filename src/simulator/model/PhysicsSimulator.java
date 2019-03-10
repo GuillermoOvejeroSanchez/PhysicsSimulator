@@ -43,18 +43,49 @@ public class PhysicsSimulator {
 		}
 		_time+=_dt;
 	}
+	/*
+	public String toString() {
+		JSONObject info = new JSONObject(); 
+		JSONArray bodies = new JSONArray(); 
+		
+		info.put("time", _time); 
+		
+		for (Body bodie : _bodies) {
+			bodies.put(new JSONObject(bodie.toString())); 
+		}
+		
+		info.put("bodies", bodies);
+		
+		return info.toString();
+	}
+	*/
+	
 	
 	
 	public String toString() {
-		stateJSON.put("time", _time);
-		JSONArray bodies = new JSONArray();
+		
+		
+		StringBuilder state = new StringBuilder();
+		//state.append("{\r\n" + 
+			//	"\"states\": [\r\n"); 
+		state.append("{ \"time\":  ");
+		state.append(_time);
+		state.append(" ,  \"bodies\":  [ ");
+	
+		
 		for (Body body : _bodies) {
-			bodies.put(body);
+			
+			state.append(body.toString());
+			state.append(" , ");
+			
 		}
-		stateJSON.put("bodies",bodies);
-		//System.out.println(stateJSON);
-		return stateJSON.toString();
+		
+		state.append(" ] } ,\n");
+		
+		
+		return state.toString();
 		
 	}
+	
 
 }

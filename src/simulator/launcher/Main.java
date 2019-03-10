@@ -236,6 +236,7 @@ public class Main {
 		PhysicsSimulator sim = new PhysicsSimulator(gravityLaws, _dtime);
 		Controller ctrl = new Controller(sim, _bodyFactory);
 
+		
 		ctrl.loadBodies(is);
 		ctrl.run(_steps, os);
 	}

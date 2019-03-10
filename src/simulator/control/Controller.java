@@ -36,26 +36,46 @@ public class Controller {
 		JSONObject jsonInput = new JSONObject(new JSONTokener(input.toString()));
 		JSONArray bodies = jsonInput.getJSONArray("bodies");
 		for (int i = 0; i < bodies.length(); i++)
-		_sim.addBody(_bodiesFactory.createInstance(bodies.getJSONObject(i)));
+		_sim.addBody(_bodiesFactory.createInstance(bodies.getJSONObject(i))); // TODO aqui falla la vaina 
 		
 	}
-
+	
+	public void run(Integer n, OutputStream out) {
+		JSONObject state = new JSONObject(); 
+		JSONArray s = new JSONArray(); 
+		
+		s.put(new JSONObject(_sim.toString())); 
+		for(int i = 0; i < n ; i++) {
+			_sim.advance();
+			s.put(new JSONObject(_sim.toString())); 
+		}
+		
+		state.put("states", s); 
+		
+		 try {
+				out.write(state.toString().getBytes());
+			}catch (IOException a) {
+				System.err.println("Error en la salida");
+			}
+	}
+	
+	
+	
+	/*
 	public void run(Integer _steps, OutputStream out) {
 		
 		JSONObject estados = new JSONObject(); 
 		JSONArray jsonArray = new JSONArray();
 		
-		jsonArray.put(new JSONObject(_sim.toString())); 
 		
-		int i  = 0; 
 		
-		while(i < _steps) {
-			_sim.advance();
+		for(int i = 0; i < _steps; i++ ) {
 			jsonArray.put(new JSONObject(_sim.toString())); 
-			i++; 
+			_sim.advance();
+			
 		}
 		
-		estados.put("state", jsonArray); 
+		estados.put("states", jsonArray); 
 		
 		 try {
 			out.write(estados.toString().getBytes());
@@ -64,5 +84,6 @@ public class Controller {
 		}
 		 System.out.println("Output de la simulacion realizado");
 	}
+	*/
 
 } 

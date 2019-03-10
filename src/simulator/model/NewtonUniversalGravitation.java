@@ -36,6 +36,9 @@ static private final double G = 6.67E-11;
 				bodies.get(i).setAcceleration( new Vector (bodies.get(i).acceleration.dim()));
 				bodies.get(i).setVelocity(new Vector(bodies.get(i).velocity.dim()));
 			}
+			
+			bodies.get(i).setAcceleration(sumFuerza.scale(1/bodies.get(i).getMass()));
+			
 		}
 	}
 	
