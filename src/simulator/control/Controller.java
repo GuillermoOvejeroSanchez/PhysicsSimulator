@@ -23,8 +23,7 @@ public class Controller {
 
 	public void loadBodies(InputStream in) throws JSONException, Exception {
 		
-		//El jsonInput con InputStream no funciona bien
-		//JSONObject jsonInupt = new JSONObject(new JSONTokener(in()));
+	
 		
 		StringBuilder input = new StringBuilder();
 		int data = in.read();
@@ -36,7 +35,7 @@ public class Controller {
 		JSONObject jsonInput = new JSONObject(new JSONTokener(input.toString()));
 		JSONArray bodies = jsonInput.getJSONArray("bodies");
 		for (int i = 0; i < bodies.length(); i++)
-		_sim.addBody(_bodiesFactory.createInstance(bodies.getJSONObject(i))); // TODO aqui falla la vaina 
+		_sim.addBody(_bodiesFactory.createInstance(bodies.getJSONObject(i))); 
 		
 	}
 	
@@ -60,30 +59,6 @@ public class Controller {
 	}
 	
 	
-	
-	/*
-	public void run(Integer _steps, OutputStream out) {
-		
-		JSONObject estados = new JSONObject(); 
-		JSONArray jsonArray = new JSONArray();
-		
-		
-		
-		for(int i = 0; i < _steps; i++ ) {
-			jsonArray.put(new JSONObject(_sim.toString())); 
-			_sim.advance();
-			
-		}
-		
-		estados.put("states", jsonArray); 
-		
-		 try {
-			out.write(estados.toString().getBytes());
-		}catch (IOException a) {
-			System.err.println("Error en la salida");
-		}
-		 System.out.println("Output de la simulacion realizado");
-	}
-	*/
+
 
 } 

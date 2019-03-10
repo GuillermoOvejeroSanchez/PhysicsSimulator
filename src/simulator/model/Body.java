@@ -59,25 +59,6 @@ public class Body {
 	}
 	
 	
-	/*
-	public String toString() {
-		
-		JSONObject cuerpo = new JSONObject(); 
-		
-		cuerpo.put("id", id); 
-		cuerpo.put("mass", mass); 
-		cuerpo.put("acceleration", acceleration.toString()); 
-		cuerpo.put("position", position.toString()); 
-		cuerpo.put("velocity", velocity.toString()); 
-		return cuerpo.toString();
-		
-		/*
-		return "{ " + "\"id: " + id + "mass: "  + mass + "acceleration: " + acceleration + "position: " + 
-		position + "velocity: " + velocity; 
-		
-	}
-	*/
-	
 	public String toString() {
 		StringBuilder cuerpo = new StringBuilder();
 		
@@ -97,17 +78,7 @@ public class Body {
 		cuerpo.append(acceleration.toString());
 		cuerpo.append(" } ");
 	
-		/*
-		state.append("{\r\n" + 
-				"\"states\": [\r\n"); 
-		state.append("{ \"time\": ");
-		state.append(0.0);
-		state.append(", \"bodies\": [ ");
-		state.append(body.toString());
-		state.append(",");
-		state.append(body2.toString());
-		state.append(" ] },\n");
-		*/
+	
 		return cuerpo.toString(); 
 	}
 	
