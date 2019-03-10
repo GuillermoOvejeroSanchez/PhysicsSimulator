@@ -15,7 +15,7 @@ static private final double G = 6.67E-11;
 			
 			Vector sumFuerza = new Vector(bodies.get(i).getPosition().dim()); 
 			
-			if(bodies.get(i).getMass() > 0) {
+			if(bodies.get(i).getMass() > 0.00) {
 				//Vector sumFuerza = new Vector(bodies.get(i).getPosition().dim()); 
 				for(int j = 0; j < bodies.size(); j++) {
 					
@@ -28,7 +28,7 @@ static private final double G = 6.67E-11;
 					}
 				}
 			}
-			else if(bodies.get(i).getMass() == 0) {
+			else if(bodies.get(i).getMass() <= 0) {
 				bodies.get(i).setAcceleration( new Vector (bodies.get(i).acceleration.dim()));
 				bodies.get(i).setVelocity(new Vector(bodies.get(i).velocity.dim()));
 			}

@@ -16,8 +16,8 @@ public class BasicBodyBuilder extends Builder<Body> {
 				Body bodyObject = null;
 				try {
 					Vector acc = defaultVector();
-					Vector vel = new Vector(jsonArrayTodoubleArray(data.getJSONArray("pos")));
-					Vector pos = new Vector(jsonArrayTodoubleArray(data.getJSONArray("vel")));
+					Vector vel = new Vector(jsonArrayTodoubleArray(data.getJSONArray("vel")));
+					Vector pos = new Vector(jsonArrayTodoubleArray(data.getJSONArray("pos")));
 					bodyObject = new Body(data.getString("id"), vel, acc, pos, data.getDouble("mass"));
 				}catch (Exception e) {
 					// TODO: handle exception

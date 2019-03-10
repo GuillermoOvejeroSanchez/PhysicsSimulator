@@ -5,12 +5,12 @@ import simulator.misc.Vector;
 
 public class FallingToCenterGravity implements GravityLaws{
 	
-	static private final double g = -9.81; 
+	static private final double g = 9.81; 
 	
 	
 	
 	public void apply(List<Body> bodies) {
-		double[] acc = {g, 0.0}; 
+		double[] acc = {0.0, g}; 
 		Body body; 
 		Vector gravedad= new Vector(acc); 
 		
