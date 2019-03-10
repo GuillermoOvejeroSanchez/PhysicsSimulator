@@ -44,7 +44,7 @@ public class Main {
 	// default values for some parameters
 	//
 	private final static Double _dtimeDefaultValue = 2500.0;
-	private final static Integer _stepsDefaultValue = 150;
+	private final static Integer _stepsDefaultValue = 1500;
 
 	// some attributes to stores values corresponding to command-line parameters
 	//

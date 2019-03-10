@@ -42,13 +42,19 @@ static private final double G = 6.67E-11;
 		Vector fuerza = null;
 		double distancia; 
 		double fuerzaDouble; 
-		Vector direccion = null; 
+		Vector direccion = null;
 		
-		distancia =  a.velocity.distanceTo(b.velocity) * a.velocity.distanceTo(b.velocity); 
-		fuerzaDouble = (G*(b.getMass() * a.getMass()) /(distancia*distancia));
+		
+		
+		distancia =  a.position.distanceTo(b.position); 
+		fuerzaDouble = G*((b.getMass() * a.getMass()) /(distancia*distancia));
 		direccion = a.position.minus(b.position).direction(); 
-		
-		
+		/*
+		System.out.println(distancia);
+		System.out.println(direccion.toString());
+		System.out.println(fuerzaDouble);
+		System.out.println("\n");
+		*/
 		
 		//fuerza = b.velocity.direction().scale((G*(b.getMass() * a.getMass()) /(distancia*distancia)));
 		return direccion.scale(fuerzaDouble);
