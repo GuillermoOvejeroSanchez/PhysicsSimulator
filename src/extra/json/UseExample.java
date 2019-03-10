@@ -137,16 +137,16 @@ public class UseExample {
 
 		// build a JSONObject from a file
 		JSONObject joFromFile1 = new JSONObject(
-				new JSONTokener(new FileInputStream(new File("resources/other/json-1.txt"))));
+				new JSONTokener(new FileInputStream(new File("resources/examples/ex1_PRUEBA.2body.txt"))));
 		JSONObject joFromFile2 = new JSONObject(
-				new JSONTokener(new FileInputStream(new File("resources/other/json-2.txt"))));
+				new JSONTokener(new FileInputStream(new File("resources/output/out.1.txt"))));
 		JSONObject joFromFile3 = new JSONObject(
 				new JSONTokener(new FileInputStream(new File("resources/other/json-3.txt"))));
 
-		accessExample(joFromString);
-		accessExample(joFromFile1);
-		accessExample(joFromFile2);
-		accessExample(joFromFile3);
+		//accessExample(joFromString);
+		//accessExample(joFromFile1);
+		//accessExample(joFromFile2);
+		//accessExample(joFromFile3);
 
 		// Example 2: compare two JSON structures
 		//
@@ -156,16 +156,14 @@ public class UseExample {
 		System.out.println("=======================");
 		System.out.println();
 		
-		System.out.println("Are joFromString and joFromFile1 euqal? " + checkSemanticEquality(joFromString, joFromFile1));
-		System.out
-				.println("Are joFromString and joFromFile2 euqal? " + checkSemanticEquality(joFromString, joFromFile2));
-		System.out
-				.println("Are joFromString and joFromFile3 euqal? " + checkSemanticEquality(joFromString, joFromFile3));
+		System.out.println("Are joFromString and joFromFile1 euqal? " + checkSemanticEquality(joFromFile2, joFromFile1));
+		//System.out.println("Are joFromString and joFromFile2 euqal? " + checkSemanticEquality(joFromString, joFromFile2));
+		//System.out.println("Are joFromString and joFromFile3 euqal? " + checkSemanticEquality(joFromString, joFromFile3));
 		System.out.println();
 
 		// Example 3: create JSON structure
 		//
-		createExample();
+		//createExample();
 
 	}
 
