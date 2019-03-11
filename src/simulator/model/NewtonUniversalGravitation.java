@@ -57,7 +57,7 @@ static private final double G = 6.67E-11;
 		*/
 		
 		//fuerza = b.velocity.direction().scale((G*(b.getMass() * a.getMass()) /(distancia*distancia)));
-		return direccion.scale(fuerzaDouble);
+		return direccion.scale(-fuerzaDouble);
 	}
 	
 	/*
