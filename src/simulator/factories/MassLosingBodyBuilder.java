@@ -6,13 +6,13 @@ import simulator.misc.Vector;
 import simulator.model.Body;
 import simulator.model.MassLosingBody;
 
-public class MassLosingBodyBuilder extends Builder<Body>{
+public class MassLosingBodyBuilder extends Builder<Body> {
 
-	
 	public MassLosingBodyBuilder() {
-			_typeTag = "mlb";
-			_desc = "Mass Losing Body";
+		_typeTag = "mlb";
+		_desc = "Mass Losing Body";
 	}
+
 	@Override
 	public JSONObject createData() {
 		JSONObject data = new JSONObject();
@@ -36,6 +36,7 @@ public class MassLosingBodyBuilder extends Builder<Body>{
 		double factor = data.getDouble("factor");
 		double freq = data.getDouble("freq");
 		bodyObject = new MassLosingBody(data.getString("id"), vel, acc, pos, data.getDouble("mass"), factor, freq);
+
 		}catch (Exception e) {
 			throw new IllegalArgumentException("Datos no validos");
 		}

@@ -213,12 +213,12 @@ public class Main {
 
 	private static void parseOutputOption(CommandLine line) throws ParseException {
 		_outFile = line.getOptionValue("o");
-			try {
-				os = (_outFile == null) ? System.out : new PrintStream(_outFile);
-			} catch (FileNotFoundException e) {
-				throw new ParseException("Invalid output File: " + _outFile);
+		try {
+			os = (_outFile == null) ? System.out : new PrintStream(_outFile);
+		} catch (FileNotFoundException e) {
+			throw new ParseException("Invalid output File: " + _outFile);
 
-			}
+		}
 	}
 
 	private static void parseStepsOption(CommandLine line) throws ParseException {
@@ -236,7 +236,6 @@ public class Main {
 		PhysicsSimulator sim = new PhysicsSimulator(gravityLaws, _dtime);
 		Controller ctrl = new Controller(sim, _bodyFactory);
 
-		
 		ctrl.loadBodies(is);
 		ctrl.run(_steps, os);
 	}

@@ -7,14 +7,14 @@ import simulator.model.NewtonUniversalGravitation;
 
 public class NewtonUniversalGravitationBuilder extends Builder<GravityLaws> {
 
-	public static final String TIPO = "nlug"; 
-	public static final String DES = "Newton universal law"; 
-	
+	public static final String TIPO = "nlug";
+	public static final String DES = "Newton universal law";
+
 	public NewtonUniversalGravitationBuilder() {
-		this._typeTag = TIPO; 
-		this._desc = DES; 
+		this._typeTag = TIPO;
+		this._desc = DES;
 	}
-	
+
 	@Override
 	public JSONObject createData() {
 		return super.createData();
