@@ -6,25 +6,24 @@ import simulator.model.Body;
 
 public class BasicBodyBuilder extends Builder<Body> {
 
-	
 	public BasicBodyBuilder() {
 		_typeTag = "basic";
 		_desc = "Default Body";
 	}
+
 	@Override
 	public Body createTheInstance(JSONObject data) {
-				Body bodyObject = null;
-				try {
-					Vector acc = defaultVector();
-					Vector vel = new Vector(jsonArrayTodoubleArray(data.getJSONArray("vel")));
-					Vector pos = new Vector(jsonArrayTodoubleArray(data.getJSONArray("pos")));
-					bodyObject = new Body(data.getString("id"), vel, acc, pos, data.getDouble("mass"));
-				}catch (Exception e) {
-					// TODO: handle exception
-					throw new IllegalArgumentException("Datos no validos");
-				}
-					return bodyObject;
-			}
+		Body bodyObject = null;
+		try {
+			Vector acc = defaultVector();
+			Vector vel = new Vector(jsonArrayTodoubleArray(data.getJSONArray("vel")));
+			Vector pos = new Vector(jsonArrayTodoubleArray(data.getJSONArray("pos")));
+			bodyObject = new Body(data.getString("id"), vel, acc, pos, data.getDouble("mass"));
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Datos no validos");
+		}
+		return bodyObject;
+	}
 
 	@Override
 	public JSONObject createData() {
