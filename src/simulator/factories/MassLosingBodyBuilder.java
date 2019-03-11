@@ -28,14 +28,20 @@ public class MassLosingBodyBuilder extends Builder<Body>{
 	@Override
 	public Body createTheInstance(JSONObject data) {
 		Body bodyObject = null;
+		
+		try {
 		Vector acc = defaultVector();
 		Vector vel = new Vector(jsonArrayTodoubleArray(data.getJSONArray("vel")));
 		Vector pos = new Vector(jsonArrayTodoubleArray(data.getJSONArray("pos")));
 		double factor = data.getDouble("factor");
 		double freq = data.getDouble("freq");
 		bodyObject = new MassLosingBody(data.getString("id"), vel, acc, pos, data.getDouble("mass"), factor, freq);
+		}catch (Exception e) {
+			throw new IllegalArgumentException("Datos no validos");
+		}
 	return bodyObject;
 		
 	}
 
 }
+
