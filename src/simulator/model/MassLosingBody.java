@@ -44,7 +44,8 @@ public class MassLosingBody extends Body {
 	private void setLossMass(double t) {
 		elapsedTime += t;
 		if (elapsedTime >= lossFrequency) {
-			setMass(this.mass * (1 - lossFactor));
+			double newMass = this.mass * (1- lossFactor);
+			setMass(newMass);
 			elapsedTime = 0.0;
 		}
 
