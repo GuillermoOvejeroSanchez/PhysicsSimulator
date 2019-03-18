@@ -23,10 +23,9 @@ public class PhysicsSimulator {
 	}
 
 	public void addBody(Body b) throws IllegalArgumentException {
-		for (Body body : _bodies) {
-			if (body.getId().equals(b.getId()))
-				throw new IllegalArgumentException("Cuerpo con ID duplicado");
-		}
+		
+		if (_bodies.contains(b))
+			throw new IllegalArgumentException("Cuerpo con ID duplicado");
 		_bodies.add(b);
 	}
 
@@ -34,7 +33,6 @@ public class PhysicsSimulator {
 		_gravityLaws.apply(_bodies);
 		for (Body body : _bodies) {
 			body.move(_dt);
-			body.toString();
 		}
 		_time += _dt;
 	}

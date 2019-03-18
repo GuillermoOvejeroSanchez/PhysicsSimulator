@@ -24,14 +24,7 @@ public class Controller {
 
 	public void loadBodies(InputStream in) throws JSONException, Exception {
 
-		StringBuilder input = new StringBuilder();
-		int data = in.read();
-		input.append((char) data);
-		while (data != -1) {
-			data = in.read();
-			input.append((char) data);
-		}
-		JSONObject jsonInput = new JSONObject(new JSONTokener(input.toString()));
+		JSONObject jsonInput = new JSONObject(new JSONTokener(in));
 		JSONArray bodies = jsonInput.getJSONArray("bodies");
 		for (int i = 0; i < bodies.length(); i++)
 			_sim.addBody(_bodiesFactory.createInstance(bodies.getJSONObject(i)));
@@ -39,7 +32,7 @@ public class Controller {
 	}
 
 	public void run(Integer n, OutputStream out) {
-		JSONObject state = new JSONObject();
+		JSONObject state = new JSONObject(); //No crear objeto //TODO usar for each
 		JSONArray s = new JSONArray();
 
 		s.put(new JSONObject(_sim.toString()));
@@ -49,6 +42,9 @@ public class Controller {
 		}
 
 		state.put("states", s);
+		
+		//String state TODO
+		
 
 		try {
 			out.write(state.toString().getBytes());

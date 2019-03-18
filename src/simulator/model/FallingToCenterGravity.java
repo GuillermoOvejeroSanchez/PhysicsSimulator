@@ -7,9 +7,7 @@ public class FallingToCenterGravity implements GravityLaws {
 	static private final double g = 9.81;
 
 	public void apply(List<Body> bodies) {
-		Body body;
-		for (int i = 0; i < bodies.size(); i++) {
-			body = bodies.get(i);
+		for (Body body : bodies) {
 			body.setAcceleration(body.getPosition().direction().scale(-g));
 		}
 

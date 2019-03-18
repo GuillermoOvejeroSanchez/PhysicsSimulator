@@ -1,5 +1,6 @@
 package simulator.launcher;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -53,7 +54,6 @@ public class Main {
 	private static String _inFile = null;
 	private static String _outFile = null;
 	private static JSONObject _gravityLawsInfo = null;
-	private static InputStream is;
 	private static PrintStream os;
 
 	// factories
@@ -168,11 +168,6 @@ public class Main {
 
 	private static void parseInFileOption(CommandLine line) throws ParseException {
 		_inFile = line.getOptionValue("i");
-		try {
-			is = new FileInputStream(_inFile);
-		} catch (FileNotFoundException e) {
-			throw new ParseException("Invalid Input File");
-		}
 		if (_inFile == null) {
 			throw new ParseException("An input file of bodies is required");
 		}
@@ -232,11 +227,16 @@ public class Main {
 	}
 
 	private static void startBatchMode() throws Exception {
+
 		GravityLaws gravityLaws = _gravityLawsFactory.createInstance(_gravityLawsInfo);
 		PhysicsSimulator sim = new PhysicsSimulator(gravityLaws, _dtime);
 		Controller ctrl = new Controller(sim, _bodyFactory);
 
-		ctrl.loadBodies(is);
+		try (InputStream is = new FileInputStream(new File(_inFile));){
+			ctrl.loadBodies(is);
+		} catch (FileNotFoundException e) {
+			throw new ParseException("Invalid Input File");
+		}
 		ctrl.run(_steps, os);
 	}
 

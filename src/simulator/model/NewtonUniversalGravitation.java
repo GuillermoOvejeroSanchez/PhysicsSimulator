@@ -9,6 +9,30 @@ public class NewtonUniversalGravitation implements GravityLaws {
 
 	public void apply(List<Body> bodies) {
 
+		for (Body body : bodies) {
+
+			Vector sumFuerza = new Vector(body.getPosition().dim());
+
+			if (body.getMass() > 0.00) {
+				for (Body body2 : bodies) {
+
+					Vector fuerzaAux;
+
+					if (!body.equals(body2)) {
+
+						fuerzaAux = force(body, body2);
+						sumFuerza = sumFuerza.plus(fuerzaAux);
+					}
+				}
+			} else if (body.getMass() <= 0) {
+				body.setAcceleration(new Vector(body.acceleration.dim()));
+				body.setVelocity(new Vector(body.velocity.dim()));
+			}
+
+			body.setAcceleration(sumFuerza.scale(1 / body.getMass()));
+
+		}
+		/*
 		for (int i = 0; i < bodies.size(); i++) {
 
 			Vector sumFuerza = new Vector(bodies.get(i).getPosition().dim());
@@ -32,6 +56,8 @@ public class NewtonUniversalGravitation implements GravityLaws {
 			bodies.get(i).setAcceleration(sumFuerza.scale(1 / bodies.get(i).getMass()));
 
 		}
+		
+		*/
 	}
 
 	private Vector force(Body a, Body b) {

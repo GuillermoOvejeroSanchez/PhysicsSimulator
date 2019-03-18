@@ -52,8 +52,8 @@ public class Body {
 	}
 
 	public void move(double t) {
-		this.position = position.plus(velocity.scale(t)).plus(acceleration.scale(1 / 2).scale(t).scale(t));
-		this.velocity = velocity.plus(acceleration.scale(t));
+		this.position = this.position.plus(this.velocity.scale(t).plus(this.acceleration.scale(t * t * 0.5)));	
+		this.velocity = this.velocity.plus(this.acceleration.scale(t));
 	}
 
 	public String toString() {
