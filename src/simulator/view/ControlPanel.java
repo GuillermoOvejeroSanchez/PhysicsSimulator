@@ -1,8 +1,14 @@
 package simulator.view;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.LayoutManager;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 import simulator.control.Controller;
@@ -15,7 +21,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	// ...
 	private Controller _ctrl;
 	private boolean _stopped;
-
+	JToggleButton toggleButton;
 	ControlPanel(Controller ctrl) {
 
 		_ctrl = ctrl;
@@ -26,10 +32,37 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 
 	private void initGUI() {
 		// TODO build the tool bar by adding buttons, etc.
+		this.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
+		this.add(createJToolBar());
+		
+
 	}
 
 	// other private/protected methods
-	// ...
+	public JToolBar createJToolBar() {
+		JToolBar toolBar = new JToolBar();
+		this.add(toolBar, BorderLayout.PAGE_START);
+		
+		JButton load = new JButton("Load");
+		load.setToolTipText("Load a file");
+		//load.addActionListener(this);
+		//load.setIcon(new ImageIcon(IconsDir.class.getResource("open.png")));
+		JButton simulator = new JButton("Sim");
+		simulator.setToolTipText("Open Simulator Config");
+		
+		JButton play = new JButton("Play");
+		play.setToolTipText("Play's the simulation");
+		
+		JButton stop = new JButton("Stop");
+		stop.setToolTipText("Stop's the simulation");
+		
+		toolBar.add(load);
+		toolBar.add(simulator);
+		toolBar.add(play);
+		toolBar.add(stop);
+		return toolBar;
+	}
+	
 	private void run_sim(int n) {
 		if (n > 0 && !_stopped) {
 			try {

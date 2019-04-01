@@ -92,12 +92,12 @@ public class Main {
 		try {
 			CommandLine line = parser.parse(cmdLineOptions, args);
 			parseHelpOption(line, cmdLineOptions);
+			parseModeOption(line);
 			parseInFileOption(line);
 			parseDeltaTimeOption(line);
 			parseGravityLawsOption(line);
 			parseOutputOption(line);
 			parseStepsOption(line);
-			parseModeOption(line);
 
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
@@ -180,7 +180,7 @@ public class Main {
 
 	private static void parseInFileOption(CommandLine line) throws ParseException {
 		_inFile = line.getOptionValue("i");
-		if (_inFile == null) {
+		if (_inFile == null && _batchMode) {
 			throw new ParseException("An input file of bodies is required");
 		}
 	}

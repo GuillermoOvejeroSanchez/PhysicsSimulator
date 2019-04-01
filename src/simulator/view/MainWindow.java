@@ -2,8 +2,12 @@ package simulator.view;
 
 import java.awt.BorderLayout;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
+
+import simulator.view.ControlPanel;
 
 import simulator.control.Controller;
 
@@ -20,11 +24,20 @@ public class MainWindow extends JFrame {
 	}
 
 	private void initGUI() {
-		JPanel mainPanel = new JPanel(new BorderLayout());
+		JPanel mainPanel = new JPanel(new BorderLayout(5,5));
 		setContentPane(mainPanel);
 		// TODO complete this method to build the GUI
 		
+		mainPanel.add(new ControlPanel(_ctrl), BorderLayout.PAGE_START);
+		//mainPanel.add(new BodiesTable(_ctrl));
+		//mainPanel.add(new Viewer(_ctrl));
+		//mainPanel.add(new StatusBar(_ctrl));
+		
+		this.setVisible(true);
+		this.setBounds(400,100,800,800);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 	}
 	// other private/protected methods
-	// ...
+	
 }
