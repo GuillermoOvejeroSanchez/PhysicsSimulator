@@ -18,26 +18,28 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 		ctrl.addObserver(this);
 	}
 
-	@Override
-	public int getRowCount() {
-// TODO complete
-	}
-
-	@Override
-	public int getColumnCount() {
-// TODO complete
-	}
-
+	
 	@Override
 	public String getColumnName(int column) {
 // TODO complete
+		return null;
 	}
-
+	
+	@Override
+	public int getColumnCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public int getRowCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-// TODO complete
+		// TODO Auto-generated method stub
+		return null;
 	}
-
 	@Override
 	public void onRegister(List<Body> bodies, double time, double dt, String gLawsDesc) {
 		// TODO Auto-generated method stub

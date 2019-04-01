@@ -42,6 +42,7 @@ import simulator.factories.NoGravityBuilder;
 import simulator.model.Body;
 import simulator.model.GravityLaws;
 import simulator.model.PhysicsSimulator;
+import simulator.view.MainWindow;
 
 public class Main {
 
@@ -185,7 +186,7 @@ public class Main {
 	}
 
 	private static void parseModeOption(CommandLine line) throws ParseException {
-		String _mode = line.getOptionValue("h", _modeDefaultValue);
+		String _mode = line.getOptionValue("m", _modeDefaultValue);
 		if (_mode.equals("gui")) {
 			_batchMode = false;
 		} else if (_mode.equals("batch"))
@@ -270,7 +271,7 @@ public class Main {
 		SwingUtilities.invokeAndWait(new Runnable() {
 			@Override
 			public void run() {
-				// new MainWindow(ctrl);
+				new MainWindow(ctrl);
 			}
 		});
 	}

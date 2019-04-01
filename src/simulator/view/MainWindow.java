@@ -23,7 +23,7 @@ public class MainWindow extends JFrame {
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		setContentPane(mainPanel);
 		// TODO complete this method to build the GUI
-		// ..
+		
 	}
 	// other private/protected methods
 	// ...
