@@ -21,21 +21,29 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 	@Override
 	public int getRowCount() {
 // TODO complete
+		
+		return 0; 
 	}
 
 	@Override
 	public int getColumnCount() {
 // TODO complete
+		
+		return 0; 
 	}
 
 	@Override
 	public String getColumnName(int column) {
 // TODO complete
+		
+		return null; 
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 // TODO complete
+		
+		return null; 
 	}
 
 	@Override
