@@ -52,7 +52,7 @@ public class Body {
 	}
 
 	public void move(double t) {
-		this.position = this.position.plus(this.velocity.scale(t).plus(this.acceleration.scale(t * t * 0.5)));	
+		this.position = this.position.plus(this.velocity.scale(t).plus(this.acceleration.scale(t * t * 0.5)));
 		this.velocity = this.velocity.plus(this.acceleration.scale(t));
 	}
 

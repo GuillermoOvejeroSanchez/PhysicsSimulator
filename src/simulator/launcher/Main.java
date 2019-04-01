@@ -5,7 +5,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+
+import javax.swing.SwingUtilities;
 
 /*
  * Examples of command-line parameters:
@@ -42,11 +45,12 @@ import simulator.model.PhysicsSimulator;
 
 public class Main {
 
+	/**/
 	// default values for some parameters
 	//
 	private final static Double _dtimeDefaultValue = 2500.0;
 	private final static Integer _stepsDefaultValue = 1500;
-
+	private final static String _modeDefaultValue = "batch";
 	// some attributes to stores values corresponding to command-line parameters
 	//
 	private static Double _dtime = null;
@@ -55,6 +59,7 @@ public class Main {
 	private static String _outFile = null;
 	private static JSONObject _gravityLawsInfo = null;
 	private static PrintStream os;
+	private static boolean _batchMode;
 
 	// factories
 	private static Factory<Body> _bodyFactory;
@@ -91,6 +96,7 @@ public class Main {
 			parseGravityLawsOption(line);
 			parseOutputOption(line);
 			parseStepsOption(line);
+			parseModeOption(line);
 
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
@@ -138,6 +144,11 @@ public class Main {
 				Option.builder("s").longOpt("steps").hasArg().desc("An integer representing the number of\r\n"
 						+ "simulation steps. Default value: " + _stepsDefaultValue + ".").build());
 
+		// mode
+		cmdLineOptions.addOption(Option.builder("m").longOpt("mode").hasArg().desc(
+				"Execution Mode. Possible values: ’batch’ (Batch mode), ’gui’ (Graphical User Interface mode). Default value: ’batch’.")
+				.build());
+
 		String gravityLawsValues = "N/A";
 		String defaultGravityLawsValue = "N/A";
 		if (_gravityLawsFactory != null) {
@@ -171,6 +182,16 @@ public class Main {
 		if (_inFile == null) {
 			throw new ParseException("An input file of bodies is required");
 		}
+	}
+
+	private static void parseModeOption(CommandLine line) throws ParseException {
+		String _mode = line.getOptionValue("h", _modeDefaultValue);
+		if (_mode.equals("gui")) {
+			_batchMode = false;
+		} else if (_mode.equals("batch"))
+			_batchMode = true;
+		else
+			throw new ParseException("A correct mode option is required");
 	}
 
 	private static void parseDeltaTimeOption(CommandLine line) throws ParseException {
@@ -230,9 +251,9 @@ public class Main {
 
 		GravityLaws gravityLaws = _gravityLawsFactory.createInstance(_gravityLawsInfo);
 		PhysicsSimulator sim = new PhysicsSimulator(gravityLaws, _dtime);
-		Controller ctrl = new Controller(sim, _bodyFactory);
+		Controller ctrl = new Controller(sim, _bodyFactory, _gravityLawsFactory);
 
-		try (InputStream is = new FileInputStream(new File(_inFile));){
+		try (InputStream is = new FileInputStream(new File(_inFile));) {
 			ctrl.loadBodies(is);
 		} catch (FileNotFoundException e) {
 			throw new ParseException("Invalid Input File");
@@ -240,9 +261,26 @@ public class Main {
 		ctrl.run(_steps, os);
 	}
 
+	private static void startGUIMode() throws InvocationTargetException, InterruptedException {
+
+		GravityLaws gravityLaws = _gravityLawsFactory.createInstance(_gravityLawsInfo);
+		PhysicsSimulator sim = new PhysicsSimulator(gravityLaws, _dtime);
+		Controller ctrl = new Controller(sim, _bodyFactory, _gravityLawsFactory);
+
+		SwingUtilities.invokeAndWait(new Runnable() {
+			@Override
+			public void run() {
+				// new MainWindow(ctrl);
+			}
+		});
+	}
+
 	private static void start(String[] args) throws Exception {
 		parseArgs(args);
-		startBatchMode();
+		if (_batchMode)
+			startBatchMode();
+		else
+			startGUIMode();
 	}
 
 	public static void main(String[] args) {
