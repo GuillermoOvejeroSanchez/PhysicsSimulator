@@ -10,16 +10,20 @@ import org.json.JSONTokener;
 
 import simulator.factories.Factory;
 import simulator.model.Body;
+import simulator.model.GravityLaws;
 import simulator.model.PhysicsSimulator;
+import simulator.model.SimulatorObserver;
 
 public class Controller {
 
 	PhysicsSimulator _sim;
 	Factory<Body> _bodiesFactory;
+	Factory<GravityLaws> _gravityLaws;
 
-	public Controller(PhysicsSimulator sim, Factory<Body> _bodyFactory) {
+	public Controller(PhysicsSimulator sim, Factory<Body> _bodyFactory, Factory<GravityLaws> gravityLaws) {
 		_sim = sim;
 		_bodiesFactory = _bodyFactory;
+		_gravityLaws = gravityLaws;
 	}
 
 	public void loadBodies(InputStream in) throws JSONException, Exception {
@@ -32,7 +36,7 @@ public class Controller {
 	}
 
 	public void run(Integer n, OutputStream out) {
-		JSONObject state = new JSONObject(); //No crear objeto //TODO usar for each
+		JSONObject state = new JSONObject(); // No crear objeto //TODO usar for each
 		JSONArray s = new JSONArray();
 
 		s.put(new JSONObject(_sim.toString()));
@@ -42,15 +46,40 @@ public class Controller {
 		}
 
 		state.put("states", s);
-		
-		//String state TODO
-		
+
+		// String state TODO
 
 		try {
 			out.write(state.toString().getBytes());
 		} catch (IOException a) {
 			System.err.println("Error en la salida");
 		}
+	}
+
+	public void reset() {
+		_sim.reset();
+	}
+
+	public void setDeltaTime(double dt) {
+		_sim.setDeltaTime(dt);
+	}
+
+	public void addObserver(SimulatorObserver o) {
+		_sim.addObserver(o);
+	}
+
+	public void run(int n) {
+		for (int i = 0; i < n; i++) {
+			_sim.advance();
+		}
+	}
+
+	public Factory<GravityLaws> getGravityLawsFactory() {
+		return _gravityLaws;
+	}
+
+	public void setGravityLaws(JSONObject info) {
+		_gravityLaws.createInstance(info);
 	}
 
 }

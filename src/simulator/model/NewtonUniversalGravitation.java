@@ -1,4 +1,4 @@
- package simulator.model;
+package simulator.model;
 
 import java.util.List;
 import simulator.misc.Vector;
@@ -32,32 +32,6 @@ public class NewtonUniversalGravitation implements GravityLaws {
 			body.setAcceleration(sumFuerza.scale(1 / body.getMass()));
 
 		}
-		/*
-		for (int i = 0; i < bodies.size(); i++) {
-
-			Vector sumFuerza = new Vector(bodies.get(i).getPosition().dim());
-
-			if (bodies.get(i).getMass() > 0.00) {
-				for (int j = 0; j < bodies.size(); j++) {
-
-					Vector fuerzaAux;
-
-					if (!bodies.get(i).equals(bodies.get(j))) {
-
-						fuerzaAux = force(bodies.get(i), bodies.get(j));
-						sumFuerza = sumFuerza.plus(fuerzaAux);
-					}
-				}
-			} else if (bodies.get(i).getMass() <= 0) {
-				bodies.get(i).setAcceleration(new Vector(bodies.get(i).acceleration.dim()));
-				bodies.get(i).setVelocity(new Vector(bodies.get(i).velocity.dim()));
-			}
-
-			bodies.get(i).setAcceleration(sumFuerza.scale(1 / bodies.get(i).getMass()));
-
-		}
-		
-		*/
 	}
 
 	private Vector force(Body a, Body b) {
@@ -69,5 +43,12 @@ public class NewtonUniversalGravitation implements GravityLaws {
 		fuerzaDouble = G * ((b.getMass() * a.getMass()) / (distancia * distancia));
 		direccion = a.position.minus(b.position).direction();
 		return direccion.scale(-fuerzaDouble);
+	}
+
+	public String toString() {
+		return "Newton's law of universal gravitation states that every particle attracts every"
+				+ " other particle in the universe with a force which is directly proportional"
+				+ " to the product of their masses and inversely proportional to the square of"
+				+ " the distance between their centers.";
 	}
 }

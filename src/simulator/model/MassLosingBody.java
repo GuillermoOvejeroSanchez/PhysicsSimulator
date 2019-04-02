@@ -44,13 +44,13 @@ public class MassLosingBody extends Body {
 	private void setLossMass(double t) {
 		elapsedTime += t;
 		if (elapsedTime >= lossFrequency) {
-			double newMass = this.mass * (1- this.lossFactor);
+			double newMass = this.mass * (1 - this.lossFactor);
 			setMass(newMass);
 			elapsedTime = 0.0;
 		}
 
 	}
-	
+
 //	public String toString() {
 //		StringBuilder string = new StringBuilder(super.toString());
 //		string.deleteCharAt(string.length()-1);
