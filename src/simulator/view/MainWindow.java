@@ -28,7 +28,7 @@ public class MainWindow extends JFrame {
 		setContentPane(mainPanel);
 		// TODO complete this method to build the GUI
 		
-		mainPanel.add(new ControlPanel(_ctrl), BorderLayout.PAGE_START);
+		mainPanel.add(new ControlPanel(_ctrl));
 		//mainPanel.add(new BodiesTable(_ctrl));
 		//mainPanel.add(new Viewer(_ctrl));
 		//mainPanel.add(new StatusBar(_ctrl));

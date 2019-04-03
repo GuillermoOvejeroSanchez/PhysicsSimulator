@@ -5,10 +5,15 @@ import java.awt.FlowLayout;
 import java.awt.LayoutManager;
 import java.util.List;
 
+import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
 import simulator.control.Controller;
@@ -32,8 +37,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 
 	private void initGUI() {
 		// TODO build the tool bar by adding buttons, etc.
-		this.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
-		this.add(createJToolBar());
+		createJToolBar();
+		//this.add(createJToolBar());
 		
 
 	}
@@ -41,27 +46,49 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	// other private/protected methods
 	public JToolBar createJToolBar() {
 		JToolBar toolBar = new JToolBar();
-		this.add(toolBar, BorderLayout.PAGE_START);
+        toolBar.setFloatable(false);
+        toolBar.setRollover(true);
+        //toolBar.setLayout(new BorderLayout());
+		JPanel leftPanel = new JPanel();
 		
-		JButton load = new JButton("Load");
+		JButton load = new JButton();
 		load.setToolTipText("Load a file");
 		//load.addActionListener(this);
-		//load.setIcon(new ImageIcon(IconsDir.class.getResource("open.png")));
-		JButton simulator = new JButton("Sim");
+		load.setIcon(new ImageIcon(".\\icons\\open.png"));
+		leftPanel.add(load);
+		
+		JButton simulator = new JButton();
 		simulator.setToolTipText("Open Simulator Config");
+		simulator.setIcon(new ImageIcon(".\\icons\\physics.png"));
+		leftPanel.add(simulator);
 		
-		JButton play = new JButton("Play");
+		JButton play = new JButton();
 		play.setToolTipText("Play's the simulation");
+		play.setIcon(new ImageIcon(".\\icons\\run.png"));
+		leftPanel.add(play);
 		
-		JButton stop = new JButton("Stop");
+		JButton stop = new JButton();
 		stop.setToolTipText("Stop's the simulation");
+		stop.setIcon(new ImageIcon(".\\icons\\stop.png"));
+		leftPanel.add(stop);
 		
-		toolBar.add(load);
-		toolBar.add(simulator);
-		toolBar.add(play);
-		toolBar.add(stop);
+		JSpinner delta = new JSpinner();
+		delta.setModel(new SpinnerNumberModel());
+		leftPanel.add(delta);
+		
+		toolBar.add(leftPanel);
+		add(Box.createHorizontalGlue());
+		JButton exit = new JButton();
+		exit.setToolTipText("Exit's the simulation");
+		exit.setIcon(new ImageIcon(".\\icons\\exit.png"));
+		toolBar.add(exit);
+		this.add(toolBar,BorderLayout.PAGE_START);
+		
+		
+
 		return toolBar;
 	}
+
 	
 	private void run_sim(int n) {
 		if (n > 0 && !_stopped) {
