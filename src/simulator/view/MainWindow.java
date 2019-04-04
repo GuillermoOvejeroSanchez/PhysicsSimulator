@@ -24,11 +24,11 @@ public class MainWindow extends JFrame {
 	}
 
 	private void initGUI() {
-		JPanel mainPanel = new JPanel(new BorderLayout(5,5));
+		JPanel mainPanel = new JPanel(new BorderLayout());
 		setContentPane(mainPanel);
 		// TODO complete this method to build the GUI
 		
-		mainPanel.add(new ControlPanel(_ctrl));
+		mainPanel.add(new ControlPanel(_ctrl),BorderLayout.NORTH);
 		//mainPanel.add(new BodiesTable(_ctrl));
 		//mainPanel.add(new Viewer(_ctrl));
 		//mainPanel.add(new StatusBar(_ctrl));
