@@ -56,22 +56,22 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		JButton load = new JButton();
 		load.setToolTipText("Load a file");
 		//load.addActionListener(this);
-		load.setIcon(new ImageIcon(".\\icons\\open.png"));
+		load.setIcon(new ImageIcon("icons/open.png"));
 		toolBar.add(load);
 		
 		JButton simulator = new JButton();
 		simulator.setToolTipText("Open Simulator Config");
-		simulator.setIcon(new ImageIcon(".\\icons\\physics.png"));
+		simulator.setIcon(new ImageIcon("icons/physics.png"));
 		toolBar.add(simulator);
 		
 		JButton play = new JButton();
 		play.setToolTipText("Play's the simulation");
-		play.setIcon(new ImageIcon(".\\icons\\run.png"));
+		play.setIcon(new ImageIcon("icons/run.png"));
 		toolBar.add(play);
 		
 		JButton stop = new JButton();
 		stop.setToolTipText("Stop's the simulation");
-		stop.setIcon(new ImageIcon(".\\icons\\stop.png"));
+		stop.setIcon(new ImageIcon("icons/stop.png"));
 		toolBar.add(stop);
 		
 		JLabel stepsLabel = new JLabel("Steps");
@@ -88,7 +88,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		add(Box.createHorizontalGlue());
 		JButton exit = new JButton();
 		exit.setToolTipText("Exit's the simulation");
-		exit.setIcon(new ImageIcon(".\\icons\\exit.png"));
+		exit.setIcon(new ImageIcon("icons/exit.png"));
 		toolBar.add(exit);
 		this.add(toolBar, BorderLayout.PAGE_START);
 		
