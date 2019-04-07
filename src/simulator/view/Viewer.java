@@ -1,5 +1,8 @@
 package simulator.view;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -10,7 +13,9 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.border.TitledBorder;
 
 import simulator.control.Controller;
 import simulator.misc.Vector;
@@ -30,6 +35,12 @@ public class Viewer extends JComponent implements SimulatorObserver {
 	Viewer(Controller ctrl) {
 		initGUI();
 		ctrl.addObserver(this);
+		
+		setLayout(new BorderLayout());
+		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 2), "Viewer",
+				TitledBorder.LEFT, TitledBorder.TOP));
+		
+		this.setPreferredSize(new Dimension(800, 450));
 	}
 
 	private void initGUI() {
@@ -110,7 +121,7 @@ public class Viewer extends JComponent implements SimulatorObserver {
 		Graphics2D gr = (Graphics2D) g;
 		gr.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		gr.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-// use ’gr’ to draw not ’g’
+// use ï¿½grï¿½ to draw not ï¿½gï¿½
 // calculate the center
 		_centerX = getWidth() / 2;
 		_centerY = getHeight() / 2;

@@ -1,7 +1,11 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -33,6 +37,8 @@ public class MainWindow extends JFrame {
 		//mainPanel.add(new Viewer(_ctrl));
 		//mainPanel.add(new StatusBar(_ctrl));
 		
+		mainPanel.add(centerPanel(), BorderLayout.CENTER);
+		
 		this.setVisible(true);
 		this.setBounds(400,100,800,800);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,4 +46,36 @@ public class MainWindow extends JFrame {
 	}
 	// other private/protected methods
 	
+	private JPanel centerPanel() {
+		JPanel panelCentral = new JPanel(); 
+		
+		panelCentral.setLayout(new BoxLayout(panelCentral, BoxLayout.Y_AXIS));
+		
+		panelCentral.add(new BodiesTable(_ctrl));
+		panelCentral.add(Box.createRigidArea(new Dimension(0, 10)));
+		panelCentral.add(new Viewer(_ctrl)); 
+		
+		
+		return panelCentral; 
+		
+		
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

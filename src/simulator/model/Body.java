@@ -91,5 +91,36 @@ public class Body {
 
 		return same;
 	}
+	
+	public Object dataInformatio(String data) {
+		
+		Object casilla = null; 
+		
+		if(data.equalsIgnoreCase("Id")) {
+			casilla = getId(); 
+		}
+		else if(data.equalsIgnoreCase("Position")) {
+			casilla = getPosition(); 
+		}
+		else if(data.equalsIgnoreCase("Velocity")){
+			casilla = getVelocity();
+		}
+		else if(data.equalsIgnoreCase("Acceleration")){
+			casilla = getAcceleration(); 
+		}
+		
+		return casilla; 
+	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
