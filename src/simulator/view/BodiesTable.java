@@ -36,6 +36,8 @@ public class BodiesTable extends JPanel {
 				TitledBorder.LEFT, TitledBorder.TOP));
 		this.setPreferredSize(new Dimension(800, 150));
 		
+		//TODO quitar que se puedan desplazar las columanas con los nobres
+		
 		createTable(ctrl); 
 		
 // TODO complete
