@@ -38,8 +38,6 @@ public class BodiesTable extends JPanel {
 		
 		createTable(ctrl); 
 		
-		
-		
 // TODO complete
 	}
 	

@@ -40,7 +40,7 @@ public class Viewer extends JComponent implements SimulatorObserver {
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 2), "Viewer",
 				TitledBorder.LEFT, TitledBorder.TOP));
 		
-		this.setPreferredSize(new Dimension(800, 450));
+		this.setPreferredSize(new Dimension(800, 300));
 	}
 
 	private void initGUI() {
