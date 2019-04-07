@@ -1,6 +1,7 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.LayoutManager;
 import java.util.List;
@@ -20,6 +21,7 @@ import javax.swing.SwingUtilities;
 
 import simulator.control.Controller;
 import simulator.model.Body;
+import simulator.model.NewtonUniversalGravitation;
 import simulator.model.SimulatorObserver;
 
 public class ControlPanel extends JPanel implements SimulatorObserver {
@@ -51,7 +53,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
         toolBar.setRollover(true);
-		JPanel leftPanel = new JPanel();
+		JPanel leftPanel = new JPanel(new FlowLayout());
 		
 		JButton load = new JButton();
 		load.setToolTipText("Load a file");
@@ -59,10 +61,14 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		load.setIcon(new ImageIcon("icons/open.png"));
 		toolBar.add(load);
 		
+		toolBar.addSeparator();
+		
 		JButton simulator = new JButton();
 		simulator.setToolTipText("Open Simulator Config");
 		simulator.setIcon(new ImageIcon("icons/physics.png"));
 		toolBar.add(simulator);
+		
+		toolBar.addSeparator();
 		
 		JButton play = new JButton();
 		play.setToolTipText("Play's the simulation");
@@ -77,19 +83,34 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		JLabel stepsLabel = new JLabel("Steps");
 		toolBar.add(stepsLabel);
 		JSpinner steps = new JSpinner();
+		
+		//steps.setPreferredSize(new Dimension(75,10));
+		//steps.setMaximumSize(delta.getPreferredSize());
+		steps.setMaximumSize(steps.getPreferredSize());
+		steps.setPreferredSize(new Dimension(75,15));
 		steps.setModel(new SpinnerNumberModel(1000,0,99999999999999999.0,1));
 		toolBar.add(steps);
 		
 		JLabel deltaLabel = new JLabel("Delta-Time");
 		toolBar.add(deltaLabel);
-		JTextField delta = new JTextField();
+		JTextField delta = new JTextField(5);
+		delta.setMaximumSize(delta.getPreferredSize());
 		toolBar.add(delta);
+		
+		
+		
+		
 		toolBar.add(leftPanel);
-		add(Box.createHorizontalGlue());
+		
+		//add(Box.createHorizontalGlue());
 		JButton exit = new JButton();
 		exit.setToolTipText("Exit's the simulation");
 		exit.setIcon(new ImageIcon("icons/exit.png"));
+		
+		toolBar.addSeparator();
+		
 		toolBar.add(exit);
+		
 		this.add(toolBar, BorderLayout.PAGE_START);
 		
 		
