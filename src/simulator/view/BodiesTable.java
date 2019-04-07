@@ -35,6 +35,11 @@ public class BodiesTable extends JPanel {
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 2), "Bodies",
 				TitledBorder.LEFT, TitledBorder.TOP));
 		this.setPreferredSize(new Dimension(800, 150));
+		
+		createTable(ctrl); 
+		
+		
+		
 // TODO complete
 	}
 	
