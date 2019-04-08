@@ -110,36 +110,41 @@ public class StatusBar extends JPanel implements SimulatorObserver {
 	@Override
 	public void onRegister(List<Body> bodies, double time, double dt, String gLawsDesc) {
 		// TODO Auto-generated method stub
-
+		
+		this._numOfBodies.setText(Integer.toString(bodies.size()));
+		this._currTime.setText(Double.toString(time));
+		this._currLaws.setText(gLawsDesc.toString());
 	}
 
 	@Override
 	public void onReset(List<Body> bodies, double time, double dt, String gLawsDesc) {
 		// TODO Auto-generated method stub
-
+		this._numOfBodies.setText(Integer.toString(bodies.size()));
+		this._currTime.setText(Double.toString(time));
+		this._currLaws.setText(gLawsDesc.toString());
 	}
 
 	@Override
 	public void onBodyAdded(List<Body> bodies, Body b) {
 		// TODO Auto-generated method stub
-
+		this._numOfBodies.setText(Integer.toString(bodies.size()));
 	}
 
 	@Override
 	public void onAdvance(List<Body> bodies, double time) {
 		// TODO Auto-generated method stub
-
+		this._currTime.setText(Double.toString(time));
 	}
 
 	@Override
 	public void onDeltaTimeChanged(double dt) {
 		// TODO Auto-generated method stub
-
+		//Esto no hace nada?
 	}
 
 	@Override
 	public void onGravityLawChanged(String gLawsDesc) {
 		// TODO Auto-generated method stub
-
+		this._currLaws.setText(gLawsDesc.toString());
 	}
 }
