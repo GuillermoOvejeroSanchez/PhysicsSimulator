@@ -152,7 +152,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	@Override
 	public void onReset(List<Body> bodies, double time, double dt, String gLawsDesc) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
