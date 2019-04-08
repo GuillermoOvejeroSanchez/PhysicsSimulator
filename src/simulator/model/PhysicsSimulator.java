@@ -30,6 +30,14 @@ public class PhysicsSimulator {
 		if (_bodies.contains(b))
 			throw new IllegalArgumentException("Cuerpo con ID duplicado");
 		_bodies.add(b);
+		
+		this.notifyObservers(_observers);
+	}
+
+	private void notifyObservers(List<SimulatorObserver> _observers) {
+		// TODO Auto-generated method stub
+		for (SimulatorObserver ob : _observers) {
+		}
 	}
 
 	public void advance() {
