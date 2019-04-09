@@ -45,10 +45,14 @@ public class NewtonUniversalGravitation implements GravityLaws {
 		return direccion.scale(-fuerzaDouble);
 	}
 
-	public String toString() {
+	public String toStringDes() {
 		return "Newton's law of universal gravitation states that every particle attracts every"
 				+ " other particle in the universe with a force which is directly proportional"
 				+ " to the product of their masses and inversely proportional to the square of"
 				+ " the distance between their centers.";
+	}
+	
+	public String toString() {
+		return "Newton Universal Gravitation Law"; 
 	}
 }

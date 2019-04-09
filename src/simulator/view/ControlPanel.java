@@ -4,12 +4,16 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -66,6 +70,16 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		JButton simulator = new JButton();
 		simulator.setToolTipText("Open Simulator Config");
 		simulator.setIcon(new ImageIcon("icons/physics.png"));
+		
+		simulator.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				inputLaw();
+				
+			}
+		});
+		
 		toolBar.add(simulator);
 		
 		toolBar.addSeparator();
@@ -140,6 +154,42 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			// TODO enable all buttons
 		}
 	}
+	
+	//----------------- DIALOG SELECCIONAR GRAVEDAD -----------------------
+	public JFrame inputLaw() {
+		
+		JFrame inputDialog = new JFrame("Input Dialog");
+		
+		
+		Object[] possibilities = {"Newton Universal Gravitation Law","Falling To Center Gravity","No Gravity Law"};
+		
+		String n = (String) JOptionPane.showInputDialog(this,
+				"Select gravy laws to be used.",
+				"Gravity Law Selector", 
+				  JOptionPane.INFORMATION_MESSAGE,
+				  null,
+				  possibilities,
+				  "Newton Universal Gravitation Law");
+		
+		if(n.equalsIgnoreCase("Newton Universal Gravitation Law")) {
+			// TODO se aplica ley de newton
+		}
+		else if(n.equalsIgnoreCase("Falling To Center Gravity")) {
+			//TODO se aplica ley 
+		}
+		else {
+			//TODO no gravedad 
+		}
+		
+		
+		inputDialog.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		inputDialog.pack();
+		inputDialog.setVisible(true);
+		
+		return null; 
+	}
+	
+	//--------------------------------------------------------------------------
 
 	// SimulatorObserver methods
 
