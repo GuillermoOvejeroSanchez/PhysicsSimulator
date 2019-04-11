@@ -105,7 +105,6 @@ public class PhysicsSimulator {
 		else {
 			this._gravityLaws = gravityLaws;
 			for (SimulatorObserver simulatorObserver : _observers) {
-				System.out.println(_gravityLaws.toString());
 				simulatorObserver.onGravityLawChanged(_gravityLaws.toString());
 			}
 		}

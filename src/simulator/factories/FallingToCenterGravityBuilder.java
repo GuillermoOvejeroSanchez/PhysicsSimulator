@@ -8,7 +8,7 @@ import simulator.model.GravityLaws;
 public class FallingToCenterGravityBuilder extends Builder<GravityLaws> {
 
 	public final static String TIPO = "ftcg";
-	public final static String DES = "Falling To Center Gravity";
+	public final static String DES = "Falling To Center Gravity Law";
 
 	public FallingToCenterGravityBuilder() {
 		this._typeTag = TIPO;

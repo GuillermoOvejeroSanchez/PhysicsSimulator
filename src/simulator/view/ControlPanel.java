@@ -87,6 +87,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 				if (seleccion == JFileChooser.APPROVE_OPTION) {
 					String file = (fileChooser.getSelectedFile().toString());
 					try (InputStream is = new FileInputStream(new File(file));) {
+						_ctrl.reset();
 						_ctrl.loadBodies(is);
 					} catch (Exception e1) {
 						e1.getStackTrace();
@@ -227,17 +228,13 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	public JFrame inputLaw() {
 		
 		JFrame inputDialog = new JFrame("Input Dialog");
-		Object[] possibilities = new Object[3];
-		Factory<GravityLaws> laws = _ctrl.getGravityLawsFactory();
-		/*for (JSONObject jo : laws.getInfo()) {
+		Object[] possibilities = new Object[_ctrl.getGravityLawsFactory().getInfo().size()];
+		int i = 0;
+		for (JSONObject jo : _ctrl.getGravityLawsFactory().getInfo()) {
 			possibilities[i] = jo.get("desc").toString();
 			i++;
-			i%=3;
-		}*/
-		for (int j = 0; j < possibilities.length; j++) {
-			possibilities[j] = laws.getInfo().get(j).get("desc");
 		}
-		System.out.println(laws.getInfo().toString());
+
 		try {
 			String n = (String) JOptionPane.showInputDialog(this,
 					"Select gravy laws to be used.",
@@ -248,7 +245,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 					  null);
 
 			if (n != null) {
-				for (JSONObject fe : laws.getInfo()) {
+				for (JSONObject fe : _ctrl.getGravityLawsFactory().getInfo()) {
 					if (n.equals(fe.getString("desc"))) {
 						_ctrl.setGravityLaws(fe);
 						break;

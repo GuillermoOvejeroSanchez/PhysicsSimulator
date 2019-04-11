@@ -8,7 +8,7 @@ import simulator.model.NoGravity;
 public class NoGravityBuilder extends Builder<GravityLaws> {
 
 	public static final String TIPO = "ng";
-	public static final String DES = "no gravity";
+	public static final String DES = "No Gravity";
 
 	public NoGravityBuilder() {
 		this._typeTag = TIPO;
