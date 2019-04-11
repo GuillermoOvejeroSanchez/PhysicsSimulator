@@ -49,18 +49,18 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private Controller _ctrl;
 	private boolean _stopped;
 	JToggleButton toggleButton;
-	private String _stepsNumber;
+	private int _stepsNumber;
 	
 	ControlPanel(Controller ctrl) {
 		_ctrl = ctrl;
 		_stopped = true;
-		_stepsNumber = DEFAULT_STEPS.toString();
+		_stepsNumber = DEFAULT_STEPS;
 		initGUI();
 		_ctrl.addObserver(this);
 	}
 
 	private void initGUI() {
-		// TODO build the tool bar by adding buttons, etc.
+
 		super.setLayout(new BorderLayout());
 		createJToolBar();
 		//this.add(createJToolBar());
@@ -115,7 +115,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Desactivar el resto de botones menos stop
 				_stopped = false;
-				run_sim(Integer.parseInt(_stepsNumber));
+				run_sim(_stepsNumber);
 			}
 		});
 		toolBar.add(play);
@@ -144,7 +144,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				System.out.println(steps.getValue().toString());
-				_stepsNumber = steps.getValue().toString();
+				_stepsNumber = Integer.parseInt(steps.getValue().toString());
 			}
 		});
 		toolBar.add(steps);
@@ -208,6 +208,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		} else {
 			_stopped = true;
 			// TODO enable all buttons
+			_ctrl.reset();
 		}
 	}
 	
