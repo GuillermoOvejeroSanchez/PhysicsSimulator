@@ -188,7 +188,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	
 	private void run_sim(int n) {
 		if (n > 0 && !_stopped) {
-			System.out.println(n);
 			try {
 				_ctrl.run(1);
 			} catch (Exception e) {
