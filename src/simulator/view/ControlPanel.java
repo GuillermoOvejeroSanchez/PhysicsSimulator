@@ -49,6 +49,13 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private Controller _ctrl;
 	private boolean _stopped;
 	JToggleButton toggleButton;
+	private JButton load;
+	private JButton simulator;
+	private JButton play;
+	private JButton stop;
+	private JButton exit;
+	private JSpinner steps;
+	private JTextField delta;
 	private int _stepsNumber;
 	
 	ControlPanel(Controller ctrl) {
@@ -76,7 +83,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		JPanel leftPanel = new JPanel(new FlowLayout());
 		
 		
-		JButton load = new JButton();
+		load = new JButton();
 		load.setToolTipText("Load a file");
 		load.setIcon(new ImageIcon("icons/open.png"));
 		load.addActionListener(new ActionListener() {
@@ -92,7 +99,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		
 		toolBar.addSeparator();
 		
-		JButton simulator = new JButton();
+		simulator = new JButton();
 		simulator.setToolTipText("Open Simulator Config");
 		simulator.setIcon(new ImageIcon("icons/physics.png"));
 		simulator.addActionListener(new ActionListener() {
@@ -106,7 +113,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		
 		toolBar.addSeparator();
 		
-		JButton play = new JButton();
+		play = new JButton();
 		play.setToolTipText("Play's the simulation");
 		play.setIcon(new ImageIcon("icons/run.png"));
 		play.addActionListener(new ActionListener() {
@@ -120,7 +127,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		});
 		toolBar.add(play);
 		
-		JButton stop = new JButton();
+		stop = new JButton();
 		stop.setToolTipText("Stop's the simulation");
 		stop.setIcon(new ImageIcon("icons/stop.png"));
 		stop.addActionListener(new ActionListener() {	
@@ -133,7 +140,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		
 		JLabel stepsLabel = new JLabel("Steps");
 		toolBar.add(stepsLabel);
-		JSpinner steps = new JSpinner();
+		steps = new JSpinner();
 		
 		//steps.setPreferredSize(new Dimension(75,10));
 		//steps.setMaximumSize(delta.getPreferredSize());
@@ -151,7 +158,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		
 		JLabel deltaLabel = new JLabel("Delta-Time");
 		toolBar.add(deltaLabel);
-		JTextField delta = new JTextField(5);
+		delta = new JTextField(5);
 		delta.setMaximumSize(delta.getPreferredSize());
 		delta.addActionListener(new ActionListener() {
 			@Override
@@ -167,7 +174,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		
 		toolBar.add(leftPanel);
 
-		JButton exit = new JButton();
+		exit = new JButton();
 		exit.setToolTipText("Exit's the simulation");
 		exit.setIcon(new ImageIcon("icons/exit.png"));
 		exit.addActionListener(new ActionListener() {
@@ -218,7 +225,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		
 		JFrame inputDialog = new JFrame("Input Dialog");
 		int i = 0;
-		ArrayList<Object> poss = new ArrayList<Object>();
 		Object[] possibilities = new Object[3];
 		Factory<GravityLaws> laws = _ctrl.getGravityLawsFactory();
 		for (JSONObject jo : laws.getInfo()) {
@@ -266,13 +272,13 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	@Override
 	public void onRegister(List<Body> bodies, double time, double dt, String gLawsDesc) {
 		// TODO Auto-generated method stub
-
+		delta.setText(String.valueOf(dt));
 	}
 
 	@Override
 	public void onReset(List<Body> bodies, double time, double dt, String gLawsDesc) {
 		// TODO Auto-generated method stub
-		
+		delta.setText(String.valueOf(dt));
 	}
 
 	@Override
@@ -290,7 +296,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	@Override
 	public void onDeltaTimeChanged(double dt) {
 		// TODO Auto-generated method stub
-
+		delta.setText(String.valueOf(dt));
 	}
 
 	@Override
