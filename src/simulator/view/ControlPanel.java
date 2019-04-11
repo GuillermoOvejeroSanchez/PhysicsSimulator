@@ -45,6 +45,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 
 	private static final long serialVersionUID = -7690206431664849527L;
 	// ...
+	private final Integer DEFAULT_STEPS = 1000;
 	private Controller _ctrl;
 	private boolean _stopped;
 	JToggleButton toggleButton;
@@ -53,6 +54,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	ControlPanel(Controller ctrl) {
 		_ctrl = ctrl;
 		_stopped = true;
+		_stepsNumber = DEFAULT_STEPS.toString();
 		initGUI();
 		_ctrl.addObserver(this);
 	}
@@ -137,7 +139,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		//steps.setMaximumSize(delta.getPreferredSize());
 		steps.setMaximumSize(steps.getPreferredSize());
 		steps.setPreferredSize(new Dimension(75,15));
-		steps.setModel(new SpinnerNumberModel(1000,0,Integer.MAX_VALUE,1));
+		steps.setModel(new SpinnerNumberModel(DEFAULT_STEPS.intValue(),0,Integer.MAX_VALUE,1));
 		steps.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
