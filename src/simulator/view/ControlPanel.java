@@ -6,6 +6,10 @@ import java.awt.FlowLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,10 +93,19 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		load.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileChooser = new JFileChooser();
+			public void actionPerformed(ActionEvent e){
+				JFileChooser fileChooser = new JFileChooser(new File("D:\\dev\\Java\\PhysicsSimulator\\resources\\examples"));
 				int seleccion = fileChooser.showOpenDialog(toolBar);
-				System.out.println(seleccion);
+				if (seleccion == JFileChooser.APPROVE_OPTION) {
+					//TODO Load file
+					System.out.print(fileChooser.getSelectedFile().toString());
+					try (InputStream is = new FileInputStream(new File(fileChooser.getSelectedFile().toString()));) {
+						_ctrl.loadBodies(is);
+					} catch (Exception e1) {
+						e1.getStackTrace();
+					}
+
+				}
 			}
 		});
 		toolBar.add(load);
@@ -192,7 +205,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		return toolBar;
 	}
 
-	
+	//TODO
 	private void run_sim(int n) {
 		if (n > 0 && !_stopped) {
 			try {
@@ -271,37 +284,31 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 
 	@Override
 	public void onRegister(List<Body> bodies, double time, double dt, String gLawsDesc) {
-		// TODO Auto-generated method stub
 		delta.setText(String.valueOf(dt));
 	}
 
 	@Override
 	public void onReset(List<Body> bodies, double time, double dt, String gLawsDesc) {
-		// TODO Auto-generated method stub
 		delta.setText(String.valueOf(dt));
 	}
 
 	@Override
 	public void onBodyAdded(List<Body> bodies, Body b) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void onAdvance(List<Body> bodies, double time) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void onDeltaTimeChanged(double dt) {
-		// TODO Auto-generated method stub
 		delta.setText(String.valueOf(dt));
 	}
 
 	@Override
 	public void onGravityLawChanged(String gLawsDesc) {
-		// TODO Auto-generated method stub
 
 	}
 }
