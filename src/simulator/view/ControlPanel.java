@@ -6,11 +6,15 @@ import java.awt.FlowLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Box;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -22,9 +26,18 @@ import javax.swing.JToolBar;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
+import org.apache.commons.cli.ParseException;
+import org.json.JSONObject;
+
+import javafx.scene.control.ToggleButton;
+import jdk.nashorn.internal.parser.JSONParser;
 import simulator.control.Controller;
+import simulator.factories.Factory;
 import simulator.model.Body;
+import simulator.model.GravityLaws;
 import simulator.model.NewtonUniversalGravitation;
 import simulator.model.SimulatorObserver;
 
@@ -35,8 +48,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private Controller _ctrl;
 	private boolean _stopped;
 	JToggleButton toggleButton;
+	private int stepsNumber;
 	ControlPanel(Controller ctrl) {
-
 		_ctrl = ctrl;
 		_stopped = true;
 		initGUI();
@@ -59,10 +72,20 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
         toolBar.setRollover(true);
 		JPanel leftPanel = new JPanel(new FlowLayout());
 		
+		
 		JButton load = new JButton();
 		load.setToolTipText("Load a file");
 		//load.addActionListener(this);
 		load.setIcon(new ImageIcon("icons/open.png"));
+		load.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				int seleccion = fileChooser.showOpenDialog(toolBar);
+				System.out.println(seleccion);
+			}
+		});
 		toolBar.add(load);
 		
 		toolBar.addSeparator();
@@ -70,13 +93,10 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		JButton simulator = new JButton();
 		simulator.setToolTipText("Open Simulator Config");
 		simulator.setIcon(new ImageIcon("icons/physics.png"));
-		
 		simulator.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				inputLaw();
-				
+				inputLaw();	
 			}
 		});
 		
@@ -87,11 +107,27 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		JButton play = new JButton();
 		play.setToolTipText("Play's the simulation");
 		play.setIcon(new ImageIcon("icons/run.png"));
+		play.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Desactivar el resto de botones menos stop
+				System.out.println("Ejecutando sim");
+				_stopped = false;
+				run_sim(stepsNumber);
+			}
+		});
 		toolBar.add(play);
 		
 		JButton stop = new JButton();
 		stop.setToolTipText("Stop's the simulation");
 		stop.setIcon(new ImageIcon("icons/stop.png"));
+		stop.addActionListener(new ActionListener() {	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				_stopped = true;
+			}
+		});
 		toolBar.add(stop);
 		
 		JLabel stepsLabel = new JLabel("Steps");
@@ -103,31 +139,42 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		steps.setMaximumSize(steps.getPreferredSize());
 		steps.setPreferredSize(new Dimension(75,15));
 		steps.setModel(new SpinnerNumberModel(1000,0,99999999999999999.0,1));
+		steps.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				stepsNumber = Integer.parseInt(steps.getValue().toString());
+			}
+		});
 		toolBar.add(steps);
 		
 		JLabel deltaLabel = new JLabel("Delta-Time");
 		toolBar.add(deltaLabel);
 		JTextField delta = new JTextField(5);
 		delta.setMaximumSize(delta.getPreferredSize());
+		delta.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					_ctrl.setDeltaTime(Double.parseDouble(delta.getText()));
+			}
+		});
 		toolBar.add(delta);
 		
-		
-		
-		
 		toolBar.add(leftPanel);
-		
-		//add(Box.createHorizontalGlue());
+
 		JButton exit = new JButton();
 		exit.setToolTipText("Exit's the simulation");
 		exit.setIcon(new ImageIcon("icons/exit.png"));
-		
+		exit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//TODO Añadir confirmacion de salida
+				System.exit(0);	
+			}
+		});
 		toolBar.addSeparator();
-		
 		toolBar.add(exit);
 		
 		this.add(toolBar, BorderLayout.PAGE_START);
-		
-		
 
 		return toolBar;
 	}
@@ -135,10 +182,13 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	
 	private void run_sim(int n) {
 		if (n > 0 && !_stopped) {
+			System.out.println(n);
 			try {
 				_ctrl.run(1);
 			} catch (Exception e) {
 				// TODO show the error in a dialog box
+				JDialog error = new JDialog();
+				error.setVisible(true);
 				// TODO enable all buttons
 				_stopped = true;
 				return;
@@ -146,41 +196,56 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
+					
 					run_sim(n - 1);
 				}
 			});
 		} else {
+			System.out.println("STOP");
 			_stopped = true;
 			// TODO enable all buttons
 		}
 	}
 	
+	
 	//----------------- DIALOG SELECCIONAR GRAVEDAD -----------------------
 	public JFrame inputLaw() {
 		
 		JFrame inputDialog = new JFrame("Input Dialog");
-		
-		
-		Object[] possibilities = {"Newton Universal Gravitation Law","Falling To Center Gravity","No Gravity Law"};
-		
-		String n = (String) JOptionPane.showInputDialog(this,
-				"Select gravy laws to be used.",
-				"Gravity Law Selector", 
-				  JOptionPane.INFORMATION_MESSAGE,
-				  null,
-				  possibilities,
-				  "Newton Universal Gravitation Law");
-		
-		if(n.equalsIgnoreCase("Newton Universal Gravitation Law")) {
-			// TODO se aplica ley de newton
+		int i = 0;
+		ArrayList<Object> poss = new ArrayList<Object>();
+		Object[] possibilities = new Object[3];
+		Factory<GravityLaws> laws = _ctrl.getGravityLawsFactory();
+		for (JSONObject jo : laws.getInfo()) {
+			
+			possibilities[i] = jo.get("desc").toString();
+			i++;
+			i%=3;
 		}
-		else if(n.equalsIgnoreCase("Falling To Center Gravity")) {
-			//TODO se aplica ley 
+		System.out.println(laws.getInfo().toString());
+		try {
+			String n = (String) JOptionPane.showInputDialog(this,
+					"Select gravy laws to be used.",
+					"Gravity Law Selector", 
+					  JOptionPane.INFORMATION_MESSAGE,
+					  new ImageIcon("icons/physics.png"),
+					  possibilities,
+					  null);
+
+			if (n != null) {
+				for (JSONObject fe : laws.getInfo()) {
+					if (n.equals(fe.getString("desc"))) {
+						_ctrl.setGravityLaws(fe);
+						break;
+					}
+				}
+				
+			} 
+
+			
+		} catch (Exception e) {
+			e.getStackTrace();
 		}
-		else {
-			//TODO no gravedad 
-		}
-		
 		
 		inputDialog.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		inputDialog.pack();
