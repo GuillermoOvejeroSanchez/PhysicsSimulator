@@ -34,8 +34,6 @@ public class StatusBar extends JPanel implements SimulatorObserver {
 	private JLabel _currLaws; // for gravity laws
 	private JLabel _numOfBodies; // for number of bodies
 
-	// TODO quitar la descripcion de ley y poner solo el nombre 
-	
 	public StatusBar(Controller ctrl) {
 		
 		this._currLaws = new JLabel(); 
@@ -52,19 +50,15 @@ public class StatusBar extends JPanel implements SimulatorObserver {
 		//this.setPreferredSize(new Dimension(800, 20));
 		
 		  this.setForeground(Color.GRAY);
-		
-		
 		this.setFont(new Font("verdana",Font.BOLD,5));
 		
 		createStatudBar();
-// TODO complete the code to build the tool bar
 	}
 
-// other private/protected methods
-// ...
-// SimulatorObserver methods
-// ...
 	
+	
+// SimulatorObserver methods
+
 	public void createStatudBar() {
 		
 		JLabel timeLabel = new JLabel(statusNames[0]); 
