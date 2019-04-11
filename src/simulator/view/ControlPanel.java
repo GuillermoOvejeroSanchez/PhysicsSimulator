@@ -1,7 +1,6 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -13,7 +12,6 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -62,7 +60,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	}
 
 	private void initGUI() {
-		//TODO Show dialog with errors
 		super.setLayout(new BorderLayout());
 		createJToolBar();
 		//this.add(createJToolBar());
@@ -205,9 +202,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			try {
 				_ctrl.run(1);
 			} catch (Exception e) {
-				// TODO show the error in a dialog box
-				JDialog error = new JDialog();
-				error.setVisible(true);
+				JFrame error = new JFrame("Input Dialog");
+				JOptionPane.showMessageDialog(error, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE, null);
 				// TODO enable all buttons
 				_stopped = true;
 				return;
@@ -231,14 +227,15 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	public JFrame inputLaw() {
 		
 		JFrame inputDialog = new JFrame("Input Dialog");
-		int i = 0;
 		Object[] possibilities = new Object[3];
 		Factory<GravityLaws> laws = _ctrl.getGravityLawsFactory();
-		for (JSONObject jo : laws.getInfo()) {
-			
+		/*for (JSONObject jo : laws.getInfo()) {
 			possibilities[i] = jo.get("desc").toString();
 			i++;
 			i%=3;
+		}*/
+		for (int j = 0; j < possibilities.length; j++) {
+			possibilities[j] = laws.getInfo().get(j).get("desc");
 		}
 		System.out.println(laws.getInfo().toString());
 		try {
