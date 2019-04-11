@@ -48,7 +48,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private Controller _ctrl;
 	private boolean _stopped;
 	JToggleButton toggleButton;
-	private int stepsNumber;
+	private String _stepsNumber;
+	
 	ControlPanel(Controller ctrl) {
 		_ctrl = ctrl;
 		_stopped = true;
@@ -75,7 +76,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		
 		JButton load = new JButton();
 		load.setToolTipText("Load a file");
-		//load.addActionListener(this);
 		load.setIcon(new ImageIcon("icons/open.png"));
 		load.addActionListener(new ActionListener() {
 			
@@ -112,9 +112,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Desactivar el resto de botones menos stop
-				System.out.println("Ejecutando sim");
 				_stopped = false;
-				run_sim(stepsNumber);
+				run_sim(Integer.parseInt(_stepsNumber));
 			}
 		});
 		toolBar.add(play);
@@ -138,11 +137,12 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		//steps.setMaximumSize(delta.getPreferredSize());
 		steps.setMaximumSize(steps.getPreferredSize());
 		steps.setPreferredSize(new Dimension(75,15));
-		steps.setModel(new SpinnerNumberModel(1000,0,99999999999999999.0,1));
+		steps.setModel(new SpinnerNumberModel(1000,0,Integer.MAX_VALUE,1));
 		steps.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				stepsNumber = Integer.parseInt(steps.getValue().toString());
+				System.out.println(steps.getValue().toString());
+				_stepsNumber = steps.getValue().toString();
 			}
 		});
 		toolBar.add(steps);
@@ -154,7 +154,11 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		delta.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					_ctrl.setDeltaTime(Double.parseDouble(delta.getText()));
+				try {
+					_ctrl.setDeltaTime(Double.parseDouble(delta.getText()));					
+				} catch (Exception e2) {
+					e2.getStackTrace();
+				}
 			}
 		});
 		toolBar.add(delta);
@@ -201,7 +205,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 				}
 			});
 		} else {
-			System.out.println("STOP");
 			_stopped = true;
 			// TODO enable all buttons
 		}
