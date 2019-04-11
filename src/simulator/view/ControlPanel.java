@@ -1,20 +1,16 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.Box;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -27,22 +23,17 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
-import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.apache.commons.cli.ParseException;
 import org.json.JSONObject;
 
-import javafx.scene.control.ToggleButton;
-import jdk.nashorn.internal.parser.JSONParser;
 import simulator.control.Controller;
 import simulator.factories.Factory;
 import simulator.model.Body;
 import simulator.model.GravityLaws;
-import simulator.model.NewtonUniversalGravitation;
 import simulator.model.SimulatorObserver;
 
 public class ControlPanel extends JPanel implements SimulatorObserver {
@@ -71,7 +62,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	}
 
 	private void initGUI() {
-
+		//TODO Show dialog with errors
 		super.setLayout(new BorderLayout());
 		createJToolBar();
 		//this.add(createJToolBar());
@@ -97,12 +88,13 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 				JFileChooser fileChooser = new JFileChooser(new File("D:\\dev\\Java\\PhysicsSimulator\\resources\\examples"));
 				int seleccion = fileChooser.showOpenDialog(toolBar);
 				if (seleccion == JFileChooser.APPROVE_OPTION) {
-					//TODO Load file
-					System.out.print(fileChooser.getSelectedFile().toString());
-					try (InputStream is = new FileInputStream(new File(fileChooser.getSelectedFile().toString()));) {
+					String file = (fileChooser.getSelectedFile().toString());
+					try (InputStream is = new FileInputStream(new File(file));) {
 						_ctrl.loadBodies(is);
 					} catch (Exception e1) {
 						e1.getStackTrace();
+						JFrame error = new JFrame("Input Dialog");
+						JOptionPane.showMessageDialog(error, file, "Invalid File", JOptionPane.ERROR_MESSAGE, null);
 					}
 
 				}
@@ -163,7 +155,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		steps.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				System.out.println(steps.getValue().toString());
 				_stepsNumber = Integer.parseInt(steps.getValue().toString());
 			}
 		});
@@ -193,8 +184,11 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		exit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO Añadir confirmacion de salida
-				System.exit(0);	
+				JFrame exit = new JFrame("Input Dialog");
+				int exitSelection = JOptionPane.showConfirmDialog(exit, "Really want to close it?", "Exit Application", JOptionPane.OK_CANCEL_OPTION);
+				System.out.println(exitSelection);
+				if(exitSelection == 0)
+					System.exit(exitSelection);	
 			}
 		});
 		toolBar.addSeparator();
