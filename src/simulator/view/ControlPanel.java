@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -259,9 +260,15 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			e.getStackTrace();
 		}
 		
+		/*
 		inputDialog.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		inputDialog.pack();
 		inputDialog.setVisible(true);
+		*/
+		
+		inputDialog.setVisible(false);
+		inputDialog.dispatchEvent(new WindowEvent(
+				inputDialog, WindowEvent.WINDOW_CLOSING));
 		
 		return null; 
 	}
