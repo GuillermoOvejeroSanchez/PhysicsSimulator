@@ -92,7 +92,8 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 	@Override
 	public void onReset(List<Body> bodies, double time, double dt, String gLawsDesc) {
 		// TODO Auto-generated method stub
-
+		_bodies = new ArrayList<>(bodies);
+		repaint();
 	}
 
 	@Override
