@@ -144,11 +144,15 @@ public Object getRowData(int colum, Body cuerpo) {
 // SimulatorObserver methods
 	public void setBodies(List<Body> cuerpo) {
 		this._bodies = cuerpo; 
-		this.fireTableDataChanged();
+		refresh();
 	}
 	
 	public void setColumsNames() {
 		
+	}
+	
+	public void refresh() {
+		fireTableDataChanged();
 	}
 	
 
