@@ -21,31 +21,19 @@ public class BodiesTable extends JPanel{
 	BodiesTableModel bodiesTableM; 
 	
 	BodiesTable(Controller ctrl) {
+		//bodiesTableM = new BodiesTableModel(ctrl); 
+		JTable bodiesTable = new JTable(new BodiesTableModel(ctrl)); 
+
+		
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 2), "Bodies",
 				TitledBorder.LEFT, TitledBorder.TOP));
 		this.setPreferredSize(new Dimension(800, 150));
-		
-		//TODO quitar que se puedan desplazar las columanas con los nobres
-		
-		createTable(ctrl); 
-		
-// TODO complete
-	}
 	
-	public JTable createTable(Controller ctrl) {
-		
-		bodiesTableM = new BodiesTableModel(ctrl); 
-		JTable bodiesTable = new JTable(bodiesTableM); 
-		
-		
-		//JScrollPane bodiesScroll = new JScrollPane();
-		
 		this.add(new JScrollPane(bodiesTable));
 		
-		
-		
-		return null; 
 	}
+	
+	
 	
 }

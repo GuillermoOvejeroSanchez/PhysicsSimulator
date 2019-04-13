@@ -13,41 +13,28 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 
 	private List<Body> _bodies;
 	
-	private int numOfRows; 
 	
-	private static String[] titulos = {
+	
+	private  final static String[] titulos = {
 			"Id",
 			"Mass",
 			"Position",
 			"Velocity",
-			"Acceleration",
+			"Aceleration",
 				
 		}; 
 	
-	Object[][] datosCasilla; 
+	
 
 	public BodiesTableModel(Controller ctrl) {
-		_bodies = new ArrayList<>();
+		
 		ctrl.addObserver(this);
 		
-		initTable();
+	
 		
 	}
 	
 	
-	
-	public void initTable() {
-		numOfRows = _bodies.size(); 
-		
-		datosCasilla = new Object[numOfRows][titulos.length]; 
-		
-		for(int i = 0; i < titulos.length; i++) {
-			for(int j = 0; j < numOfRows; j++ ) {
-				datosCasilla[i][j] = null; 
-			}
-		}	
-		
-	}
 
 	
 	@Override
@@ -69,55 +56,62 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 	@Override
 	public int getRowCount() {
 	
-		return _bodies.size();
+		if(this._bodies == null) {
+			return 0; 
+		}
+		else {
+			return this._bodies.size(); 
+		}
+		
 	}
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		return datosCasilla[rowIndex][columnIndex]; 
-	}
 	
-public Object getRowData(int colum, Body cuerpo) {
+		Body cuerpo = _bodies.get(rowIndex); 
 		
-		Object casilla = null; 
-		
-		switch(colum) {
-		case 0: casilla = cuerpo.getId(); break; 
-		case 1: casilla = cuerpo.getPosition(); break; 
-		case 2: casilla = cuerpo.getVelocity(); break;
-		case 3: casilla = cuerpo.getAcceleration(); break;
-		default: assert (false);
-		
+		switch(titulos[columnIndex]) {
+		case "Id" : return cuerpo.getId(); 
+		case "Mass": return cuerpo.getMass(); 
+		case "Position": return cuerpo.getPosition(); 
+		case "Velocity": return cuerpo.getVelocity(); 
+		case "Aceleration": return cuerpo.getAcceleration();  
+		default: 
+			return ""; 
 		}
 		
 		
 		
-		return casilla; 
+	}
+	
+public Object getRowData(int colum, Body cuerpo) {
+		
+		return null;
 	}
 	
 	private void addBodies(List<Body> bodies) {
 		_bodies = bodies;
-		initTable();
+		//initTable();
 	}
 	
 	@Override
 	public void onRegister(List<Body> bodies, double time, double dt, String gLawsDesc) {
-		// TODO Auto-generated method stub
-		addBodies(bodies);
-		fireTableStructureChanged();
+		_bodies = new ArrayList<>(bodies);
+		repaint();
+		
 	}
 
 	@Override
 	public void onReset(List<Body> bodies, double time, double dt, String gLawsDesc) {
 		// TODO Auto-generated method stub
-		addBodies(bodies);
-		fireTableStructureChanged();
+		
 	}
 
 	@Override
 	public void onBodyAdded(List<Body> bodies, Body b) {
 		// TODO Auto-generated method stub
-		addBodies(bodies);
-		fireTableStructureChanged();
+		//this._bodies.add(b); 
+		this._bodies = bodies; 
+		repaint();
 	}
 
 	@Override
@@ -141,9 +135,7 @@ public Object getRowData(int colum, Body cuerpo) {
 // SimulatorObserver methods
 
 	public void setBodies(List<Body> cuerpo) {
-		this._bodies = cuerpo; 
-		refresh();
-	}
+			}
 	
 
 	public void setColumsNames() {
@@ -151,7 +143,11 @@ public Object getRowData(int colum, Body cuerpo) {
 	}
 	
 	public void refresh() {
-		fireTableDataChanged();
+		this.fireTableDataChanged();
+	}
+	
+	public void repaint() {
+		this.fireTableStructureChanged();
 	}
 	
 
