@@ -7,7 +7,7 @@
 	             "id" : "b1",
      	         "pos"  : [0.0e00,  4.5e10],
      	         "vel"  : [1.0e04, 0.0e00],
-     			 "mass" : a
+     			 "mass" : asasda
      		   }		   
     },
     
