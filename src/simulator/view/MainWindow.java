@@ -1,6 +1,7 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
@@ -50,7 +51,7 @@ public class MainWindow extends JFrame {
 	
 	private JPanel centerPanel() {
 		JPanel panelCentral = new JPanel(); 
-		
+		panelCentral.setBackground(Color.WHITE);
 		panelCentral.setLayout(new BoxLayout(panelCentral, BoxLayout.Y_AXIS));
 		
 		panelCentral.add(new BodiesTable(_ctrl));

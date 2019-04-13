@@ -3,6 +3,7 @@ package simulator.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -37,10 +38,14 @@ public class Viewer extends JComponent implements SimulatorObserver {
 		ctrl.addObserver(this);
 		
 		setLayout(new BorderLayout());
+		this.setBackground(Color.WHITE);
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 2), "Viewer",
 				TitledBorder.LEFT, TitledBorder.TOP));
 		
 		this.setPreferredSize(new Dimension(800, 300));
+		//this.setFont(new Font(attributes));
+		
+		
 	}
 
 	private void initGUI() {
@@ -126,8 +131,11 @@ public class Viewer extends JComponent implements SimulatorObserver {
 		_centerX = getWidth() / 2;
 		_centerY = getHeight() / 2;
 // TODO draw a cross at center
+		centerCross(gr);
 // TODO draw bodies
+		drawBodies(gr);
 // TODO draw help if _showHelp is true
+		helpText(gr);
 	}
 
 // other private/protected methods
@@ -143,27 +151,63 @@ public class Viewer extends JComponent implements SimulatorObserver {
 		_scale = max > size ? 4.0 * max / size : 1.0;
 	}
 
+	public void centerCross(Graphics2D gr) {
+		gr.setColor(Color.red);
+		gr.drawLine(_centerX - 15, _centerY, _centerX + 15, _centerY);
+		gr.drawLine(_centerX, _centerY - 15, _centerX, _centerY + 15);
+	}
+	
+	public void helpText(Graphics2D gr) {
+		if(this._showHelp) {
+			long bordeX = Math.round(this.getBounds().getMinX()); 
+			long bordey = Math.round(this.getBounds().getMinY());
+			
+			gr.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+			gr.drawString("h: toggle help, +: zoom-in, -:zoom-out, =: fit", bordeX + 8, bordey/7);
+			gr.drawString("Scalating ratio " + this._scale, bordeX + 8, bordey/5);
+		}
+	}
+	
+	public void drawBodies(Graphics2D gr) {
+		for(Body b: this._bodies) {
+			int x = _centerX + (int) (b.getPosition().coordinate(0) / _scale) - 5; 
+			int y = _centerY + (int) (b.getPosition().coordinate(1) / _scale) - 5; 
+			
+			gr.setColor(Color.BLACK);
+			gr.drawString(b.getId(), x - 2, y - 13);
+			gr.setColor(Color.BLUE);
+			gr.fillOval(x, y, 10, 10);
+			
+		}
+	}
+	
 	@Override
 	public void onRegister(List<Body> bodies, double time, double dt, String gLawsDesc) {
-		// TODO Auto-generated method stub
+	 _bodies = new ArrayList<>(bodies); 
+	 autoScale();
+	 repaint();
 
 	}
 
 	@Override
 	public void onReset(List<Body> bodies, double time, double dt, String gLawsDesc) {
-		// TODO Auto-generated method stub
+	this._bodies.clear();
+	autoScale();
+	repaint();
 
 	}
 
 	@Override
 	public void onBodyAdded(List<Body> bodies, Body b) {
-		// TODO Auto-generated method stub
+		this._bodies.add(b); 
+		 autoScale();
+		 repaint();
 
 	}
 
 	@Override
 	public void onAdvance(List<Body> bodies, double time) {
-		// TODO Auto-generated method stub
+		repaint();
 
 	}
 
