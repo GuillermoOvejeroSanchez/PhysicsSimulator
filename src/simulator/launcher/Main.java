@@ -147,7 +147,7 @@ public class Main {
 
 		// mode
 		cmdLineOptions.addOption(Option.builder("m").longOpt("mode").hasArg().desc(
-				"Execution Mode. Possible values: ’batch’ (Batch mode), ’gui’ (Graphical User Interface mode). Default value: ’batch’.")
+				"Execution Mode. Possible values: 'batch' (Batch mode), 'gui' (Graphical User Interface mode). Default value: ’batch’.")
 				.build());
 
 		String gravityLawsValues = "N/A";
@@ -288,7 +288,6 @@ public class Main {
 		try {
 			init();
 			start(args);
-			System.out.println("Simulacion Completada");
 		} catch (Exception e) {
 			System.err.println("Something went wrong ...");
 			System.err.println();

@@ -36,16 +36,15 @@ public class Viewer extends JComponent implements SimulatorObserver {
 	Viewer(Controller ctrl) {
 		initGUI();
 		ctrl.addObserver(this);
-		
+
 		setLayout(new BorderLayout());
 		this.setBackground(Color.WHITE);
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 2), "Viewer",
 				TitledBorder.LEFT, TitledBorder.TOP));
-		
+
 		this.setPreferredSize(new Dimension(800, 300));
-		//this.setFont(new Font(attributes));
-		
-		
+		// this.setFont(new Font(attributes));
+
 	}
 
 	private void initGUI() {
@@ -156,53 +155,53 @@ public class Viewer extends JComponent implements SimulatorObserver {
 		gr.drawLine(_centerX - 15, _centerY, _centerX + 15, _centerY);
 		gr.drawLine(_centerX, _centerY - 15, _centerX, _centerY + 15);
 	}
-	
+
 	public void helpText(Graphics2D gr) {
-		if(this._showHelp) {
-			long bordeX = Math.round(this.getBounds().getMinX()); 
+		if (this._showHelp) {
+			long bordeX = Math.round(this.getBounds().getMinX());
 			long bordey = Math.round(this.getBounds().getMinY());
-			
+
 			gr.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
 			gr.setColor(Color.red);
 			gr.drawString("h: toggle help, +: zoom-in, -:zoom-out, =: fit", bordeX + 8, bordey/7);
 			gr.drawString("Scalating ratio " + this._scale, bordeX + 8, bordey/5);
 		}
 	}
-	
+
 	public void drawBodies(Graphics2D gr) {
-		for(Body b: this._bodies) {
-			int x = _centerX + (int) (b.getPosition().coordinate(0) / _scale) - 5; 
-			int y = _centerY + (int) (b.getPosition().coordinate(1) / _scale) - 5; 
-			
+		for (Body b : this._bodies) {
+			int x = _centerX + (int) (b.getPosition().coordinate(0) / _scale) - 5;
+			int y = _centerY + (int) (b.getPosition().coordinate(1) / _scale) - 5;
+
 			gr.setColor(Color.BLACK);
 			gr.drawString(b.getId(), x - 2, y - 13);
 			gr.setColor(Color.BLUE);
 			gr.fillOval(x, y, 10, 10);
-			
+
 		}
 	}
-	
+
 	@Override
 	public void onRegister(List<Body> bodies, double time, double dt, String gLawsDesc) {
-	 _bodies = new ArrayList<>(bodies); 
-	 autoScale();
-	 repaint();
+		_bodies = new ArrayList<>(bodies);
+		autoScale();
+		repaint();
 
 	}
 
 	@Override
 	public void onReset(List<Body> bodies, double time, double dt, String gLawsDesc) {
-	this._bodies.clear();
-	autoScale();
-	repaint();
+		this._bodies.clear();
+		autoScale();
+		repaint();
 
 	}
 
 	@Override
 	public void onBodyAdded(List<Body> bodies, Body b) {
-		this._bodies.add(b); 
-		 autoScale();
-		 repaint();
+		this._bodies.add(b);
+		autoScale();
+		repaint();
 
 	}
 

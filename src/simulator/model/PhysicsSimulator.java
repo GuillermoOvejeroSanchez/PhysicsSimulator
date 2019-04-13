@@ -30,34 +30,22 @@ public class PhysicsSimulator {
 		if (_bodies.contains(b))
 			throw new IllegalArgumentException("Cuerpo con ID duplicado");
 		_bodies.add(b);
-		
+
 		for (SimulatorObserver simulatorObserver : _observers) {
 			simulatorObserver.onBodyAdded(_bodies, b);
 		}
 	}
-
-	private void notifyObservers(List<SimulatorObserver> _observers) {
-		// TODO Auto-generated method stub
-		for (SimulatorObserver ob : _observers) {
-			ob.onAdvance(_bodies, _time);
-			ob.onBodyAdded(_bodies, _bodies.get(_bodies.size()-1));
-			ob.onDeltaTimeChanged(_dt);
-			ob.onGravityLawChanged(_gravityLaws.toString());
-			ob.onRegister(_bodies, _time, _dt, _gravityLaws.toString());
-			ob.onReset(_bodies, _time, _dt, _gravityLaws.toString());
-		}
-		
-	}
-
+	
 	public void advance() {
 		_gravityLaws.apply(_bodies);
 		for (Body body : _bodies) {
 			body.move(_dt);
 		}
 		_time += _dt;
-		
+
 		for (SimulatorObserver simulatorObserver : _observers) {
-			simulatorObserver.onAdvance(_bodies, _time);;
+			simulatorObserver.onAdvance(_bodies, _time);
+			;
 		}
 	}
 
@@ -84,7 +72,7 @@ public class PhysicsSimulator {
 		} catch (Exception e) {
 			throw new IllegalArgumentException();
 		}
-		
+
 		for (SimulatorObserver simulatorObserver : _observers) {
 			simulatorObserver.onDeltaTimeChanged(_dt);
 		}
@@ -93,7 +81,7 @@ public class PhysicsSimulator {
 	public void reset() {
 		_time = 0.0;
 		_bodies.clear();
-		
+
 		for (SimulatorObserver simulatorObserver : _observers) {
 			simulatorObserver.onReset(_bodies, 0.0, _dt, _gravityLaws.toString());
 		}
@@ -114,7 +102,7 @@ public class PhysicsSimulator {
 		if (!_observers.contains(o))
 			_observers.add(o);
 
-		_observers.get(_observers.size()-1).onRegister(_bodies, _time, _dt, _gravityLaws.toString());
+		_observers.get(_observers.size() - 1).onRegister(_bodies, _time, _dt, _gravityLaws.toString());
 	}
 
 }

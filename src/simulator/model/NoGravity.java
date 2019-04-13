@@ -11,9 +11,9 @@ public class NoGravity implements GravityLaws {
 	public String toStringDes() {
 		return "The gravity wont change, its like the outer space";
 	}
-	
+
 	public String toString() {
-		
-		return "No Gravity Law"; 
+
+		return "No Gravity Law";
 	}
 }

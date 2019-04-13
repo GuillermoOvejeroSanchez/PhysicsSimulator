@@ -20,7 +20,7 @@ public class FallingToCenterGravity implements GravityLaws {
 	public String toStringDes() {
 		return "All of the bodies 'fall's' into the center of the grid, simulating a kind of" + "immovable object";
 	}
-	
+
 	public String toString() {
 		return "Falling To Center Gravity";
 	}

@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -30,16 +29,14 @@ import javax.swing.event.ChangeListener;
 import org.json.JSONObject;
 
 import simulator.control.Controller;
-import simulator.factories.Factory;
 import simulator.model.Body;
-import simulator.model.GravityLaws;
 import simulator.model.SimulatorObserver;
 
 public class ControlPanel extends JPanel implements SimulatorObserver {
 
 	private static final long serialVersionUID = -7690206431664849527L;
-	// ...
-	private final Integer DEFAULT_STEPS = 1000;
+	
+	private final Integer DEFAULT_STEPS = 1500;
 	private Controller _ctrl;
 	private boolean _stopped;
 	JToggleButton toggleButton;
@@ -50,81 +47,90 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	protected JButton exit;
 	private JSpinner steps;
 	private JTextField delta;
+	private Object[] possibilities;
 	private int _stepsNumber;
-	
+
 	ControlPanel(Controller ctrl) {
 		_ctrl = ctrl;
 		_stopped = true;
 		_stepsNumber = DEFAULT_STEPS;
 		initGUI();
 		_ctrl.addObserver(this);
+
+		possibilities = new Object[_ctrl.getGravityLawsFactory().getInfo().size()];
+		int i = 0;
+		for (JSONObject jo : _ctrl.getGravityLawsFactory().getInfo()) {
+			possibilities[i] = jo.get("desc");
+			i++;
+		}
 	}
 
 	private void initGUI() {
 		super.setLayout(new BorderLayout());
 		createJToolBar();
-		//this.add(createJToolBar());
-		
+		// this.add(createJToolBar());
 
 	}
 
 	// other private/protected methods
 	public JToolBar createJToolBar() {
 		JToolBar toolBar = new JToolBar();
-        toolBar.setFloatable(false);
-        toolBar.setRollover(true);
+		toolBar.setFloatable(false);
+		toolBar.setRollover(true);
 		JPanel leftPanel = new JPanel(new FlowLayout());
-		
-		
+
 		load = new JButton();
 		load.setToolTipText("Load a file");
 		load.setIcon(new ImageIcon("icons/open.png"));
 		load.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e){
-				JFileChooser fileChooser = new JFileChooser(new File("D:\\dev\\Java\\PhysicsSimulator\\resources\\examples"));
-				int seleccion = fileChooser.showOpenDialog(toolBar);
-				if (seleccion == JFileChooser.APPROVE_OPTION) {
-					String file = (fileChooser.getSelectedFile().toString());
-					try (InputStream is = new FileInputStream(new File(file));) {
-						_ctrl.reset();
-						_ctrl.loadBodies(is);
-					} catch (Exception e1) {
-						e1.getStackTrace();
-						JFrame error = new JFrame("Input Dialog");
-						JOptionPane.showMessageDialog(error, file, "Invalid File", JOptionPane.ERROR_MESSAGE, null);
-					}
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource().equals(load)) {
+
+					JFileChooser fileChooser = new JFileChooser(
+							new File("C:\\dev\\Java\\PhysicsSimulator\\resources\\examples"));
+					int seleccion = fileChooser.showOpenDialog(toolBar);
+					if (seleccion == JFileChooser.APPROVE_OPTION) {
+						String file = (fileChooser.getSelectedFile().toString());
+						try (InputStream is = new FileInputStream(new File(file));) {
+							_ctrl.reset();
+							_ctrl.loadBodies(is);
+						} catch (Exception e1) {
+							JFrame error = new JFrame("Input Dialog");
+							JOptionPane.showMessageDialog(error, "File is not valid", "Invalid File",
+									JOptionPane.ERROR_MESSAGE, null);
+						}
+					}
 				}
 			}
 		});
 		toolBar.add(load);
-		
+
 		toolBar.addSeparator();
-		
+
 		simulator = new JButton();
 		simulator.setToolTipText("Open Simulator Config");
 		simulator.setIcon(new ImageIcon("icons/physics.png"));
 		simulator.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				inputLaw();	
+				inputLaw();
 			}
 		});
-		
+
 		toolBar.add(simulator);
-		
+
 		toolBar.addSeparator();
-		
+
 		play = new JButton();
 		play.setToolTipText("Play's the simulation");
 		play.setIcon(new ImageIcon("icons/run.png"));
 		play.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Desactivar el resto de botones menos stop
+				setEnable(false);
 				_stopped = false;
 				run_sim(_stepsNumber);
 				
@@ -132,27 +138,27 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			}
 		});
 		toolBar.add(play);
-		
+
 		stop = new JButton();
 		stop.setToolTipText("Stop's the simulation");
 		stop.setIcon(new ImageIcon("icons/stop.png"));
-		stop.addActionListener(new ActionListener() {	
+		stop.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				_stopped = true;
 			}
 		});
 		toolBar.add(stop);
-		
+
 		JLabel stepsLabel = new JLabel("Steps");
 		toolBar.add(stepsLabel);
 		steps = new JSpinner();
-		
-		//steps.setPreferredSize(new Dimension(75,10));
-		//steps.setMaximumSize(delta.getPreferredSize());
+
+		// steps.setPreferredSize(new Dimension(75,10));
+		// steps.setMaximumSize(delta.getPreferredSize());
 		steps.setMaximumSize(steps.getPreferredSize());
-		steps.setPreferredSize(new Dimension(75,15));
-		steps.setModel(new SpinnerNumberModel(DEFAULT_STEPS.intValue(),0,Integer.MAX_VALUE,1));
+		steps.setPreferredSize(new Dimension(75, 15));
+		steps.setModel(new SpinnerNumberModel(DEFAULT_STEPS.intValue(), 0, Integer.MAX_VALUE, 1));
 		steps.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -160,7 +166,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			}
 		});
 		toolBar.add(steps);
-		
+
 		JLabel deltaLabel = new JLabel("Delta-Time");
 		toolBar.add(deltaLabel);
 		delta = new JTextField(5);
@@ -169,14 +175,14 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					_ctrl.setDeltaTime(Double.parseDouble(delta.getText()));					
+					_ctrl.setDeltaTime(Double.parseDouble(delta.getText()));
 				} catch (Exception e2) {
 					e2.getStackTrace();
 				}
 			}
 		});
 		toolBar.add(delta);
-		
+
 		toolBar.add(leftPanel);
 
 		
@@ -203,13 +209,21 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		});
 		toolBar.addSeparator();
 		toolBar.add(exit);
-		
+
 		this.add(toolBar, BorderLayout.PAGE_START);
 
 		return toolBar;
 	}
 
-	//TODO
+	private void setEnable(boolean enable) {
+		load.setEnabled(enable);
+		simulator.setEnabled(enable);
+		play.setEnabled(enable);
+		steps.setEnabled(enable);
+		delta.setEnabled(enable);
+		//exit.setEnabled(enable);
+	}
+	
 	private void run_sim(int n) {
 		if (n > 0 && !_stopped) {
 			try {
@@ -217,19 +231,20 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			} catch (Exception e) {
 				JFrame error = new JFrame("Input Dialog");
 				JOptionPane.showMessageDialog(error, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE, null);
-				// TODO enable all buttons
+				setEnable(true);
 				_stopped = true;
 				return;
 			}
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					
+
 					run_sim(n - 1);
 				}
 			});
 		} else {
 			_stopped = true;
+
 			// TODO enable all buttons
 			enableButtons();
 			_ctrl.reset();
@@ -260,14 +275,19 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			i++;
 		}
 
+			setEnable(true);
+			_ctrl.reset();
+		}
+	}
+
+	// ----------------- DIALOG SELECCIONAR GRAVEDAD -----------------------
+	public void inputLaw() {
+
+
 		try {
-			String n = (String) JOptionPane.showInputDialog(this,
-					"Select gravy laws to be used.",
-					"Gravity Law Selector", 
-					  JOptionPane.INFORMATION_MESSAGE,
-					  new ImageIcon("icons/physics.png"),
-					  possibilities,
-					  null);
+			String n = (String) JOptionPane.showInputDialog(this, "Select gravy laws to be used.",
+					"Gravity Law Selector", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("icons/physics.png"),
+					possibilities, null);
 
 			if (n != null) {
 				for (JSONObject fe : _ctrl.getGravityLawsFactory().getInfo()) {
@@ -276,28 +296,15 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 						break;
 					}
 				}
-				
-			} 
 
-			
+			}
+
 		} catch (Exception e) {
 			e.getStackTrace();
 		}
-		
-		/*
-		inputDialog.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		inputDialog.pack();
-		inputDialog.setVisible(true);
-		*/
-		
-		inputDialog.setVisible(false);
-		inputDialog.dispatchEvent(new WindowEvent(
-				inputDialog, WindowEvent.WINDOW_CLOSING));
-		
-		return null; 
 	}
-	
-	//--------------------------------------------------------------------------
+
+	// --------------------------------------------------------------------------
 
 	// SimulatorObserver methods
 

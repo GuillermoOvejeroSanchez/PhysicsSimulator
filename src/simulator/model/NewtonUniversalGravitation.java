@@ -51,8 +51,8 @@ public class NewtonUniversalGravitation implements GravityLaws {
 				+ " to the product of their masses and inversely proportional to the square of"
 				+ " the distance between their centers.";
 	}
-	
+
 	public String toString() {
-		return "Newton Universal Gravitation Law"; 
+		return "Newton Universal Gravitation Law";
 	}
 }
