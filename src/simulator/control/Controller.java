@@ -79,7 +79,7 @@ public class Controller {
 	}
 
 	public void setGravityLaws(JSONObject info) {
-		_gravityLaws.createInstance(info);
+		_sim.setGravityLaws(_gravityLaws.createInstance(info));
 	}
 
 }

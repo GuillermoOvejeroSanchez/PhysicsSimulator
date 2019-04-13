@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.io.ObjectInputFilter.Status;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -29,27 +28,20 @@ public class StatusBar extends JPanel implements SimulatorObserver {
 		"Laws: ",
 		
 	};
-	
-	private final static String DEFAULT_LAW  = "Newton's Universal Gravitation";  
+	 
 
 	private JLabel _currTime; // for current time
 	private JLabel _currLaws; // for gravity laws
 	private JLabel _numOfBodies; // for number of bodies
 
-	// TODO quitar la descripcion de ley y poner solo el nombre 
-	
 	public StatusBar(Controller ctrl) {
 		
-		this._currLaws = new JLabel(DEFAULT_LAW); 
+		this._currLaws = new JLabel(); 
 		this._currTime = new JLabel("0.00"); 
 		this._numOfBodies = new JLabel("0"); 
 		
 		initGUI();
 		ctrl.addObserver(this);
-		
-		this._currLaws = new JLabel("default Law"); 
-		this._currTime = new JLabel("0.00"); 
-		this._numOfBodies = new JLabel("0"); 
 	}
 
 	private void initGUI() {
@@ -58,22 +50,16 @@ public class StatusBar extends JPanel implements SimulatorObserver {
 		//this.setPreferredSize(new Dimension(800, 20));
 		
 		  this.setForeground(Color.GRAY);
-		
-		
 		this.setFont(new Font("verdana",Font.BOLD,5));
 		
 		createStatudBar();
-// TODO complete the code to build the tool bar
 	}
 
-// other private/protected methods
-// ...
-// SimulatorObserver methods
-// ...
 	
+	
+// SimulatorObserver methods
+
 	public void createStatudBar() {
-		
-		
 		
 		JLabel timeLabel = new JLabel(statusNames[0]); 
 		this.add(timeLabel); 
@@ -147,6 +133,6 @@ public class StatusBar extends JPanel implements SimulatorObserver {
 	@Override
 	public void onGravityLawChanged(String gLawsDesc) {
 		// TODO Auto-generated method stub
-		this._currLaws.setText(gLawsDesc.toString());
+		this._currLaws.setText(gLawsDesc);
 	}
 }

@@ -8,7 +8,7 @@ import simulator.model.NewtonUniversalGravitation;
 public class NewtonUniversalGravitationBuilder extends Builder<GravityLaws> {
 
 	public static final String TIPO = "nlug";
-	public static final String DES = "Newton universal law";
+	public static final String DES = "Newton Universal Gravitation Law";
 
 	public NewtonUniversalGravitationBuilder() {
 		this._typeTag = TIPO;

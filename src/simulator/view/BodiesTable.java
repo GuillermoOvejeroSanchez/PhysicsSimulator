@@ -12,21 +12,11 @@ import javax.swing.border.TitledBorder;
 
 import simulator.control.Controller;
 import simulator.model.BodiesTableModel;
+import simulator.model.SimulatorObserver;
 
-public class BodiesTable extends JPanel {
+public class BodiesTable extends JPanel{
 
 	private static final long serialVersionUID = 1L;
-	
-	
-	
-	private static String[] titulos = {
-		"Id",
-		"Mass",
-		"Position",
-		"Velocity",
-		"Acceleration",
-			
-	}; 
 
 	BodiesTableModel bodiesTableM; 
 	
