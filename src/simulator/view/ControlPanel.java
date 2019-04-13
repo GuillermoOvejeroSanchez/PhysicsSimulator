@@ -177,6 +177,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		
 		toolBar.add(leftPanel);
 
+		
+		
 		exit = new JButton();
 		exit.setToolTipText("Exit's the simulation");
 		exit.setIcon(new ImageIcon("icons/exit.png"));
@@ -184,7 +186,14 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFrame exit = new JFrame("Input Dialog");
-				int exitSelection = JOptionPane.showConfirmDialog(exit, "Really want to close it?", "Exit Application", JOptionPane.OK_CANCEL_OPTION);
+			
+				//int exitSelection = JOptionPane.showConfirmDialog(exit, "Really want to close it?", "Exit Application", JOptionPane.OK_CANCEL_OPTION);
+				int exitSelection = JOptionPane.showConfirmDialog(exit, 
+						"Really want to close it?", 
+						"Exit Application", 
+						JOptionPane.OK_CANCEL_OPTION,
+						JOptionPane.WARNING_MESSAGE , 
+						new ImageIcon("icons/error.png"));
 				System.out.println(exitSelection);
 				if(exitSelection == 0)
 					System.exit(exitSelection);	
