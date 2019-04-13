@@ -43,11 +43,11 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private Controller _ctrl;
 	private boolean _stopped;
 	JToggleButton toggleButton;
-	private JButton load;
-	private JButton simulator;
-	private JButton play;
-	private JButton stop;
-	private JButton exit;
+	protected JButton load;
+	protected JButton simulator;
+	protected JButton play;
+	protected JButton stop;
+	protected JButton exit;
 	private JSpinner steps;
 	private JTextField delta;
 	private int _stepsNumber;
@@ -127,6 +127,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 				// TODO Desactivar el resto de botones menos stop
 				_stopped = false;
 				run_sim(_stepsNumber);
+				
+				disableButtons();
 			}
 		});
 		toolBar.add(play);
@@ -229,8 +231,21 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		} else {
 			_stopped = true;
 			// TODO enable all buttons
+			enableButtons();
 			_ctrl.reset();
 		}
+	}
+	
+	public void enableButtons() {
+		load.setEnabled(true);
+		simulator.setEnabled(true);
+		exit.setEnabled(true);
+	}
+	
+	public void disableButtons(){
+		load.setEnabled(false);
+		simulator.setEnabled(false);
+		exit.setEnabled(false);
 	}
 	
 	
