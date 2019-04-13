@@ -162,8 +162,9 @@ public class Viewer extends JComponent implements SimulatorObserver {
 			long bordey = Math.round(this.getBounds().getMinY());
 
 			gr.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
-			gr.drawString("h: toggle help, +: zoom-in, -:zoom-out, =: fit", bordeX + 8, bordey / 7);
-			gr.drawString("Scalating ratio " + this._scale, bordeX + 8, bordey / 5);
+			gr.setColor(Color.red);
+			gr.drawString("h: toggle help, +: zoom-in, -:zoom-out, =: fit", bordeX + 8, bordey/7);
+			gr.drawString("Scalating ratio " + this._scale, bordeX + 8, bordey/5);
 		}
 	}
 
