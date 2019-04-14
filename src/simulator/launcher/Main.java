@@ -91,13 +91,15 @@ public class Main {
 		CommandLineParser parser = new DefaultParser();
 		try {
 			CommandLine line = parser.parse(cmdLineOptions, args);
-			parseHelpOption(line, cmdLineOptions);
 			parseModeOption(line);
+			if (_batchMode) {
+				parseOutputOption(line);
+				parseStepsOption(line);
+			}
+			parseHelpOption(line, cmdLineOptions);
 			parseInFileOption(line);
 			parseDeltaTimeOption(line);
 			parseGravityLawsOption(line);
-			parseOutputOption(line);
-			parseStepsOption(line);
 
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
@@ -262,11 +264,20 @@ public class Main {
 		ctrl.run(_steps, os);
 	}
 
-	private static void startGUIMode() throws InvocationTargetException, InterruptedException {
+	private static void startGUIMode() throws InvocationTargetException, InterruptedException, Exception {
 
 		GravityLaws gravityLaws = _gravityLawsFactory.createInstance(_gravityLawsInfo);
 		PhysicsSimulator sim = new PhysicsSimulator(gravityLaws, _dtime);
 		Controller ctrl = new Controller(sim, _bodyFactory, _gravityLawsFactory);
+
+		if (_inFile != null) {
+			try (InputStream is = new FileInputStream(new File(_inFile));) {
+				ctrl.loadBodies(is);
+			} catch (FileNotFoundException e) {
+				throw new ParseException("Invalid Input File");
+			}
+		}
+		ctrl.setDeltaTime(_dtime);
 
 		SwingUtilities.invokeAndWait(new Runnable() {
 			@Override

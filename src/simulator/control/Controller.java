@@ -36,9 +36,9 @@ public class Controller {
 	}
 
 	public void run(Integer n, OutputStream out) {
-		JSONObject state = new JSONObject(); // No crear objeto //TODO usar for each
+		JSONObject state = new JSONObject();
 		JSONArray s = new JSONArray();
-
+		
 		s.put(new JSONObject(_sim.toString()));
 		for (int i = 0; i < n; i++) {
 			_sim.advance();
@@ -46,8 +46,6 @@ public class Controller {
 		}
 
 		state.put("states", s);
-
-		// String state TODO
 
 		try {
 			out.write(state.toString().getBytes());

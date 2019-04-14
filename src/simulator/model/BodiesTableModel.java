@@ -52,34 +52,33 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-
-		Body cuerpo = _bodies.get(rowIndex);
-
-		switch (titulos[columnIndex]) {
-		case "Id":
-			return cuerpo.getId();
-		case "Mass":
-			return cuerpo.getMass();
-		case "Position":
-			return cuerpo.getPosition();
-		case "Velocity":
-			return cuerpo.getVelocity();
-		case "Aceleration":
-			return cuerpo.getAcceleration();
-		default:
-			return "";
+		
+		try {
+			Body cuerpo = _bodies.get(rowIndex);
+			
+			switch (titulos[columnIndex]) {
+			case "Id":
+				return cuerpo.getId();
+			case "Mass":
+				return cuerpo.getMass();
+			case "Position":
+				return cuerpo.getPosition();
+			case "Velocity":
+				return cuerpo.getVelocity();
+			case "Aceleration":
+				return cuerpo.getAcceleration();
+			default:
+				return "";
+			}
+			
+		} catch (Exception e) {
+			e.getMessage();
 		}
-
-	}
-
-	public Object getRowData(int colum, Body cuerpo) {
-
-		return null;
+		return "";
 	}
 
 	private void addBodies(List<Body> bodies) {
 		_bodies = bodies;
-		// initTable();
 	}
 
 	@Override
@@ -91,51 +90,40 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 
 	@Override
 	public void onReset(List<Body> bodies, double time, double dt, String gLawsDesc) {
-		// TODO Auto-generated method stub
 		_bodies = new ArrayList<>(bodies);
 		repaint();
 	}
 
 	@Override
 	public void onBodyAdded(List<Body> bodies, Body b) {
-		// TODO Auto-generated method stub
-		// this._bodies.add(b);
-		this._bodies = bodies;
+		//this._bodies = bodies;
+		 this._bodies.add(b);
 		repaint();
 	}
 
 	@Override
 	public void onAdvance(List<Body> bodies, double time) {
-		// TODO Auto-generated method stub
 		addBodies(bodies);
 		fireTableStructureChanged();
 	}
 
 	@Override
 	public void onDeltaTimeChanged(double dt) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void onGravityLawChanged(String gLawsDesc) {
-		// TODO Auto-generated method stub
-
 	}
+	
+	
 // SimulatorObserver methods
-
-	public void setBodies(List<Body> cuerpo) {
-	}
-
-	public void setColumsNames() {
-
-	}
-
-	public void refresh() {
+/*
+	private void refresh() {
 		this.fireTableDataChanged();
 	}
-
-	public void repaint() {
+*/
+	private void repaint() {
 		this.fireTableStructureChanged();
 	}
 

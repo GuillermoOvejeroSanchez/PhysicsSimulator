@@ -43,7 +43,6 @@ public class Viewer extends JComponent implements SimulatorObserver {
 				TitledBorder.LEFT, TitledBorder.TOP));
 
 		this.setPreferredSize(new Dimension(800, 300));
-		// this.setFont(new Font(attributes));
 
 	}
 
@@ -53,7 +52,7 @@ public class Viewer extends JComponent implements SimulatorObserver {
 		_scale = 1.0;
 		_showHelp = true;
 		addKeyListener(new KeyListener() {
-// ...
+			
 			@Override
 			public void keyPressed(KeyEvent e) {
 				switch (e.getKeyChar()) {
@@ -76,18 +75,14 @@ public class Viewer extends JComponent implements SimulatorObserver {
 
 			@Override
 			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void keyTyped(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-
 			}
 		});
 		addMouseListener(new MouseListener() {
-// ...
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				requestFocus();
@@ -95,26 +90,20 @@ public class Viewer extends JComponent implements SimulatorObserver {
 
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void mouseExited(MouseEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-
 			}
 		});
 	}
@@ -125,20 +114,15 @@ public class Viewer extends JComponent implements SimulatorObserver {
 		Graphics2D gr = (Graphics2D) g;
 		gr.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		gr.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-// use �gr� to draw not �g�
+		
 // calculate the center
 		_centerX = getWidth() / 2;
 		_centerY = getHeight() / 2;
-// TODO draw a cross at center
 		centerCross(gr);
-// TODO draw bodies
 		drawBodies(gr);
-// TODO draw help if _showHelp is true
 		helpText(gr);
 	}
 
-// other private/protected methods
-// ...
 	private void autoScale() {
 		double max = 1.0;
 		for (Body b : _bodies) {
@@ -213,15 +197,11 @@ public class Viewer extends JComponent implements SimulatorObserver {
 
 	@Override
 	public void onDeltaTimeChanged(double dt) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onGravityLawChanged(String gLawsDesc) {
-		// TODO Auto-generated method stub
 
 	}
-// SimulatorObserver methods
-// ...
+
 }

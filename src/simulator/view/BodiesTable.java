@@ -20,7 +20,6 @@ public class BodiesTable extends JPanel {
 	BodiesTableModel bodiesTableM;
 
 	BodiesTable(Controller ctrl) {
-		// bodiesTableM = new BodiesTableModel(ctrl);
 		JTable bodiesTable = new JTable(new BodiesTableModel(ctrl));
 
 		setLayout(new BorderLayout());

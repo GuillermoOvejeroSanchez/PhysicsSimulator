@@ -50,18 +50,4 @@ public class MassLosingBody extends Body {
 		}
 
 	}
-
-//	public String toString() {
-//		StringBuilder string = new StringBuilder(super.toString());
-//		string.deleteCharAt(string.length()-1);
-//		string.append("\"factor\": ");
-//		string.append(lossFactor);
-//		string.append(" , ");
-//		string.append("\"freq\": ");
-//		string.append(lossFrequency);
-//		string.append(" } ");
-//		
-//		return string.toString();
-//	}
-
 }

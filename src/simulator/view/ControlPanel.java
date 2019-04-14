@@ -67,13 +67,11 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 
 	private void initGUI() {
 		super.setLayout(new BorderLayout());
-		createJToolBar();
-		// this.add(createJToolBar());
-
+		addJToolBar();
 	}
 
 	// other private/protected methods
-	public JToolBar createJToolBar() {
+	private void addJToolBar() {
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
 		toolBar.setRollover(true);
@@ -152,8 +150,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		toolBar.add(stepsLabel);
 		steps = new JSpinner();
 
-		// steps.setPreferredSize(new Dimension(75,10));
-		// steps.setMaximumSize(delta.getPreferredSize());
 		steps.setMaximumSize(steps.getPreferredSize());
 		steps.setPreferredSize(new Dimension(75, 15));
 		steps.setModel(new SpinnerNumberModel(DEFAULT_STEPS.intValue(), 0, Integer.MAX_VALUE, 1));
@@ -192,15 +188,12 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFrame exit = new JFrame("Input Dialog");
-			
-				//int exitSelection = JOptionPane.showConfirmDialog(exit, "Really want to close it?", "Exit Application", JOptionPane.OK_CANCEL_OPTION);
 				int exitSelection = JOptionPane.showConfirmDialog(exit, 
 						"Really want to close it?", 
 						"Exit Application", 
 						JOptionPane.OK_CANCEL_OPTION,
 						JOptionPane.WARNING_MESSAGE , 
 						new ImageIcon("icons/error.png"));
-				System.out.println(exitSelection);
 				if(exitSelection == 0)
 					System.exit(exitSelection);	
 			}
@@ -209,8 +202,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		toolBar.add(exit);
 
 		this.add(toolBar, BorderLayout.PAGE_START);
-
-		return toolBar;
 	}
 
 	private void setEnable(boolean enable) {
@@ -248,7 +239,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	}
 
 	// ----------------- DIALOG SELECCIONAR GRAVEDAD -----------------------
-	public void inputLaw() {
+	private void inputLaw() {
 
 		try {
 			String n = (String) JOptionPane.showInputDialog(this, "Select gravy laws to be used.",

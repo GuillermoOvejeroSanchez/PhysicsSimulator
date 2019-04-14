@@ -43,19 +43,18 @@ public class StatusBar extends JPanel implements SimulatorObserver {
 		this.setForeground(Color.GRAY);
 		this.setFont(new Font("verdana", Font.BOLD, 5));
 
-		createStatudBar();
+		createStatusBar();
 	}
 
 // SimulatorObserver methods
 
-	public void createStatudBar() {
+	private void createStatusBar() {
 
 		JLabel timeLabel = new JLabel(statusNames[0]);
 		this.add(timeLabel);
 		this.add(_currTime);
 
 		this.add(Box.createHorizontalStrut(3));
-		// this.add(new JSeparator(SwingConstants.VERTICAL));
 		this.add(separator());
 
 		JLabel bodiesLabel = new JLabel(statusNames[1]);
@@ -63,7 +62,6 @@ public class StatusBar extends JPanel implements SimulatorObserver {
 		this.add(_numOfBodies);
 
 		this.add(Box.createHorizontalStrut(3));
-		// this.add(new JSeparator(SwingConstants.VERTICAL));
 		this.add(separator());
 
 		JLabel lawsLabel = new JLabel(statusNames[2]);
@@ -72,7 +70,7 @@ public class StatusBar extends JPanel implements SimulatorObserver {
 
 	}
 
-	public JLabel separator() {
+	private JLabel separator() {
 		JLabel sep = new JLabel(" | ");
 		sep.setForeground(Color.GRAY);
 

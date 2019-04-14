@@ -26,13 +26,7 @@ public class MainWindow extends JFrame {
 	private void initGUI() {
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		setContentPane(mainPanel);
-		// TODO complete this method to build the GUI
-
 		mainPanel.add(new ControlPanel(_ctrl), BorderLayout.NORTH);
-		// mainPanel.add(new BodiesTable(_ctrl));
-		// mainPanel.add(new Viewer(_ctrl));
-		// mainPanel.add(new StatusBar(_ctrl));
-
 		mainPanel.add(centerPanel(), BorderLayout.CENTER);
 
 		mainPanel.add(new StatusBar(_ctrl), BorderLayout.SOUTH);
@@ -42,7 +36,7 @@ public class MainWindow extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	}
-	// other private/protected methods
+	
 
 	private JPanel centerPanel() {
 		JPanel panelCentral = new JPanel();
