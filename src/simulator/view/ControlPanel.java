@@ -265,6 +265,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	
 	
 	//----------------- DIALOG SELECCIONAR GRAVEDAD -----------------------
+	/*
 	public JFrame inputLaw() {
 		
 		JFrame inputDialog = new JFrame("Input Dialog");
@@ -279,6 +280,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			_ctrl.reset();
 		}
 	}
+
+*/
 
 	// ----------------- DIALOG SELECCIONAR GRAVEDAD -----------------------
 	public void inputLaw() {
