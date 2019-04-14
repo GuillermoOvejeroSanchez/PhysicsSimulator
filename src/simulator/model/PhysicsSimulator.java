@@ -81,7 +81,6 @@ public class PhysicsSimulator {
 	public void reset() {
 		_time = 0.0;
 		_bodies.clear();
-
 		for (SimulatorObserver simulatorObserver : _observers) {
 			simulatorObserver.onReset(_bodies, 0.0, _dt, _gravityLaws.toString());
 		}
