@@ -40,11 +40,11 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private Controller _ctrl;
 	private boolean _stopped;
 	JToggleButton toggleButton;
-	private JButton load;
-	private JButton simulator;
-	private JButton play;
-	private JButton stop;
-	private JButton exit;
+	protected JButton load;
+	protected JButton simulator;
+	protected JButton play;
+	protected JButton stop;
+	protected JButton exit;
 	private JSpinner steps;
 	private JTextField delta;
 	private Object[] possibilities;
@@ -131,6 +131,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 				setEnable(false);
 				_stopped = false;
 				run_sim(_stepsNumber);
+				
+				disableButtons();
 			}
 		});
 		toolBar.add(play);
@@ -233,13 +235,48 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			});
 		} else {
 			_stopped = true;
+
+			// TODO enable all buttons
+			enableButtons();
+			_ctrl.reset();
+		}
+	}
+	
+	public void enableButtons() {
+		load.setEnabled(true);
+		simulator.setEnabled(true);
+		exit.setEnabled(true);
+	}
+	
+	public void disableButtons(){
+		load.setEnabled(false);
+		simulator.setEnabled(false);
+		exit.setEnabled(false);
+	}
+	
+	
+	//----------------- DIALOG SELECCIONAR GRAVEDAD -----------------------
+	/*
+	public JFrame inputLaw() {
+		
+		JFrame inputDialog = new JFrame("Input Dialog");
+		Object[] possibilities = new Object[_ctrl.getGravityLawsFactory().getInfo().size()];
+		int i = 0;
+		for (JSONObject jo : _ctrl.getGravityLawsFactory().getInfo()) {
+			possibilities[i] = jo.get("desc").toString();
+			i++;
+		}
+
 			setEnable(true);
 			_ctrl.reset();
 		}
 	}
 
+*/
+
 	// ----------------- DIALOG SELECCIONAR GRAVEDAD -----------------------
 	private void inputLaw() {
+
 
 		try {
 			String n = (String) JOptionPane.showInputDialog(this, "Select gravy laws to be used.",
