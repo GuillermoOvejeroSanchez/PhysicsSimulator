@@ -18,7 +18,6 @@ public class StatusBar extends JPanel implements SimulatorObserver {
 	private static final long serialVersionUID = 1L;
 
 	private static String[] statusNames = { "Time: ", "Bodies: ", "Laws: ",
-
 	};
 
 	private JLabel _currTime; // for current time

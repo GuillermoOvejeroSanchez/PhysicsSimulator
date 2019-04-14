@@ -35,8 +35,9 @@ import simulator.model.SimulatorObserver;
 public class ControlPanel extends JPanel implements SimulatorObserver {
 
 	private static final long serialVersionUID = -7690206431664849527L;
-	
+
 	private final Integer DEFAULT_STEPS = 1500;
+	private final Double DEFAULT_DELTA = 2500.0;
 	private Controller _ctrl;
 	private boolean _stopped;
 	JToggleButton toggleButton;
@@ -87,7 +88,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 				if (e.getSource().equals(load)) {
 
 					JFileChooser fileChooser = new JFileChooser(
-							new File("C:\\dev\\Java\\PhysicsSimulator\\resources\\examples"));
+							new File("C:\\dev\\Java\\PhysicsSimulator\\resources\\examples")); // Mi ruta para los
+																								// inputs
 					int seleccion = fileChooser.showOpenDialog(toolBar);
 					if (seleccion == JFileChooser.APPROVE_OPTION) {
 						String file = (fileChooser.getSelectedFile().toString());
@@ -131,8 +133,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 				setEnable(false);
 				_stopped = false;
 				run_sim(_stepsNumber);
-				
-				disableButtons();
+
+				setEnable(false);
 			}
 		});
 		toolBar.add(play);
@@ -158,7 +160,11 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		steps.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				_stepsNumber = Integer.parseInt(steps.getValue().toString());
+				try {
+					_stepsNumber = Integer.parseInt(steps.getValue().toString());
+				} catch (Exception e1) {
+					_stepsNumber = DEFAULT_STEPS;
+				}
 			}
 		});
 		toolBar.add(steps);
@@ -173,7 +179,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 				try {
 					_ctrl.setDeltaTime(Double.parseDouble(delta.getText()));
 				} catch (Exception e2) {
-					e2.getStackTrace();
+					_ctrl.setDeltaTime(DEFAULT_DELTA);
 				}
 			}
 		});
@@ -181,8 +187,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 
 		toolBar.add(leftPanel);
 
-		
-		
 		exit = new JButton();
 		exit.setToolTipText("Exit's the simulation");
 		exit.setIcon(new ImageIcon("icons/exit.png"));
@@ -190,14 +194,10 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFrame exit = new JFrame("Input Dialog");
-				int exitSelection = JOptionPane.showConfirmDialog(exit, 
-						"Really want to close it?", 
-						"Exit Application", 
-						JOptionPane.OK_CANCEL_OPTION,
-						JOptionPane.WARNING_MESSAGE , 
-						new ImageIcon("icons/error.png"));
-				if(exitSelection == 0)
-					System.exit(exitSelection);	
+				int exitSelection = JOptionPane.showConfirmDialog(exit, "Really want to close it?", "Exit Application",
+						JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, new ImageIcon("icons/error.png"));
+				if (exitSelection == 0)
+					System.exit(exitSelection);
 			}
 		});
 		toolBar.addSeparator();
@@ -212,9 +212,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		play.setEnabled(enable);
 		steps.setEnabled(enable);
 		delta.setEnabled(enable);
-		//exit.setEnabled(enable);
 	}
-	
+
 	private void run_sim(int n) {
 		if (n > 0 && !_stopped) {
 			try {
@@ -235,48 +234,13 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			});
 		} else {
 			_stopped = true;
-
-			// TODO enable all buttons
-			enableButtons();
-			_ctrl.reset();
-		}
-	}
-	
-	public void enableButtons() {
-		load.setEnabled(true);
-		simulator.setEnabled(true);
-		exit.setEnabled(true);
-	}
-	
-	public void disableButtons(){
-		load.setEnabled(false);
-		simulator.setEnabled(false);
-		exit.setEnabled(false);
-	}
-	
-	
-	//----------------- DIALOG SELECCIONAR GRAVEDAD -----------------------
-	/*
-	public JFrame inputLaw() {
-		
-		JFrame inputDialog = new JFrame("Input Dialog");
-		Object[] possibilities = new Object[_ctrl.getGravityLawsFactory().getInfo().size()];
-		int i = 0;
-		for (JSONObject jo : _ctrl.getGravityLawsFactory().getInfo()) {
-			possibilities[i] = jo.get("desc").toString();
-			i++;
-		}
-
 			setEnable(true);
 			_ctrl.reset();
 		}
 	}
 
-*/
-
 	// ----------------- DIALOG SELECCIONAR GRAVEDAD -----------------------
 	private void inputLaw() {
-
 
 		try {
 			String n = (String) JOptionPane.showInputDialog(this, "Select gravy laws to be used.",

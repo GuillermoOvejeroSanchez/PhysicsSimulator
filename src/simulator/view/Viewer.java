@@ -153,16 +153,20 @@ public class Viewer extends JComponent implements SimulatorObserver {
 	}
 
 	public void drawBodies(Graphics2D gr) {
-		for (Body b : this._bodies) {
-			int x = _centerX + (int) (b.getPosition().coordinate(0) / _scale) - 5;
-			int y = _centerY + (int) (b.getPosition().coordinate(1) / _scale) - 5;
-
-			gr.setColor(Color.BLACK);
-			gr.drawString(b.getId(), x - 2, y - 13);
-			gr.setColor(Color.BLUE);
-			gr.fillOval(x, y, 10, 10);
-
+		try {
+			for (Body b : this._bodies) {
+				int x = _centerX + (int) (b.getPosition().coordinate(0) / _scale) - 5;
+				int y = _centerY + (int) (b.getPosition().coordinate(1) / _scale) - 5;
+				
+				gr.setColor(Color.BLACK);
+				gr.drawString(b.getId(), x - 2, y - 13);
+				gr.setColor(Color.BLUE);
+				gr.fillOval(x, y, 10, 10);
+			}
+		} catch (Exception e) {
+			e.getMessage();
 		}
+
 	}
 
 	@Override
