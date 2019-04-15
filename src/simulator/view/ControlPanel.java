@@ -134,7 +134,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 				_stopped = false;
 				run_sim(_stepsNumber);
 
-				setEnable(false);
+				//setEnable(false);
 			}
 		});
 		toolBar.add(play);
@@ -212,6 +212,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		play.setEnabled(enable);
 		steps.setEnabled(enable);
 		delta.setEnabled(enable);
+		exit.setEnabled(enable);
 	}
 
 	private void run_sim(int n) {

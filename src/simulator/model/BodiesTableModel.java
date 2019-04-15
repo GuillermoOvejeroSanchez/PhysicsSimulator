@@ -104,7 +104,7 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 	@Override
 	public void onAdvance(List<Body> bodies, double time) {
 		addBodies(bodies);
-		fireTableStructureChanged();
+		repaint();
 	}
 
 	@Override
