@@ -137,8 +137,8 @@ public class Viewer extends JComponent implements SimulatorObserver {
 
 	private void centerCross(Graphics2D gr) {
 		gr.setColor(Color.red);
-		gr.drawLine(_centerX - 15, _centerY, _centerX + 15, _centerY);
-		gr.drawLine(_centerX, _centerY - 15, _centerX, _centerY + 15);
+		gr.drawLine(_centerX - 5, _centerY, _centerX + 5, _centerY);
+		gr.drawLine(_centerX, _centerY - 5, _centerX, _centerY + 5);
 	}
 
 	private void helpText(Graphics2D gr) {

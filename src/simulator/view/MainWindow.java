@@ -44,7 +44,6 @@ public class MainWindow extends JFrame {
 		panelCentral.setLayout(new BoxLayout(panelCentral, BoxLayout.Y_AXIS));
 
 		panelCentral.add(new BodiesTable(_ctrl));
-		panelCentral.add(Box.createRigidArea(new Dimension(0, 10)));
 		panelCentral.add(new Viewer(_ctrl));
 
 		return panelCentral;
