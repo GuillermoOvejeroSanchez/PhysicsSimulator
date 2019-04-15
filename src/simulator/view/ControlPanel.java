@@ -156,6 +156,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 
 		steps.setMaximumSize(steps.getPreferredSize());
 		steps.setPreferredSize(new Dimension(75, 15));
+		steps.setToolTipText("Set number of steps to run");
 		steps.setModel(new SpinnerNumberModel(DEFAULT_STEPS.intValue(), 0, Integer.MAX_VALUE, 1));
 		steps.addChangeListener(new ChangeListener() {
 			@Override
@@ -173,6 +174,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		toolBar.add(deltaLabel);
 		delta = new JTextField(5);
 		delta.setMaximumSize(delta.getPreferredSize());
+		delta.setToolTipText("Set delta time between steps");
 		delta.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -254,7 +256,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 						break;
 					}
 				}
-
 			}
 
 		} catch (Exception e) {

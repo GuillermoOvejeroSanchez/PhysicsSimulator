@@ -51,6 +51,7 @@ public class Viewer extends JComponent implements SimulatorObserver {
 		_bodies = new ArrayList<>();
 		_scale = 1.0;
 		_showHelp = true;
+		
 		addKeyListener(new KeyListener() {
 			
 			@Override
@@ -134,13 +135,13 @@ public class Viewer extends JComponent implements SimulatorObserver {
 		_scale = max > size ? 4.0 * max / size : 1.0;
 	}
 
-	public void centerCross(Graphics2D gr) {
+	private void centerCross(Graphics2D gr) {
 		gr.setColor(Color.red);
 		gr.drawLine(_centerX - 15, _centerY, _centerX + 15, _centerY);
 		gr.drawLine(_centerX, _centerY - 15, _centerX, _centerY + 15);
 	}
 
-	public void helpText(Graphics2D gr) {
+	private void helpText(Graphics2D gr) {
 		if (this._showHelp) {
 			long bordeX = Math.round(this.getBounds().getMinX());
 			long bordey = Math.round(this.getBounds().getMinY());
@@ -152,7 +153,7 @@ public class Viewer extends JComponent implements SimulatorObserver {
 		}
 	}
 
-	public void drawBodies(Graphics2D gr) {
+	private void drawBodies(Graphics2D gr) {
 		try {
 			for (Body b : this._bodies) {
 				int x = _centerX + (int) (b.getPosition().coordinate(0) / _scale) - 5;
