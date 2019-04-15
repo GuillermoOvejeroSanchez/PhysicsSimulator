@@ -272,6 +272,7 @@ public class Main {
 
 		if (_inFile != null) {
 			try (InputStream is = new FileInputStream(new File(_inFile));) {
+				ctrl.reset();
 				ctrl.loadBodies(is);
 			} catch (FileNotFoundException e) {
 				throw new ParseException("Invalid Input File");
