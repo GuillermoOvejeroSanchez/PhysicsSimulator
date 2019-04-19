@@ -39,7 +39,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private final Integer DEFAULT_STEPS = 1500;
 	private final Double DEFAULT_DELTA = 2500.0;
 	private Controller _ctrl;
-	private boolean _stopped;
 	JToggleButton toggleButton;
 	protected JButton load;
 	protected JButton simulator;
@@ -47,14 +46,16 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	protected JButton stop;
 	protected JButton exit;
 	private JSpinner steps;
+	private JSpinner delay;
 	private JTextField delta;
 	private Object[] possibilities;
 	private int _stepsNumber;
+	private Thread _thread;
 
 	ControlPanel(Controller ctrl) {
 		_ctrl = ctrl;
-		_stopped = true;
 		_stepsNumber = DEFAULT_STEPS;
+		_thread = null;
 		initGUI();
 		_ctrl.addObserver(this);
 
@@ -131,10 +132,16 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				setEnable(false);
-				_stopped = false;
-				run_sim(_stepsNumber);
+				_thread = new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						run_sim(_stepsNumber, Long.parseUnsignedLong(delay.getValue().toString()));
+						setEnable(false);
+						_thread = null;
+					}
+				}); 
 
-				setEnable(false);
 			}
 		});
 		toolBar.add(play);
@@ -145,13 +152,37 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		stop.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				_stopped = true;
+				if(_thread != null)
+					setEnable(true);
+					_thread.interrupt();
 			}
 		});
 		toolBar.add(stop);
 
+		JLabel delayLabel = new JLabel("Delay");
+		toolBar.add(delayLabel);
+		delay = new JSpinner();
+
+		delay.setMaximumSize(delay.getPreferredSize());
+		delay.setPreferredSize(new Dimension(75, 15));
+		delay.setModel(new SpinnerNumberModel(1, 0, 1000, 1));
+		delay.setToolTipText("Set delay between steps in miliseconds");
+		delay.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				try {
+					_stepsNumber = Integer.parseInt(steps.getValue().toString());
+				} catch (Exception e1) {
+					_stepsNumber = DEFAULT_STEPS;
+				}
+			}
+		});
+		toolBar.add(delay);
+		
+		
 		JLabel stepsLabel = new JLabel("Steps");
 		toolBar.add(stepsLabel);
+		
 		steps = new JSpinner();
 
 		steps.setMaximumSize(steps.getPreferredSize());
@@ -174,7 +205,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		toolBar.add(deltaLabel);
 		delta = new JTextField(5);
 		delta.setMaximumSize(delta.getPreferredSize());
-		delta.setToolTipText("Set delta time between steps");
+		delta.setToolTipText("Set delta time for each step");
 		delta.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -192,6 +223,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		exit = new JButton();
 		exit.setToolTipText("Exit's the simulation");
 		exit.setIcon(new ImageIcon("icons/exit.png"));
+		exit.setToolTipText("Exit's the application");
 		exit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -217,7 +249,29 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		exit.setEnabled(enable);
 	}
 
-	private void run_sim(int n) {
+	private void run_sim(int n, long delay) {
+		while ( n>0 && !Thread.interrupted() ) { //(the current thread has not been intereptred)  TODO
+			// 1. execute the simulator one step, i.e., call method
+			// _ctrl.run(1) and handle exceptions if any
+			try {
+				_ctrl.run(1);
+			} catch (Exception e) {
+				JFrame error = new JFrame("Input Dialog");
+				JOptionPane.showMessageDialog(error, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE, null);
+				setEnable(true);
+				return;
+			}
+			// 2. sleep the current thread for ’delay’ milliseconds TODO
+			try {
+				Thread.sleep(delay);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				return;
+			}
+			n--;
+			}
+		_thread.interrupt();
+		/*
 		if (n > 0 && !_stopped) {
 			try {
 				_ctrl.run(1);
@@ -240,6 +294,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			setEnable(true);
 			_ctrl.reset();
 		}
+		
+		*/
 	}
 
 	// ----------------- DIALOG SELECCIONAR GRAVEDAD -----------------------
@@ -257,6 +313,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 						break;
 					}
 				}
+
 			}
 
 		} catch (Exception e) {
