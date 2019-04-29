@@ -50,7 +50,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private JTextField delta;
 	private Object[] possibilities;
 	private int _stepsNumber;
-	private Thread _thread;
+	private volatile Thread _thread;
 
 	ControlPanel(Controller ctrl) {
 		_ctrl = ctrl;
@@ -131,17 +131,22 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				setEnable(false);
-				_thread = new Thread(new Runnable() {
+				SwingUtilities.invokeLater(new Runnable() {
 					
 					@Override
 					public void run() {
+						// TODO Auto-generated method stub
+						setEnable(false);						
+					}
+				});
+				_thread = new Thread(new Runnable() {
+					@Override
+					public void run() {
 						run_sim(_stepsNumber, Long.parseUnsignedLong(delay.getValue().toString()));
-						setEnable(false);
 						_thread = null;
 					}
-				}); 
-
+				});
+				_thread.start();
 			}
 		});
 		toolBar.add(play);
@@ -152,9 +157,16 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		stop.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(_thread != null)
-					setEnable(true);
-					_thread.interrupt();
+				SwingUtilities.invokeLater(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						if(_thread != null) {
+							_thread.interrupt();
+						}
+					}
+				});
 			}
 		});
 		toolBar.add(stop);
@@ -250,27 +262,33 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	}
 
 	private void run_sim(int n, long delay) {
-		while ( n>0 && !Thread.interrupted() ) { //(the current thread has not been intereptred)  TODO
+		while( n>0 && !Thread.interrupted() ) { //(the current thread has not been intereptred)  TODO
 			// 1. execute the simulator one step, i.e., call method
 			// _ctrl.run(1) and handle exceptions if any
 			try {
 				_ctrl.run(1);
 			} catch (Exception e) {
-				JFrame error = new JFrame("Input Dialog");
-				JOptionPane.showMessageDialog(error, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE, null);
+				
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);	
+					}
+				});
 				setEnable(true);
 				return;
 			}
 			// 2. sleep the current thread for ’delay’ milliseconds TODO
 			try {
 				Thread.sleep(delay);
+				//run_sim(n-1, delay);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				setEnable(true);
 				return;
 			}
 			n--;
-			}
-		_thread.interrupt();
+		}
+			setEnable(true);
 		/*
 		if (n > 0 && !_stopped) {
 			try {
@@ -327,12 +345,27 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 
 	@Override
 	public void onRegister(List<Body> bodies, double time, double dt, String gLawsDesc) {
-		delta.setText(String.valueOf(dt));
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				delta.setText(String.valueOf(dt));
+				// TODO Auto-generated method stub
+			}
+		});
 	}
 
 	@Override
 	public void onReset(List<Body> bodies, double time, double dt, String gLawsDesc) {
-		delta.setText(String.valueOf(dt));
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				delta.setText(String.valueOf(dt));
+				
+			}
+		});
 	}
 
 	@Override
@@ -347,7 +380,15 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 
 	@Override
 	public void onDeltaTimeChanged(double dt) {
-		delta.setText(String.valueOf(dt));
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				delta.setText(String.valueOf(dt));
+				
+			}
+		});
 	}
 
 	@Override

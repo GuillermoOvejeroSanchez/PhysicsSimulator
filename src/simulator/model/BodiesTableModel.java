@@ -3,6 +3,7 @@ package simulator.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
@@ -84,27 +85,59 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 	@Override
 	public void onRegister(List<Body> bodies, double time, double dt, String gLawsDesc) {
 		_bodies = new ArrayList<>(bodies);
-		repaint();
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				repaint();
+				
+			}
+		});
 
 	}
 
 	@Override
 	public void onReset(List<Body> bodies, double time, double dt, String gLawsDesc) {
 		_bodies = new ArrayList<>(bodies);
-		repaint();
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				repaint();
+				
+			}
+		});
 	}
 
 	@Override
 	public void onBodyAdded(List<Body> bodies, Body b) {
 		//this._bodies = bodies;
-		 this._bodies.add(b);
-		repaint();
+		this._bodies.add(b);
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				repaint();
+				
+			}
+		});
 	}
 
 	@Override
 	public void onAdvance(List<Body> bodies, double time) {
-		addBodies(bodies);
-		repaint();
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				addBodies(bodies);
+				repaint();
+				
+			}
+		});
 	}
 
 	@Override
