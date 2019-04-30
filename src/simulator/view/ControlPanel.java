@@ -48,7 +48,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private JSpinner steps;
 	private JSpinner delay;
 	private JTextField delta;
-	private Object[] possibilities;
+	private String[] possibilities;
 	private int _stepsNumber;
 	private volatile Thread _thread;
 
@@ -59,10 +59,10 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		initGUI();
 		_ctrl.addObserver(this);
 
-		possibilities = new Object[_ctrl.getGravityLawsFactory().getInfo().size()];
+		possibilities = new String[_ctrl.getGravityLawsFactory().getInfo().size()];
 		int i = 0;
 		for (JSONObject jo : _ctrl.getGravityLawsFactory().getInfo()) {
-			possibilities[i] = jo.get("desc");
+			possibilities[i] = jo.get("desc").toString();
 			i++;
 		}
 	}
@@ -135,7 +135,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 					
 					@Override
 					public void run() {
-						// TODO Auto-generated method stub
 						setEnable(false);						
 					}
 				});
@@ -161,7 +160,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 					
 					@Override
 					public void run() {
-						// TODO Auto-generated method stub
 						if(_thread != null) {
 							_thread.interrupt();
 						}
@@ -259,12 +257,11 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		steps.setEnabled(enable);
 		delta.setEnabled(enable);
 		exit.setEnabled(enable);
+		delay.setEnabled(enable);
 	}
 
 	private void run_sim(int n, long delay) {
-		while( n>0 && !Thread.interrupted() ) { //(the current thread has not been intereptred)  TODO
-			// 1. execute the simulator one step, i.e., call method
-			// _ctrl.run(1) and handle exceptions if any
+		while( n>0 && !Thread.interrupted() ) { 
 			try {
 				_ctrl.run(1);
 			} catch (Exception e) {
@@ -278,10 +275,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 				setEnable(true);
 				return;
 			}
-			// 2. sleep the current thread for ’delay’ milliseconds TODO
 			try {
 				Thread.sleep(delay);
-				//run_sim(n-1, delay);
 			} catch (InterruptedException e) {
 				setEnable(true);
 				return;
@@ -289,31 +284,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			n--;
 		}
 			setEnable(true);
-		/*
-		if (n > 0 && !_stopped) {
-			try {
-				_ctrl.run(1);
-			} catch (Exception e) {
-				JFrame error = new JFrame("Input Dialog");
-				JOptionPane.showMessageDialog(error, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE, null);
-				setEnable(true);
-				_stopped = true;
-				return;
-			}
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-
-					run_sim(n - 1);
-				}
-			});
-		} else {
-			_stopped = true;
-			setEnable(true);
-			_ctrl.reset();
-		}
-		
-		*/
 	}
 
 	// ----------------- DIALOG SELECCIONAR GRAVEDAD -----------------------
@@ -350,7 +320,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			@Override
 			public void run() {
 				delta.setText(String.valueOf(dt));
-				// TODO Auto-generated method stub
 			}
 		});
 	}
@@ -358,10 +327,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	@Override
 	public void onReset(List<Body> bodies, double time, double dt, String gLawsDesc) {
 		SwingUtilities.invokeLater(new Runnable() {
-			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				delta.setText(String.valueOf(dt));
 				
 			}
@@ -384,7 +351,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				delta.setText(String.valueOf(dt));
 				
 			}

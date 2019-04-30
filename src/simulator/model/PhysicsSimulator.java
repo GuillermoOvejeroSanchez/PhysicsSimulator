@@ -30,10 +30,7 @@ public class PhysicsSimulator {
 		if (_bodies.contains(b))
 			throw new IllegalArgumentException("Cuerpo con ID duplicado");
 		_bodies.add(b);
-
-		for (SimulatorObserver simulatorObserver : _observers) {
-			simulatorObserver.onBodyAdded(_bodies, b);
-		}
+		notifyonBodyAdded(b);
 	}
 	
 	public void advance() {
@@ -43,10 +40,7 @@ public class PhysicsSimulator {
 		}
 		_time += _dt;
 
-		for (SimulatorObserver simulatorObserver : _observers) {
-			simulatorObserver.onAdvance(_bodies, _time);
-			;
-		}
+		notifyOnAdvance();
 	}
 
 	public String toString() {
@@ -73,17 +67,13 @@ public class PhysicsSimulator {
 			throw new IllegalArgumentException();
 		}
 
-		for (SimulatorObserver simulatorObserver : _observers) {
-			simulatorObserver.onDeltaTimeChanged(_dt);
-		}
+		notifyOnDeltaTimeChanged();
 	}
 
 	public void reset() {
 		_time = 0.0;
 		_bodies.clear();
-		for (SimulatorObserver simulatorObserver : _observers) {
-			simulatorObserver.onReset(_bodies, 0.0, _dt, _gravityLaws.toString());
-		}
+		notifyOnReset();
 	}
 
 	public void setGravityLaws(GravityLaws gravityLaws) {
@@ -91,17 +81,48 @@ public class PhysicsSimulator {
 			throw new IllegalArgumentException();
 		else {
 			this._gravityLaws = gravityLaws;
-			for (SimulatorObserver simulatorObserver : _observers) {
-				simulatorObserver.onGravityLawChanged(_gravityLaws.toString());
-			}
+			notifyOnGravityLawChanged();
 		}
 	}
-
+	
 	public void addObserver(SimulatorObserver o) {
 		if (!_observers.contains(o))
 			_observers.add(o);
 
-		_observers.get(_observers.size() - 1).onRegister(_bodies, _time, _dt, _gravityLaws.toString());
+		notifyOnRegister(_observers.get(_observers.size() - 1));
 	}
 
+	private void notifyOnDeltaTimeChanged() {
+		for (SimulatorObserver simulatorObserver : _observers) {
+			simulatorObserver.onDeltaTimeChanged(_dt);
+		}
+	}
+	
+	private void notifyOnAdvance() {
+		for (SimulatorObserver simulatorObserver : _observers) {
+			simulatorObserver.onAdvance(_bodies, _time);
+		}
+	}
+	
+	private void notifyonBodyAdded(Body b) {
+		for (SimulatorObserver simulatorObserver : _observers) {
+			simulatorObserver.onBodyAdded(_bodies, b);
+		}
+	}
+	
+	private void notifyOnGravityLawChanged() {
+		for (SimulatorObserver simulatorObserver : _observers) {
+			simulatorObserver.onGravityLawChanged(_gravityLaws.toString());
+		}
+	}
+	
+	private void notifyOnRegister(SimulatorObserver o) {
+		o.onRegister(_bodies, _time, _dt, _gravityLaws.toString());
+	}
+	
+	private void notifyOnReset() {
+		for (SimulatorObserver simulatorObserver : _observers) {
+			simulatorObserver.onReset(_bodies, _time, _dt, _gravityLaws.toString());
+		}
+	}
 }

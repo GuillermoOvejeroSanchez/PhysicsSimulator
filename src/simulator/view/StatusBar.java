@@ -102,7 +102,6 @@ public class StatusBar extends JPanel implements SimulatorObserver {
 			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				_numOfBodies.setText(Integer.toString(bodies.size()));
 				_currTime.setText(Double.toString(time));
 				_currLaws.setText(gLawsDesc.toString());
@@ -117,7 +116,6 @@ public class StatusBar extends JPanel implements SimulatorObserver {
 			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				_numOfBodies.setText(Integer.toString(bodies.size()));
 				_currTime.setText(Double.toString(time));
 				_currLaws.setText(gLawsDesc.toString());
@@ -132,7 +130,6 @@ public class StatusBar extends JPanel implements SimulatorObserver {
 			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				_numOfBodies.setText(Integer.toString(bodies.size()));
 				
 			}
@@ -145,7 +142,6 @@ public class StatusBar extends JPanel implements SimulatorObserver {
 			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				_currTime.setText(Double.toString(time));
 				
 			}
@@ -162,7 +158,6 @@ public class StatusBar extends JPanel implements SimulatorObserver {
 			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				_currLaws.setText(gLawsDesc);
 				
 			}

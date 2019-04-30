@@ -33,7 +33,7 @@ public class Viewer extends JComponent implements SimulatorObserver {
 	private double _scale;
 	private List<Body> _bodies;
 	private boolean _showHelp;
-
+	private boolean _autoFit;
 	Viewer(Controller ctrl) {
 		initGUI();
 		ctrl.addObserver(this);
@@ -48,11 +48,10 @@ public class Viewer extends JComponent implements SimulatorObserver {
 	}
 
 	private void initGUI() {
-// TODO add border with title
 		_bodies = new ArrayList<>();
 		_scale = 1.0;
 		_showHelp = true;
-		
+		_autoFit = true;
 		addKeyListener(new KeyListener() {
 			
 			@Override
@@ -65,6 +64,7 @@ public class Viewer extends JComponent implements SimulatorObserver {
 					_scale = Math.max(1000.0, _scale / 1.1);
 					break;
 				case '=':
+					_autoFit = !_autoFit;
 					autoScale();
 					break;
 				case 'h':
@@ -123,9 +123,12 @@ public class Viewer extends JComponent implements SimulatorObserver {
 		centerCross(gr);
 		drawBodies(gr);
 		helpText(gr);
+		autoScale();
 	}
 
 	private void autoScale() {
+		if(_autoFit) {
+			
 		double max = 1.0;
 		for (Body b : _bodies) {
 			Vector p = b.getPosition();
@@ -134,6 +137,7 @@ public class Viewer extends JComponent implements SimulatorObserver {
 		}
 		double size = Math.max(1.0, Math.min((double) getWidth(), (double) getHeight()));
 		_scale = max > size ? 4.0 * max / size : 1.0;
+		}
 	}
 
 	private void centerCross(Graphics2D gr) {
@@ -146,10 +150,10 @@ public class Viewer extends JComponent implements SimulatorObserver {
 		if (this._showHelp) {
 			long bordeX = Math.round(this.getBounds().getMinX());
 			long bordey = Math.round(this.getBounds().getMinY());
-
 			gr.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
 			gr.setColor(Color.red);
-			gr.drawString("h: toggle help, +: zoom-in, -:zoom-out, =: fit", bordeX + 8, bordey/7);
+			String toggle = _autoFit?"activated" : "desactivated";
+			gr.drawString("h: toggle help, +: zoom-in, -:zoom-out, =: toggle fit: " + toggle, bordeX + 8, bordey/7);
 			gr.drawString("Scalating ratio " + this._scale, bordeX + 8, bordey/5);
 		}
 	}
@@ -177,7 +181,6 @@ public class Viewer extends JComponent implements SimulatorObserver {
 			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				_bodies = new ArrayList<>(bodies);
 				autoScale();
 				repaint();
@@ -193,7 +196,7 @@ public class Viewer extends JComponent implements SimulatorObserver {
 			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
+
 				_bodies.clear();
 				autoScale();
 				repaint();
@@ -209,9 +212,7 @@ public class Viewer extends JComponent implements SimulatorObserver {
 			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				_bodies.add(b);
-				autoScale();
 				repaint();
 				
 			}
@@ -225,7 +226,6 @@ public class Viewer extends JComponent implements SimulatorObserver {
 			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				repaint();
 				
 			}

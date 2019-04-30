@@ -1,4 +1,4 @@
-package simulator.model;
+package simulator.view;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
+import simulator.model.Body;
+import simulator.model.SimulatorObserver;
 
 public class BodiesTableModel extends AbstractTableModel implements SimulatorObserver {
 
@@ -89,7 +91,6 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				repaint();
 				
 			}
@@ -104,7 +105,6 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				repaint();
 				
 			}
@@ -113,13 +113,11 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 
 	@Override
 	public void onBodyAdded(List<Body> bodies, Body b) {
-		//this._bodies = bodies;
 		this._bodies.add(b);
 		SwingUtilities.invokeLater(new Runnable() {
 			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				repaint();
 				
 			}
@@ -132,30 +130,20 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				addBodies(bodies);
 				repaint();
-				
 			}
 		});
 	}
 
 	@Override
 	public void onDeltaTimeChanged(double dt) {
-
 	}
 
 	@Override
 	public void onGravityLawChanged(String gLawsDesc) {
 	}
 	
-	
-// SimulatorObserver methods
-/*
-	private void refresh() {
-		this.fireTableDataChanged();
-	}
-*/
 	private void repaint() {
 		this.fireTableStructureChanged();
 	}

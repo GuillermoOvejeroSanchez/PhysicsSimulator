@@ -11,7 +11,6 @@ import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 
 import simulator.control.Controller;
-import simulator.model.BodiesTableModel;
 
 public class BodiesTable extends JPanel {
 
