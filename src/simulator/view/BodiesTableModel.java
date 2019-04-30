@@ -1,11 +1,14 @@
-package simulator.model;
+package simulator.view;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
+import simulator.model.Body;
+import simulator.model.SimulatorObserver;
 
 public class BodiesTableModel extends AbstractTableModel implements SimulatorObserver {
 
@@ -84,45 +87,63 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 	@Override
 	public void onRegister(List<Body> bodies, double time, double dt, String gLawsDesc) {
 		_bodies = new ArrayList<>(bodies);
-		repaint();
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				repaint();
+				
+			}
+		});
 
 	}
 
 	@Override
 	public void onReset(List<Body> bodies, double time, double dt, String gLawsDesc) {
 		_bodies = new ArrayList<>(bodies);
-		repaint();
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				repaint();
+				
+			}
+		});
 	}
 
 	@Override
 	public void onBodyAdded(List<Body> bodies, Body b) {
-		//this._bodies = bodies;
-		 this._bodies.add(b);
-		repaint();
+		this._bodies.add(b);
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				repaint();
+				
+			}
+		});
 	}
 
 	@Override
 	public void onAdvance(List<Body> bodies, double time) {
-		addBodies(bodies);
-		repaint();
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				addBodies(bodies);
+				repaint();
+			}
+		});
 	}
 
 	@Override
 	public void onDeltaTimeChanged(double dt) {
-
 	}
 
 	@Override
 	public void onGravityLawChanged(String gLawsDesc) {
 	}
 	
-	
-// SimulatorObserver methods
-/*
-	private void refresh() {
-		this.fireTableDataChanged();
-	}
-*/
 	private void repaint() {
 		this.fireTableStructureChanged();
 	}

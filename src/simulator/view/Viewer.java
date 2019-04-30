@@ -16,6 +16,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
 import simulator.control.Controller;
@@ -32,7 +33,7 @@ public class Viewer extends JComponent implements SimulatorObserver {
 	private double _scale;
 	private List<Body> _bodies;
 	private boolean _showHelp;
-
+	private boolean _autoFit;
 	Viewer(Controller ctrl) {
 		initGUI();
 		ctrl.addObserver(this);
@@ -47,11 +48,10 @@ public class Viewer extends JComponent implements SimulatorObserver {
 	}
 
 	private void initGUI() {
-// TODO add border with title
 		_bodies = new ArrayList<>();
 		_scale = 1.0;
 		_showHelp = true;
-		
+		_autoFit = true;
 		addKeyListener(new KeyListener() {
 			
 			@Override
@@ -64,6 +64,7 @@ public class Viewer extends JComponent implements SimulatorObserver {
 					_scale = Math.max(1000.0, _scale / 1.1);
 					break;
 				case '=':
+					_autoFit = !_autoFit;
 					autoScale();
 					break;
 				case 'h':
@@ -122,9 +123,12 @@ public class Viewer extends JComponent implements SimulatorObserver {
 		centerCross(gr);
 		drawBodies(gr);
 		helpText(gr);
+		autoScale();
 	}
 
 	private void autoScale() {
+		if(_autoFit) {
+			
 		double max = 1.0;
 		for (Body b : _bodies) {
 			Vector p = b.getPosition();
@@ -133,6 +137,7 @@ public class Viewer extends JComponent implements SimulatorObserver {
 		}
 		double size = Math.max(1.0, Math.min((double) getWidth(), (double) getHeight()));
 		_scale = max > size ? 4.0 * max / size : 1.0;
+		}
 	}
 
 	private void centerCross(Graphics2D gr) {
@@ -145,10 +150,10 @@ public class Viewer extends JComponent implements SimulatorObserver {
 		if (this._showHelp) {
 			long bordeX = Math.round(this.getBounds().getMinX());
 			long bordey = Math.round(this.getBounds().getMinY());
-
 			gr.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
 			gr.setColor(Color.red);
-			gr.drawString("h: toggle help, +: zoom-in, -:zoom-out, =: fit", bordeX + 8, bordey/7);
+			String toggle = _autoFit?"activated" : "desactivated";
+			gr.drawString("h: toggle help, +: zoom-in, -:zoom-out, =: toggle fit: " + toggle, bordeX + 8, bordey/7);
 			gr.drawString("Scalating ratio " + this._scale, bordeX + 8, bordey/5);
 		}
 	}
@@ -172,31 +177,59 @@ public class Viewer extends JComponent implements SimulatorObserver {
 
 	@Override
 	public void onRegister(List<Body> bodies, double time, double dt, String gLawsDesc) {
-		_bodies = new ArrayList<>(bodies);
-		autoScale();
-		repaint();
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				_bodies = new ArrayList<>(bodies);
+				autoScale();
+				repaint();
+				
+			}
+		});
 
 	}
 
 	@Override
 	public void onReset(List<Body> bodies, double time, double dt, String gLawsDesc) {
-		this._bodies.clear();
-		autoScale();
-		repaint();
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+
+				_bodies.clear();
+				autoScale();
+				repaint();
+				
+			}
+		});
 
 	}
 
 	@Override
 	public void onBodyAdded(List<Body> bodies, Body b) {
-		this._bodies.add(b);
-		autoScale();
-		repaint();
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				_bodies.add(b);
+				repaint();
+				
+			}
+		});
 
 	}
 
 	@Override
 	public void onAdvance(List<Body> bodies, double time) {
-		repaint();
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				repaint();
+				
+			}
+		});
 
 	}
 
