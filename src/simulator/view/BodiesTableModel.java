@@ -126,14 +126,8 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 
 	@Override
 	public void onAdvance(List<Body> bodies, double time) {
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
 				addBodies(bodies);
 				repaint();
-			}
-		});
 	}
 
 	@Override

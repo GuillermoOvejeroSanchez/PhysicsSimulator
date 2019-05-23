@@ -98,54 +98,27 @@ public class StatusBar extends JPanel implements SimulatorObserver {
 
 	@Override
 	public void onRegister(List<Body> bodies, double time, double dt, String gLawsDesc) {
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
 				_numOfBodies.setText(Integer.toString(bodies.size()));
 				_currTime.setText(Double.toString(time));
 				_currLaws.setText(gLawsDesc.toString());
-				
-			}
-		});
 	}
 
 	@Override
 	public void onReset(List<Body> bodies, double time, double dt, String gLawsDesc) {
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
 				_numOfBodies.setText(Integer.toString(bodies.size()));
 				_currTime.setText(Double.toString(time));
 				_currLaws.setText(gLawsDesc.toString());
-				
-			}
-		});
 	}
 
 	@Override
 	public void onBodyAdded(List<Body> bodies, Body b) {
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
 				_numOfBodies.setText(Integer.toString(bodies.size()));
 				
-			}
-		});
 	}
 
 	@Override
 	public void onAdvance(List<Body> bodies, double time) {
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
 				_currTime.setText(Double.toString(time));
-				
-			}
-		});
 	}
 
 	@Override
@@ -154,13 +127,7 @@ public class StatusBar extends JPanel implements SimulatorObserver {
 
 	@Override
 	public void onGravityLawChanged(String gLawsDesc) {
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
 				_currLaws.setText(gLawsDesc);
 				
-			}
-		});
 	}
 }

@@ -50,12 +50,12 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private JTextField delta;
 	private String[] possibilities;
 	private int _stepsNumber;
-	private volatile Thread _thread;
+	private boolean _stopped;
 
 	ControlPanel(Controller ctrl) {
+		_stopped = true;
 		_ctrl = ctrl;
 		_stepsNumber = DEFAULT_STEPS;
-		_thread = null;
 		initGUI();
 		_ctrl.addObserver(this);
 
@@ -128,24 +128,12 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		play.setToolTipText("Play's the simulation");
 		play.setIcon(new ImageIcon("icons/run.png"));
 		play.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(new Runnable() {
-					
-					@Override
-					public void run() {
-						setEnable(false);						
-					}
-				});
-				_thread = new Thread(new Runnable() {
-					@Override
-					public void run() {
-						run_sim(_stepsNumber, Long.parseUnsignedLong(delay.getValue().toString()));
-						_thread = null;
-					}
-				});
-				_thread.start();
+						setEnable(false);	
+						_stopped = false;
+						//run_sim(_stepsNumber, Long.parseUnsignedLong(delay.getValue().toString()));
+						run_sim(_stepsNumber);
 			}
 		});
 		toolBar.add(play);
@@ -156,15 +144,9 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		stop.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(new Runnable() {
-					
-					@Override
-					public void run() {
-						if(_thread != null) {
-							_thread.interrupt();
-						}
-					}
-				});
+				_stopped = true;
+				setEnable(true);
+				
 			}
 		});
 		toolBar.add(stop);
@@ -260,6 +242,30 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		delay.setEnabled(enable);
 	}
 
+	private void run_sim(int n) {
+		if (n > 0 && !_stopped) {
+			try {
+				_ctrl.run(1);
+			} catch (Exception e) {
+				JFrame error = new JFrame("Input Dialog");
+				JOptionPane.showMessageDialog(error, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE, null);
+				setEnable(true);
+				_stopped = true;
+				return;
+			}
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+
+					run_sim(n - 1);
+				}
+			});
+		} else {
+			_stopped = true;
+			setEnable(true);
+			//_ctrl.reset();
+		}
+	}
 	private void run_sim(int n, long delay) {
 		while( n>0 && !Thread.interrupted() ) { 
 			try {

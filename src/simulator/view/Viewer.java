@@ -177,60 +177,28 @@ public class Viewer extends JComponent implements SimulatorObserver {
 
 	@Override
 	public void onRegister(List<Body> bodies, double time, double dt, String gLawsDesc) {
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
 				_bodies = new ArrayList<>(bodies);
 				autoScale();
 				repaint();
-				
-			}
-		});
-
 	}
 
 	@Override
 	public void onReset(List<Body> bodies, double time, double dt, String gLawsDesc) {
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
-
 				_bodies.clear();
 				autoScale();
 				repaint();
-				
-			}
-		});
 
 	}
 
 	@Override
 	public void onBodyAdded(List<Body> bodies, Body b) {
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
 				_bodies.add(b);
 				repaint();
-				
-			}
-		});
-
 	}
 
 	@Override
 	public void onAdvance(List<Body> bodies, double time) {
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
 				repaint();
-				
-			}
-		});
-
 	}
 
 	@Override
